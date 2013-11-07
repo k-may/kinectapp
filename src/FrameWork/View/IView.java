@@ -1,4 +1,4 @@
-package FrameWork.View;
+package FrameWork.view;
 
 import FrameWork.Rectangle;
 import processing.core.PApplet;

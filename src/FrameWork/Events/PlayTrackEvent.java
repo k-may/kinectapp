@@ -1,6 +1,6 @@
-package FrameWork.Events;
+package FrameWork.events;
 
-import FrameWork.Data.MusicEntry;
+import FrameWork.data.MusicEntry;
 
 public class PlayTrackEvent extends Event {
 

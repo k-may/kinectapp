@@ -1,5 +1,7 @@
 package FrameWork.Interaction;
 
+import FrameWork.data.UserData;
+
 public class InteractionTargetInfo {
 
 	private float _x;
@@ -7,6 +9,7 @@ public class InteractionTargetInfo {
 	private Boolean _isPressTarget;
 	private float _pressAttractionX;
 	private float _pressAttractionY;
+	private UserData _user;
 	
 	public InteractionTargetInfo(){
 	}
@@ -40,6 +43,14 @@ public class InteractionTargetInfo {
 	}
 	public void set_pressAttractionY(float _pressAttractionY) {
 		this._pressAttractionY = _pressAttractionY;
+	}
+
+	public UserData get_user() {
+		return _user;
+	}
+
+	public void set_user(UserData _user) {
+		this._user = _user;
 	}
 
 }

@@ -10,8 +10,8 @@ import ddf.minim.Controller;
 import ddf.minim.Minim;
 
 import FrameWork.IAudioPlayer;
-import FrameWork.Data.MusicEntry;
-import FrameWork.Events.PlayTrackEvent;
+import FrameWork.data.MusicEntry;
+import FrameWork.events.PlayTrackEvent;
 
 public class TrackPlayer implements IAudioPlayer {
 

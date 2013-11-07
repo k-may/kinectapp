@@ -1,7 +1,9 @@
-package FrameWork.Events;
+package FrameWork.events;
 
+import kinectapp.Controller;
 import FrameWork.Interaction.Types.InteractionEventType;
-import FrameWork.View.View;
+import FrameWork.data.UserData;
+import FrameWork.view.View;
 
 public class TouchEvent extends Event {
 
@@ -9,14 +11,23 @@ public class TouchEvent extends Event {
 	private View _target;
 	private float _localX;
 	private float _localY;
+	private float _pressure;
+	private UserData _user;
 
 	public TouchEvent(InteractionEventType type, View target, float localX,
-			float localY) {
+			float localY, float pressure, UserData user) {
 		super(EventType.Touch);
 		_type = type;
 		_target = target;
 		_localX = localX;
 		_localY = localY;
+		_pressure = pressure;
+		_user = user;
+	}
+	
+
+	public void dispatch() {
+		Controller.getInstance().addTouchEvent(this);
 	}
 
 	public InteractionEventType get_interactionType() {
@@ -50,5 +61,14 @@ public class TouchEvent extends Event {
 	public Boolean isRollOut() {
 		return _type == InteractionEventType.RollOut;
 	}
+
+	public float get_pressure() {
+		return _pressure;
+	}
+
+	public UserData getUser() {
+		return _user;
+	}
+
 
 }

@@ -1,11 +1,11 @@
 package kinectapp.view;
 
 import kinectapp.KinectApp;
-import kinectapp.Content.FontInfo;
-import kinectapp.Content.Utils;
+import kinectapp.content.FontInfo;
+import kinectapp.content.Utils;
 import processing.core.PApplet;
 import processing.core.PVector;
-import FrameWork.View.View;
+import FrameWork.view.View;
 
 
 public class LabelView extends View {

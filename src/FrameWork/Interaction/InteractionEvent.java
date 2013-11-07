@@ -1,7 +1,7 @@
 package FrameWork.Interaction;
 
 import FrameWork.Interaction.Types.InteractionEventType;
-import FrameWork.View.View;
+import FrameWork.view.View;
 
 public class InteractionEvent {
 	private InteractionEventType _type;

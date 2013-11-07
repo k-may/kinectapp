@@ -1,4 +1,4 @@
-package FrameWork.Data;
+package FrameWork.data;
 
 public class MusicEntry{
 	public String filePath;

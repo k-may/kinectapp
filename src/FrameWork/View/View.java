@@ -1,4 +1,4 @@
-package FrameWork.View;
+package FrameWork.view;
 
 import java.util.ArrayList;
 
@@ -6,8 +6,8 @@ import processing.core.PApplet;
 import processing.core.PVector;
 import static processing.core.PApplet.println;
 import FrameWork.Rectangle;
-import FrameWork.Events.TouchEvent;
 import FrameWork.Interaction.InteractionStreamData;
+import FrameWork.events.TouchEvent;
 
 public class View implements IView {
 	

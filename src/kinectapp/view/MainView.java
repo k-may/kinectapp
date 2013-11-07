@@ -1,21 +1,25 @@
 package kinectapp.view;
 
 import static processing.core.PApplet.println;
+
+import java.util.ArrayList;
+
 import kinectapp.Controller;
 import processing.core.PApplet;
 import processing.core.PVector;
-import FrameWork.ICanvas;
+import FrameWork.IMainView;
 import FrameWork.Rectangle;
-import FrameWork.Events.TouchEvent;
 import FrameWork.Interaction.IInteractionRegion;
 import FrameWork.Interaction.InteractionDispatcher;
 import FrameWork.Interaction.Types.InteractionEventType;
-import FrameWork.Scenes.SceneManager;
-import FrameWork.Scenes.SceneType;
-import FrameWork.View.IView;
-import FrameWork.View.View;
+import FrameWork.data.UserData;
+import FrameWork.events.TouchEvent;
+import FrameWork.scenes.SceneManager;
+import FrameWork.scenes.SceneType;
+import FrameWork.view.IView;
+import FrameWork.view.View;
 
-public class Canvas implements ICanvas {
+public class MainView implements IMainView {
 	private SceneType _currentScene;
 	private PApplet _parent;
 	private IInteractionRegion _region;
@@ -24,16 +28,18 @@ public class Canvas implements ICanvas {
 	public static int SCREEN_HEIGHT;
 	private Controller _controller;
 	private InteractionDispatcher _dispatcher;
+	private ArrayList<UserData> _users;
 
-	public Canvas(PApplet parent) {
+	public MainView(PApplet parent) {
 		_parent = parent;
 		_parent.smooth();
 		_currentScene = DefaultScene;
 		_controller = Controller.getInstance();
 		_dispatcher = new InteractionDispatcher(this);
+		_users = new ArrayList<UserData>();
+
 		SCREEN_WIDTH = _parent.width;
 		SCREEN_HEIGHT = _parent.height;
-
 	}
 
 	public float get_width() {
@@ -46,7 +52,10 @@ public class Canvas implements ICanvas {
 
 	@Override
 	public IView getTargetAtLocation(float x, float y) {
-		// println(x + " : " + y);
+		//map values
+		x = x * SCREEN_WIDTH;
+		y = y * SCREEN_HEIGHT;
+		
 		View element = SceneManager.getScene(_currentScene);
 
 		for (int i = element.get_numChildren() - 1; i >= 0; i--) {
@@ -124,41 +133,59 @@ public class Canvas implements ICanvas {
 
 	@Override
 	public void setScene(SceneType scene) {
+		//println("set scene : " + scene.toString());
 		_currentScene = scene;
 	}
 
 	@Override
-	public void addPressDownEvent(View target, float x, float y) {
-		addInteractionEvent(InteractionEventType.PressDown, target, x, y);
+	public void addPressDownEvent(View target, float x, float y, float pressure, int id) {
+		addInteractionEvent(InteractionEventType.PressDown, target, x, y, pressure, id);
 	}
 
 	@Override
-	public void addPressReleaseEvent(View target, float x, float y) {
-		addInteractionEvent(InteractionEventType.PressUp, target, x, y);
+	public void addPressReleaseEvent(View target, float x, float y, float pressure, int id) {
+		addInteractionEvent(InteractionEventType.PressUp, target, x, y, pressure, id);
 	}
 
 	@Override
-	public void addRollOverEvent(View target, float x, float y) {
-		addInteractionEvent(InteractionEventType.RollOver, target, x, y);
+	public void addRollOverEvent(View target, float x, float y, float pressure, int id) {
+		addInteractionEvent(InteractionEventType.RollOver, target, x, y, pressure, id);
 	}
 
 	@Override
-	public void addRollOutEvent(View target, float x, float y) {
-		addInteractionEvent(InteractionEventType.RollOut, target, x, y);
+	public void addRollOutEvent(View target, float x, float y, float pressure, int id) {
+		addInteractionEvent(InteractionEventType.RollOut, target, x, y, pressure, id);
 	}
 
+	public void addMoveEvent(View target, float x, float y, float pressure, int id) {
+		addInteractionEvent(InteractionEventType.Move, target, x, y, pressure, id);
+	}
+	
 	private void addInteractionEvent(InteractionEventType type, View target,
-			float x, float y) {
+			float x, float y, float pressure, int id) {
 		PVector pos = target.get_absPos();
-		float localX = x - pos.x;
-		float localY = y - pos.y;
-		new TouchEvent(type, target, localX, localY).dispatch();
+		float localX = x*SCREEN_WIDTH - pos.x;
+		float localY = y*SCREEN_HEIGHT - pos.y;
+		new TouchEvent(type, target, localX, localY, pressure, getUser(id)).dispatch();
 	}
 
 	@Override
 	public Boolean isTouchEnabled() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public ArrayList<UserData> get_users() {
+		return _users;
+	}
+	
+	public UserData getUser(int id){
+		for (UserData u : _users) {
+			if (u.get_id() == id)
+				return u;
+		}
+
+		return new UserData(id);
 	}
 
 }

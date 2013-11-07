@@ -1,32 +1,40 @@
 package kinectapp;
 
-import static kinectapp.Data.XMLClient.getXMLCLientInstance;
+import static kinectapp.clients.XMLClient.getXMLCLientInstance;
 import static processing.core.PApplet.println;
 import java.util.ArrayList;
 
-import kinectapp.Data.XMLClient;
-import kinectapp.view.Canvas;
-import FrameWork.ICanvas;
-import FrameWork.Data.ImageEntry;
-import FrameWork.Data.MusicEntry;
-import FrameWork.Events.Event;
-import FrameWork.Events.EventType;
-import FrameWork.Events.InteractionRegionReadyEvent;
-import FrameWork.Events.PlayTrackEvent;
-import FrameWork.Events.SaveCanvasEvent;
-import FrameWork.Events.TouchEvent;
+import processing.core.PApplet;
+
+import stroke.ICanvas;
+
+import kinectapp.clients.XMLClient;
+import kinectapp.view.MainView;
+import FrameWork.IMainView;
 import FrameWork.Interaction.InteractionDispatcher;
-import FrameWork.View.IGallery;
-import FrameWork.View.View;
+import FrameWork.data.ImageEntry;
+import FrameWork.data.MusicEntry;
+import FrameWork.events.Event;
+import FrameWork.events.EventType;
+import FrameWork.events.InteractionRegionReadyEvent;
+import FrameWork.events.LabelButtonPressed;
+import FrameWork.events.PlayTrackEvent;
+import FrameWork.events.SaveCanvasEvent;
+import FrameWork.events.TouchEvent;
+import FrameWork.scenes.SceneType;
+import FrameWork.view.IGallery;
+import FrameWork.view.View;
 import ddf.minim.Minim;
 
 public class Controller {
 
+	private ArrayList<TouchEvent> _touchEventQueue;
 	private ArrayList<Event> _eventQueue;
 	private static Controller _instance;
-	private Canvas _parent;
+	private MainView _parent;
 	private TrackPlayer _player;
 	private IGallery _gallery;
+	private ICanvas _canvas;
 
 	private XMLClient xmlClient;
 
@@ -34,11 +42,12 @@ public class Controller {
 	private ArrayList<ImageEntry> imageEntries;
 
 	private Controller() {
+		_touchEventQueue = new ArrayList<TouchEvent>();
 		_eventQueue = new ArrayList<Event>();
 		xmlClient = getXMLCLientInstance();
 	}
 
-	public void registerParent(Canvas parent) {
+	public void registerParent(MainView parent) {
 		_parent = parent;
 	}
 
@@ -46,19 +55,35 @@ public class Controller {
 		_gallery = gallery;
 	}
 
+	public void registerCanvas(ICanvas canvas) {
+		_canvas = canvas;
+	}
+
 	public void addEvent(Event event) {
 		_eventQueue.add(event);
 	}
 
 	public void update() {
+		processTouches();
 		processEvents();
 	}
 
+	private void processTouches() {
+		ArrayList<TouchEvent> tempList = new ArrayList<TouchEvent>(_touchEventQueue);
+		_touchEventQueue.clear();
+
+		for (TouchEvent evt : tempList) {
+			handleTouchEvent(evt);
+		}
+	}
+
 	private void processEvents() {
-		for (Event evt : _eventQueue) {
+		ArrayList<Event> tempList = new ArrayList<Event>(_eventQueue);
+		_eventQueue.clear();
+
+		for (Event evt : tempList) {
 			processEvent(evt);
 		}
-		_eventQueue.clear();
 	}
 
 	private void processEvent(Event event) {
@@ -77,10 +102,40 @@ public class Controller {
 			case Exit:
 				handleExit();
 				break;
-			case Touch:
-				handleTouchEvent((TouchEvent) event);
-				break;
+			case LabelButtonPressed:
+				handleLableButton((LabelButtonPressed) event);
 		}
+	}
+
+	private void handleLableButton(LabelButtonPressed event) {
+		String text = event.get_text();
+		println("handleLabelButton : " + text);
+
+		if (text == "Canvas")
+			_parent.setScene(SceneType.Canvas);
+		else if (text == "Gallery")
+			_parent.setScene(SceneType.Gallery);
+		else if (text == "Home")
+			_parent.setScene(SceneType.Home);
+		else if (text == "Save")
+			handleSaveImage();
+		else if(text == "Clear")
+			handleClearCanvas();
+	}
+
+	private void handleClearCanvas() {
+		// TODO Auto-generated method stub
+		_canvas.clear();
+	}
+
+	private void handleSaveImage() {
+
+		String filePath = PApplet.minute() + ".jpg";
+		ImageEntry entry = new ImageEntry(filePath, "", new String[]{"me"});
+
+		XMLClient.getXMLCLientInstance().writeXML(entry);
+
+		_canvas.save(filePath);
 	}
 
 	private void handleTouchEvent(TouchEvent event) {
@@ -129,6 +184,10 @@ public class Controller {
 			_instance = new Controller();
 
 		return _instance;
+	}
+
+	public void addTouchEvent(TouchEvent touchEvent) {
+		_touchEventQueue.add(touchEvent);
 	}
 
 }

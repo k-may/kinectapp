@@ -6,21 +6,21 @@ import java.util.Map;
 import processing.core.PVector;
 
 import kinectapp.Interaction.Adapter;
-import kinectapp.view.Canvas;
-import FrameWork.ICanvas;
+import kinectapp.view.MainView;
+import FrameWork.IMainView;
 import FrameWork.Interaction.InteractionTargetInfo;
 import FrameWork.Interaction.InteractionType;
-import FrameWork.View.View;
+import FrameWork.view.View;
 
 public class SONAdapter extends Adapter {
 
 	private Map<Integer, Avatar> _avatars; // <int, Avatar> _avatars;
-	private Canvas _canvas;
+	private MainView _canvas;
 
 	@Override
-	public void set_canvas(ICanvas canvas) {
+	public void set_canvas(IMainView canvas) {
 		// TODO Auto-generated method stub
-		_canvas = (Canvas) canvas;
+		_canvas = (MainView) canvas;
 		_avatars = new HashMap<Integer, Avatar>();
 	}
 

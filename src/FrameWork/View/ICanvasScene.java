@@ -1,7 +1,8 @@
-package FrameWork.View;
+package FrameWork.view;
 
 import processing.core.PImage;
+import stroke.ICanvas;
 
 public interface ICanvasScene {
-	PImage get_image();
+	ICanvas get_canvas();
 }

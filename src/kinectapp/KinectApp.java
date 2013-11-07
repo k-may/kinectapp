@@ -1,14 +1,14 @@
 package kinectapp;
 
-import FrameWork.Events.ExitEvent;
-import kinectapp.Content.ContentManager;
-import kinectapp.view.Canvas;
+import FrameWork.events.ExitEvent;
+import kinectapp.content.ContentManager;
+import kinectapp.view.MainView;
 import processing.core.PApplet;
 
 
 public class KinectApp extends PApplet {
 
-	private Canvas _root;
+	private MainView _root;
 	private AppBuilder _appBuilder;
 	private Boolean isFullScreen  =	false;
 	
@@ -29,7 +29,7 @@ public class KinectApp extends PApplet {
 
 
 	private void createChilds() {
-		_root = new Canvas(this);
+		_root = new MainView(this);
 
 		_appBuilder = new AppBuilder(_root);
 		_appBuilder.init();

@@ -1,4 +1,4 @@
-package FrameWork.Data;
+package FrameWork.data;
 
 public class ImageEntry {
 	public String filePath;

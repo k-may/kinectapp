@@ -2,21 +2,21 @@ package FrameWork.Interaction;
 
 import java.util.ArrayList;
 
-import kinectapp.view.Canvas;
+import kinectapp.view.MainView;
 import static processing.core.PApplet.println;
 import processing.core.PVector;
 
-import FrameWork.ICanvas;
+import FrameWork.IMainView;
 import FrameWork.Interaction.Types.InteractionEventType;
-import FrameWork.View.IView;
-import FrameWork.View.View;
+import FrameWork.view.IView;
+import FrameWork.view.View;
 
 public class InteractionDispatcher {
 
-	public Canvas _canvas;
+	public MainView _canvas;
 	public ArrayList<InteractionHandle> _handles;
 
-	public InteractionDispatcher(Canvas canvas) {
+	public InteractionDispatcher(MainView canvas) {
 		_canvas = canvas;
 		_handles = new ArrayList<InteractionHandle>();
 	}
@@ -29,8 +29,8 @@ public class InteractionDispatcher {
 	}
 
 	private void seeData(InteractionStreamData data) {
-		float x = data.get_x() * _canvas.get_width();
-		float y = data.get_y() * _canvas.get_height();
+		float x = data.get_x();
+		float y = data.get_y();
 		View target = (View) _canvas.getTargetAtLocation(x, y);
 
 		getInteractionHandle(target, data);
@@ -49,13 +49,12 @@ public class InteractionDispatcher {
 		}
 
 		if (target != null) {
-			InteractionHandle handle = new InteractionHandle(data.get_userId(),
-					target);
+			InteractionHandle handle = new InteractionHandle(data.get_userId(), target);
 			handle.add(data);
 			_handles.add(handle);
 		}
 	}
-	
+
 	private void preUpdateHandles() {
 
 		ArrayList<InteractionHandle> completeHandles = new ArrayList<InteractionHandle>();
@@ -66,30 +65,32 @@ public class InteractionDispatcher {
 			View target = handle.get_target();
 			float x = handle.get_currentX();
 			float y = handle.get_currentY();
-			InteractionStreamData currentInteraction = handle
-					.get_currentInteraction();
-			InteractionStreamData lastInteraction = handle
-					.get_lastInteraction();
+			InteractionStreamData currentInteraction = handle.get_currentInteraction();
+			InteractionStreamData lastInteraction = handle.get_lastInteraction();
+			float pressure = handle.getCurrentPressure();
 
 			if (handle.isCancelled()) {
-				dispatchEvent(target, InteractionEventType.RollOut, x, y);
+				dispatchEvent(target, InteractionEventType.RollOut, x, y, pressure, handle.get_id());
 				completeHandles.add(handle);
 			} else {
 				if (lastInteraction != null) {
 
 					if (currentInteraction.isPressing() && !handle.isPressing())
-						dispatchEvent(target, InteractionEventType.PressDown,
-								x, y);
+						dispatchEvent(target, InteractionEventType.PressDown, x, y, pressure, handle.get_id());
 					else if (!currentInteraction.isPressing()
 							&& handle.isPressing())
-						dispatchEvent(target, InteractionEventType.PressUp, x,
-								y);
-				} else {
-					dispatchEvent(target, InteractionEventType.RollOver, x, y);
+						dispatchEvent(target, InteractionEventType.PressUp, x, y, pressure, handle.get_id());
 
-					if (currentInteraction.isPressing())
-						dispatchEvent(target, InteractionEventType.PressDown,
-								x, y);
+					if (x != lastInteraction.get_x()
+							|| y != lastInteraction.get_y())
+						dispatchEvent(target, InteractionEventType.Move, x, y, pressure, handle.get_id());
+
+				} else {
+					dispatchEvent(target, InteractionEventType.RollOver, x, y, pressure, handle.get_id());
+
+					// if (currentInteraction.isPressing())
+					// dispatchEvent(target, InteractionEventType.PressDown, x,
+					// y);
 				}
 			}
 		}
@@ -109,22 +110,25 @@ public class InteractionDispatcher {
 	}
 
 	private void dispatchEvent(View target, InteractionEventType type, float x,
-			float y) {
-		println("dispatch : " + type);
+			float y, float pressure, int id) {
+		// println("dispatch : " + type);
 		switch (type) {
 			case None:
 				break;
 			case PressDown:
-				_canvas.addPressDownEvent(target, x, y);
+				_canvas.addPressDownEvent(target, x, y, pressure, id);
 				break;
 			case PressUp:
-				_canvas.addPressReleaseEvent(target, x, y);
+				_canvas.addPressReleaseEvent(target, x, y, pressure, id);
 				break;
 			case RollOut:
-				_canvas.addRollOutEvent(target, x, y);
+				_canvas.addRollOutEvent(target, x, y, pressure, id);
 				break;
 			case RollOver:
-				_canvas.addRollOverEvent(target, x, y);
+				_canvas.addRollOverEvent(target, x, y, pressure, id);
+				break;
+			case Move:
+				_canvas.addMoveEvent(target, x, y, pressure, id);
 				break;
 		}
 	}

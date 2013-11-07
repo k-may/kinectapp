@@ -1,4 +1,4 @@
-package FrameWork.Events;
+package FrameWork.events;
 
 public class SaveCanvasEvent extends Event {
 

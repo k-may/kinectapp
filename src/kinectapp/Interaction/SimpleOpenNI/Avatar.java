@@ -1,10 +1,10 @@
 package kinectapp.Interaction.SimpleOpenNI;
 
-import kinectapp.Content.Assets;
+import kinectapp.content.Assets;
 import processing.core.PApplet;
 import processing.core.PImage;
 import FrameWork.Interaction.Types.HandType;
-import FrameWork.View.View;
+import FrameWork.view.View;
 
 public class Avatar extends View {
 

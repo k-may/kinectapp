@@ -1,6 +1,6 @@
-package FrameWork.Scenes;
+package FrameWork.scenes;
 
-import FrameWork.View.View;
+import FrameWork.view.View;
 
 public class Scene extends View {
 	public Scene(SceneType type) {

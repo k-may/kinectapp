@@ -1,7 +1,7 @@
-package kinectapp.view.Gallery;
+package kinectapp.view.gallery;
 
-import FrameWork.Data.ImageEntry;
-import FrameWork.View.View;
+import FrameWork.data.ImageEntry;
+import FrameWork.view.View;
 
 public class ImageEntryView extends View {
 

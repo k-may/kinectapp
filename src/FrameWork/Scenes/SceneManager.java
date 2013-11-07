@@ -1,8 +1,9 @@
-package FrameWork.Scenes;
+package FrameWork.scenes;
 
 import java.util.HashMap;
 import java.util.Map;
-import FrameWork.View.IView;
+
+import FrameWork.view.IView;
 
 public class SceneManager {
 

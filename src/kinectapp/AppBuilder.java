@@ -3,27 +3,26 @@ package kinectapp;
 import static processing.core.PApplet.println;
 import kinectapp.Interaction.Processing.PRegion;
 import kinectapp.Interaction.SimpleOpenNI.SONRegion;
-import kinectapp.view.Canvas;
-import kinectapp.view.CanvasScene.CanvasScene;
-import kinectapp.view.Gallery.GalleryScene;
+import kinectapp.view.MainView;
+import kinectapp.view.canvas.CanvasScene;
+import kinectapp.view.gallery.GalleryScene;
 import kinectapp.view.home.HomeScene;
-import FrameWork.Events.InteractionRegionReadyEvent;
 import FrameWork.Interaction.IInteractionRegion;
+import FrameWork.events.InteractionRegionReadyEvent;
 import SimpleOpenNI.SimpleOpenNI;
 
 public class AppBuilder {
 
 	private IInteractionRegion _region;
-	Canvas _parent;
+	MainView _parent;
 	Controller _controller;
 	GalleryScene _gallery;
 	CanvasScene _canvas;
 	HomeScene _home;
 
-	public AppBuilder(Canvas parent) {
+	public AppBuilder(MainView parent) {
 		_parent = parent;
 		_controller = Controller.getInstance();
-
 		_controller.registerParent(_parent);
 	}
 
@@ -34,8 +33,8 @@ public class AppBuilder {
 	}
 
 	private void initController() {
-
 		_controller.registerGallery(_gallery);
+		_controller.registerCanvas(_canvas.getCanvas());
 		_controller.start();
 	}
 

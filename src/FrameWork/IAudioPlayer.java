@@ -2,7 +2,7 @@ package FrameWork;
 
 import java.util.ArrayList;
 
-import FrameWork.Data.MusicEntry;
+import FrameWork.data.MusicEntry;
 
 public interface IAudioPlayer {
 	void setEntries(ArrayList<MusicEntry> entries);

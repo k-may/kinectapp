@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data>
-	<music name="Sun" artist="Caribou">
-		tracks/Sun.mp3
-	</music>
-	<music name="African Dialects" artist="Peter King">
-		tracks/African Dialects.mp3
-	</music>
-	<music name="Sure Thing" artist="Saint-Germain">
-		tracks/Sure Thing.mp3
-	</music>
+  <music artist="Caribou" name="Sun">tracks/Sun.mp3</music>
+  <music artist="Peter King" name="African Dialects">tracks/African Dialects.mp3</music>
+  <music artist="Saint-Germain" name="Sure Thing">tracks/Sure Thing.mp3</music>
+  <image artists="me" title="">FrameWork.data.ImageEntry@1d8f162</image>
+  <image artists="me" title="">FrameWork.data.ImageEntry@13af084</image>
+  <image artists="me" title="">FrameWork.data.ImageEntry@257b34</image>
+  <image artists="me" title="">FrameWork.data.ImageEntry@8d3d62</image>
+  <image artists="me" title="">FrameWork.data.ImageEntry@1e536d6</image>
 </data>

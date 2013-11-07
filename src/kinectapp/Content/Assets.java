@@ -1,4 +1,4 @@
-package kinectapp.Content;
+package kinectapp.content;
 
 import processing.core.PFont;
 import processing.core.PImage;

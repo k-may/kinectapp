@@ -2,7 +2,7 @@ package FrameWork.Interaction;
 
 import java.util.ArrayList;
 import static processing.core.PApplet.println;
-import FrameWork.View.View;
+import FrameWork.view.View;
 
 public class InteractionHandle {
 	private View _target;
@@ -65,6 +65,10 @@ public class InteractionHandle {
 	}
 
 	public void update(){
-		_isPressing = get_currentInteraction().get_pressure() == 1;
+		_isPressing = getCurrentPressure() == 1;
+	}
+	
+	public float getCurrentPressure(){
+		return get_currentInteraction().get_pressure();
 	}
 }

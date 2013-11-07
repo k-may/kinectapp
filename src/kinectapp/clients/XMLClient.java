@@ -1,11 +1,11 @@
-package kinectapp.Data;
+package kinectapp.clients;
 
 import static processing.core.PApplet.println;
 
 import java.util.ArrayList;
 
-import FrameWork.Data.ImageEntry;
-import FrameWork.Data.MusicEntry;
+import FrameWork.data.ImageEntry;
+import FrameWork.data.MusicEntry;
 
 import com.sun.xml.internal.ws.util.StringUtils;
 

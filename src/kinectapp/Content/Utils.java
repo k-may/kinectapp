@@ -1,4 +1,4 @@
-package kinectapp.Content;
+package kinectapp.content;
 
 import kinectapp.KinectApp;
 import processing.core.PApplet;

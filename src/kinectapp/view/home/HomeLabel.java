@@ -1,12 +1,12 @@
 package kinectapp.view.home;
 
 import kinectapp.KinectApp;
-import kinectapp.Content.Assets;
+import kinectapp.content.Assets;
 import kinectapp.view.LabelView;
 import processing.core.PApplet;
-import FrameWork.Events.TouchEvent;
 import FrameWork.Interaction.InteractionStreamData;
-import FrameWork.View.View;
+import FrameWork.events.TouchEvent;
+import FrameWork.view.View;
 
 public class HomeLabel extends View {
 
