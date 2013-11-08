@@ -1,7 +1,7 @@
 package kinectapp.view;
 
 import kinectapp.KinectApp;
-import kinectapp.content.Assets;
+import kinectapp.content.ContentManager;
 import processing.core.PApplet;
 import FrameWork.events.LabelButtonPressed;
 import FrameWork.events.TouchEvent;
@@ -19,7 +19,7 @@ public class LabelButton extends View {
 	}
 
 	public void setText(String text) {
-		_label = new LabelView(text, 0x000, Assets.Font_48);
+		_label = new LabelView(text, 0x000, ContentManager.GetFont("large"));
 		addChild(_label);
 		_width = _label.get_width();
 		_height = _label.get_height();

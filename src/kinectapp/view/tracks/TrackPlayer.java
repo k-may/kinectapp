@@ -1,6 +1,8 @@
-package kinectapp;
+package kinectapp.view.tracks;
 
 import java.util.ArrayList;
+
+import kinectapp.KinectApp;
 import static processing.core.PApplet.println;
 import processing.core.PApplet;
 
@@ -12,8 +14,9 @@ import ddf.minim.Minim;
 import FrameWork.IAudioPlayer;
 import FrameWork.data.MusicEntry;
 import FrameWork.events.PlayTrackEvent;
+import FrameWork.view.View;
 
-public class TrackPlayer implements IAudioPlayer {
+public class TrackPlayer extends View implements IAudioPlayer {
 
 	private PApplet parent;
 	private ArrayList<MusicEntry> _entries;
@@ -128,5 +131,29 @@ public class TrackPlayer implements IAudioPlayer {
 		} else {
 			println("The output doesn't have a gain control.");// , 105);
 		}
+	}
+
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void collapse() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void expand() {
+		// TODO Auto-generated method stub
+		
 	}
 }

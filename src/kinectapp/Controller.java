@@ -2,16 +2,16 @@ package kinectapp;
 
 import static kinectapp.clients.XMLClient.getXMLCLientInstance;
 import static processing.core.PApplet.println;
+
 import java.util.ArrayList;
 
-import processing.core.PApplet;
-
-import stroke.ICanvas;
-
 import kinectapp.clients.XMLClient;
+import kinectapp.content.ContentManager;
 import kinectapp.view.MainView;
-import FrameWork.IMainView;
-import FrameWork.Interaction.InteractionDispatcher;
+import kinectapp.view.canvas.CanvasScene;
+import kinectapp.view.tracks.TrackPlayer;
+import processing.core.PApplet;
+import stroke.ICanvas;
 import FrameWork.data.ImageEntry;
 import FrameWork.data.MusicEntry;
 import FrameWork.events.Event;
@@ -22,9 +22,8 @@ import FrameWork.events.PlayTrackEvent;
 import FrameWork.events.SaveCanvasEvent;
 import FrameWork.events.TouchEvent;
 import FrameWork.scenes.SceneType;
+import FrameWork.view.ICanvasScene;
 import FrameWork.view.IGallery;
-import FrameWork.view.View;
-import ddf.minim.Minim;
 
 public class Controller {
 
@@ -35,7 +34,7 @@ public class Controller {
 	private TrackPlayer _player;
 	private IGallery _gallery;
 	private ICanvas _canvas;
-
+	private ICanvasScene _canvasScene;
 	private XMLClient xmlClient;
 
 	private ArrayList<MusicEntry> musicEntries;
@@ -53,6 +52,7 @@ public class Controller {
 
 	public void registerGallery(IGallery gallery) {
 		_gallery = gallery;
+		_gallery.setImages(ContentManager.GetGalleyImages());
 	}
 
 	public void registerCanvas(ICanvas canvas) {
@@ -113,29 +113,17 @@ public class Controller {
 
 		if (text == "Canvas")
 			_parent.setScene(SceneType.Canvas);
-		else if (text == "Gallery")
-			_parent.setScene(SceneType.Gallery);
 		else if (text == "Home")
 			_parent.setScene(SceneType.Home);
 		else if (text == "Save")
-			handleSaveImage();
-		else if(text == "Clear")
+			new SaveCanvasEvent().dispatch();
+		else if (text == "Clear")
 			handleClearCanvas();
 	}
 
 	private void handleClearCanvas() {
 		// TODO Auto-generated method stub
 		_canvas.clear();
-	}
-
-	private void handleSaveImage() {
-
-		String filePath = PApplet.minute() + ".jpg";
-		ImageEntry entry = new ImageEntry(filePath, "", new String[]{"me"});
-
-		XMLClient.getXMLCLientInstance().writeXML(entry);
-
-		_canvas.save(filePath);
 	}
 
 	private void handleTouchEvent(TouchEvent event) {
@@ -155,7 +143,16 @@ public class Controller {
 
 	private void handleSaveCanvas(SaveCanvasEvent event) {
 		// TODO Auto-generated method stub
-		String fileName = KinectApp.instance.millis() + ".jpg";
+		String date = PApplet.month() + "_" + PApplet.day() + "_"
+				+ PApplet.minute() + "_" + PApplet.second();
+		String title = PApplet.minute() + "_" + PApplet.second();
+		String filePath = "images" + PApplet.minute() + "_" + PApplet.second()
+				+ ".jpg";
+		ImageEntry entry = new ImageEntry(filePath, "", new String[] { "me" }, date);
+
+		XMLClient.getXMLCLientInstance().writeXML(entry);
+
+		_canvas.save(filePath);
 	}
 
 	private void handleRegionReady(InteractionRegionReadyEvent event) {
@@ -166,16 +163,16 @@ public class Controller {
 	}
 
 	public void start() {
-		_parent.start();
+
+		ContentManager.loadIcons(KinectApp.instance, xmlClient.readAssetEntries());
+		ContentManager.loadFonts(KinectApp.instance, xmlClient.readFontEntries());
+		ContentManager.loadGalleryEntries(KinectApp.instance, xmlClient.readImageEntries());
 
 		musicEntries = xmlClient.readMusicEntries();
 		_player = new TrackPlayer();
 		_player.setEntries(musicEntries);
-		// new
-		// PlayTrackEvent(musicEntries.get(0)).dispatch();//_player.play(musicEntries.get(0));
 
-		imageEntries = xmlClient.readImageEntries();
-		_gallery.setImages(imageEntries);
+		_parent.start();
 
 	}
 
@@ -188,6 +185,10 @@ public class Controller {
 
 	public void addTouchEvent(TouchEvent touchEvent) {
 		_touchEventQueue.add(touchEvent);
+	}
+
+	public void registerCanvasScene(ICanvasScene canvasScene) {
+		_canvasScene = canvasScene;
 	}
 
 }

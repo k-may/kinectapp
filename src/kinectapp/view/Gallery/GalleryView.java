@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import processing.core.PApplet;
 
+import kinectapp.content.GalleryEntry;
 import kinectapp.view.MainView;
 import kinectapp.view.LabelButton;
 import FrameWork.data.ImageEntry;
@@ -12,9 +13,9 @@ import FrameWork.scenes.SceneType;
 import FrameWork.view.IGallery;
 import FrameWork.view.View;
 
-public class GalleryScene extends Scene implements IGallery {
+public class GalleryView extends View implements IGallery {
 
-	private ArrayList<ImageEntry> _data;
+	private ArrayList<GalleryEntry> _data;
 	private ArrayList<ImageEntryView> _entries;
 	private View _scrollable;
 
@@ -25,9 +26,8 @@ public class GalleryScene extends Scene implements IGallery {
 	private LabelButton _homeButton;
 	private LabelButton _canvasButton;
 
-	public GalleryScene() {
-		super(SceneType.Gallery);
-
+	public GalleryView() {
+		
 		_width = MainView.SCREEN_WIDTH;
 		_height = MainView.SCREEN_HEIGHT;
 
@@ -60,7 +60,8 @@ public class GalleryScene extends Scene implements IGallery {
 		_homeButton.set_y(_height - _homeButton.get_height() - 10);
 	}
 
-	public void setImages(ArrayList<ImageEntry> entries) {
+	@Override
+	public void setImages(ArrayList<GalleryEntry> entries) {
 		_data = entries;
 
 		clear();
@@ -71,7 +72,7 @@ public class GalleryScene extends Scene implements IGallery {
 		ImageEntryView view;
 		int x = 0;
 
-		for (ImageEntry entry : _data) {
+		for (GalleryEntry entry : _data) {
 			view = new ImageEntryView(entry);
 			_scrollable.addChild(view);
 			view.set_x(x);
@@ -89,4 +90,6 @@ public class GalleryScene extends Scene implements IGallery {
 		// TODO Auto-generated method stub
 		_scrollable.removeAllChildren();
 	}
+
+
 }

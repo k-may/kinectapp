@@ -124,7 +124,6 @@ public class View implements IView {
 	}
 
 	public void removeAllChildren() {
-		// TODO Auto-generated method stub
 		for (IView child : _childs) {
 			removeChild(child);
 		}
@@ -133,12 +132,10 @@ public class View implements IView {
 	}
 
 	public int get_numChildren() {
-		// TODO Auto-generated method stub
 		return _childs.size();
 	}
 
 	public View get_childAt(int i) {
-		// TODO Auto-generated method stub
 		return (View) _childs.get(i);
 	}
 

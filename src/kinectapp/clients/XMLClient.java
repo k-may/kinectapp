@@ -4,9 +4,12 @@ import static processing.core.PApplet.println;
 
 import java.util.ArrayList;
 
+import FrameWork.data.AssetEntry;
+import FrameWork.data.FontEntry;
 import FrameWork.data.ImageEntry;
 import FrameWork.data.MusicEntry;
 
+import com.jogamp.opengl.math.geom.AABBox;
 import com.sun.xml.internal.ws.util.StringUtils;
 
 import kinectapp.KinectApp;
@@ -93,10 +96,34 @@ public class XMLClient {
 			String filePath = child.getContent().trim();
 			String[] artists = child.getString("artists").split("\\,");
 			String title = child.getString("title");
-			ImageEntry entry = new ImageEntry(filePath,title, artists);
+			String date = child.getString("date");
+			ImageEntry entry = new ImageEntry(filePath,title, artists, date);
 			entries.add(entry);
 		}
 
 		return entries;
 	}
-}
+	
+	public ArrayList<AssetEntry> readAssetEntries(){
+		ArrayList<AssetEntry> entries = new ArrayList<AssetEntry>();
+		for(XML child : xml.getChildren("asset")){
+			String filePath = child.getContent().trim();
+			String name = child.getString("name");
+			String type = child.getString("type");
+			AssetEntry entry = new AssetEntry(name, type, filePath);
+			entries.add(entry);
+		}
+		return entries;
+	}
+	
+	public ArrayList<FontEntry> readFontEntries(){
+		ArrayList<FontEntry> entries = new ArrayList<FontEntry>();
+		for(XML child : xml.getChildren("font")){
+			String filePath = child.getContent().trim();
+			String name = child.getString("name");
+			int size = child.getInt("size");
+			FontEntry entry = new FontEntry(name, filePath,size); 
+			entries.add(entry);
+		}
+		return entries;
+	}}

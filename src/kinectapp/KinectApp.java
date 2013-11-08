@@ -22,8 +22,7 @@ public class KinectApp extends PApplet {
 		if(!isFullScreen){
 			size(1024, 768);
 		}
-		
-		initAssets();
+
 		createChilds();
 	}
 
@@ -36,12 +35,6 @@ public class KinectApp extends PApplet {
 
 	}
 
-
-	private void initAssets() {
-		// TODO Auto-generated method stub
-		ContentManager manager = new ContentManager(this);
-	}
-	
 	public void draw() {
 		_root.draw(this);
 	}

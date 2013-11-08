@@ -13,6 +13,7 @@ import FrameWork.view.View;
 public class Adapter implements IAdapter {
 
 	protected MainView _canvas;
+	protected InteractionView _interactionView;
 
 	public Adapter() {
 	}
@@ -22,12 +23,16 @@ public class Adapter implements IAdapter {
 			int userId, InteractionType type) {
 		// TODO Auto-generated method stub
 		InteractionTargetInfo info = new InteractionTargetInfo();
+		
+		float localX = x * _canvas.get_width();
+		float localY = y *  _canvas.get_height();
 
-		UserData user = _canvas.getUser(userId);
+		UserData user = _interactionView.getUser(userId);
 		user.set_updated(true);
-
-		View target = (View) _canvas.getTargetAtLocation(x
-				* _canvas.get_width(), y * _canvas.get_height());
+		user.set_localX(localX);
+		user.set_localY(localY);
+		
+		View target = (View) _canvas.getTargetAtLocation(localX, localY);
 		info.set_isPressTarget(target != null);
 
 		return info;
@@ -38,11 +43,12 @@ public class Adapter implements IAdapter {
 	public void set_canvas(IMainView canvas) {
 		// TODO Auto-generated method stub
 		_canvas = (MainView) canvas;
+		_canvas.addChild(_interactionView);
 	}
 
 	@Override
 	public void beginInteractionFrame() {
-		for (UserData data : _canvas.get_users()) {
+		for (UserData data : _interactionView.get_users()) {
 			data.set_updated(false);
 		}
 	}
@@ -51,13 +57,13 @@ public class Adapter implements IAdapter {
 	public void endInteractionFrame() {
 		// TODO Auto-generated method stub
 		ArrayList<UserData> staleUsers = new ArrayList<UserData>();
-		for (UserData user : _canvas.get_users()) {
+		for (UserData user : _interactionView.get_users()) {
 			if (!user.isUpdated())
 				staleUsers.add(user);
 		}
 
 		for (UserData user : staleUsers) {
-			_canvas.get_users().remove(user);
+			_interactionView.get_users().remove(user);
 		}
 	}
 

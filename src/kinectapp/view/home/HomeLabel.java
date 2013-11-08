@@ -1,7 +1,7 @@
 package kinectapp.view.home;
 
 import kinectapp.KinectApp;
-import kinectapp.content.Assets;
+import kinectapp.content.ContentManager;
 import kinectapp.view.LabelView;
 import processing.core.PApplet;
 import FrameWork.Interaction.InteractionStreamData;
@@ -20,7 +20,7 @@ public class HomeLabel extends View {
 
 	public HomeLabel(String name) {
 		_label = new LabelView("Welcome", KinectApp.instance.color(100, 100,
-				100), Assets.Font_48);
+				100), ContentManager.GetFont("large"));
 		addChild(_label);
 		_label.set_x(_paddingLeft);
 		_height = _label.get_height() + _paddingBottom;

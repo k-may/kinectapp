@@ -1,6 +1,5 @@
 package kinectapp.Interaction.SimpleOpenNI;
 
-import kinectapp.content.Assets;
 import processing.core.PApplet;
 import processing.core.PImage;
 import FrameWork.Interaction.Types.HandType;
@@ -30,12 +29,7 @@ public class Avatar extends View {
 	}
 	
 	private void createChilds() {
-		// TODO Auto-generated method stub
-		_pressingLeft = Assets.LeftPressingHand;
-		_pressingRight = Assets.RightPressingHand;
-		_leftHand = Assets.LeftHand;
-		_rightHand = Assets.RightHand;
-		
+
 	}
 
 	public int get_id() {

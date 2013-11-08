@@ -27,8 +27,7 @@ public class PRegion extends Region<PApplet> {
 		float mY = (float) _source.mouseY / _source.height;
 
 		// println(mX + " : " + mY);
-		// InteractionTargetInfo info =
-		// _adapter.getInteractionInfoAtLocation(mX,mY, -1, _type);
+		 InteractionTargetInfo info = _adapter.getInteractionInfoAtLocation(mX,mY, -1, _type);
 
 		float pressure = _source.mousePressed ? 1 : 0;
 		InteractionStreamData data = new InteractionStreamData(pressure, mX,

@@ -11,4 +11,9 @@ public interface IAudioPlayer {
 	void stop();
 	void pause();
 	void set_volume(float value);
+	void show();
+	void hide();
+	void collapse();
+	void expand();
+	
 }

@@ -1,15 +1,27 @@
 package kinectapp.content;
 
+import FrameWork.data.FontEntry;
 import processing.core.PFont;
 
 public class FontInfo {
-	public PFont font;
-	public int size;
-	public String name;
 	
-	public FontInfo(PFont font, int size, String name){
-		this.font = font;
-		this.size = size;
-		this.name = name;
+	private PFont _font;
+	private FontEntry _entry;
+	
+	public FontInfo(PFont font, FontEntry entry){
+		this._font = font;
+		this._entry = entry;
+	}
+	
+	public PFont get_font() {
+		return _font;
+	}
+
+	public int get_size() {
+		return _entry.get_size();
+	}
+
+	public String get_name() {
+		return _entry.get_name();
 	}
 }

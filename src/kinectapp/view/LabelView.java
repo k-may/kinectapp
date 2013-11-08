@@ -35,7 +35,7 @@ public class LabelView extends View {
 		}
 		
 		p.textAlign(_alignment);
-		p.textFont(_font.font);
+		p.textFont(_font.get_font());
 		p.fill(_color);
 		PVector pos = get_absPos();
 		p.text(_text, pos.x, pos.y + _height);
@@ -83,14 +83,14 @@ public class LabelView extends View {
 	@Override
 	public float get_width() {
 		// TODO Auto-generated method stub
-		_width = Utils.MeasureStringWidth(_font.font, _text);
+		_width = Utils.MeasureStringWidth(_font.get_font(), _text);
 		return _width;
 	}
 	
 	@Override
 	public float get_height() {
 		// TODO Auto-generated method stub
-		_height = _font.size;
+		_height = _font.get_size();
 		log("set height: " + _height);
 		return _height;
 	}
