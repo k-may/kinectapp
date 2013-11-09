@@ -2,25 +2,27 @@ package FrameWork.Interaction;
 
 public class InteractionStreamData {
 	
-	private float _pressure;
+	private float _z;
 	private float _x;
 	private float _y;
 	private int _userId;
 	private InteractionType _type;
-	
-	public InteractionStreamData(float pressure, float x, float y, int userId, InteractionType type){
-		_pressure = (pressure);
+	private Boolean _isOverPressTarget = false;
+
+
+	public InteractionStreamData(float x, float y, float z, int userId, InteractionType type){
+		_z = (z);
 		_x = (x);
 		_y = (y);
 		_type = (type);
 	}
 
 	public Boolean isPressing(){
-		return _pressure == 1;
+		return _z == 1;
 	}
 	
-	public float get_pressure() {
-		return _pressure;
+	public float get_z() {
+		return _z;
 	}
 
 	public float get_x() {
@@ -35,9 +37,16 @@ public class InteractionStreamData {
 		return _userId;
 	}
 
-
 	public InteractionType get_type() {
 		return _type;
+	}
+	
+	public Boolean get_isOverPressTarget() {
+		return _isOverPressTarget;
+	}
+
+	public void set_isOverPressTarget(Boolean _isOverPressTarget) {
+		this._isOverPressTarget = _isOverPressTarget;
 	}
 
 }

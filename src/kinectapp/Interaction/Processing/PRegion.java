@@ -1,15 +1,18 @@
 package kinectapp.Interaction.Processing;
 
-import static processing.core.PApplet.println;
 import java.util.ArrayList;
 
+import kinectapp.Interaction.Adapter;
+import kinectapp.Interaction.Region;
+import processing.core.PApplet;
 import FrameWork.Interaction.InteractionStreamData;
 import FrameWork.Interaction.InteractionTargetInfo;
 import FrameWork.Interaction.InteractionType;
-import processing.core.PApplet;
-import kinectapp.Interaction.Adapter;
-import kinectapp.Interaction.Region;
 
+/**
+ * @author kev
+ * 
+ */
 public class PRegion extends Region<PApplet> {
 
 	public PRegion(PApplet source) {
@@ -25,16 +28,17 @@ public class PRegion extends Region<PApplet> {
 		// TODO Auto-generated method stub
 		float mX = (float) _source.mouseX / _source.width;
 		float mY = (float) _source.mouseY / _source.height;
+		float mZ = _source.mousePressed ? 1 : 0;
 
-		// println(mX + " : " + mY);
-		 InteractionTargetInfo info = _adapter.getInteractionInfoAtLocation(mX,mY, -1, _type);
+		InteractionTargetInfo info = _adapter.getInteractionInfoAtLocation(mX, mY, mZ, 1, _type);
 
-		float pressure = _source.mousePressed ? 1 : 0;
-		InteractionStreamData data = new InteractionStreamData(pressure, mX,
-				mY, -1, _type);
+		InteractionStreamData data = new InteractionStreamData(mX, mY, mZ, 1, _type);
+		data.set_isOverPressTarget(info.get_isPressTarget());
 
 		_interactions = new ArrayList<InteractionStreamData>();
 		_interactions.add(data);
+		
+		_adapter.handleStreamData(_interactions);
 	}
 
 	@Override

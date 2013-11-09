@@ -15,6 +15,10 @@
 	<asset name="playOut" type="image">playOut.png</asset>
 	<asset name="pauseOver" type="image">pauseOver.png</asset>
 	<asset name="pauseOut" type="image">pauseOut.png</asset>
-	<font name="large" size="48" >GillSansMT-48.vlw</font>
-	<image artists="me/you" title="here's the title" date="1908_12_01_34_35">images/11.jpg</image>
+	<asset name="colorWheel" type="image">colorWheel.png</asset>
+	<font name="large" size="48">GillSansMT-48.vlw</font>
+	<font name="small" size="13">GillSansMTPro-Medium-13.vlw</font>
+	<font name="smallItalic" size="13">GillSansMT-Italic-13.vlw</font>
+	<image artists="me/you" title="here's the title" date="1908_12_01_34_35">images/11.jpg
+	</image>
 </data>

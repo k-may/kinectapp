@@ -69,6 +69,6 @@ public class InteractionHandle {
 	}
 	
 	public float getCurrentPressure(){
-		return get_currentInteraction().get_pressure();
+		return get_currentInteraction().get_z();
 	}
 }

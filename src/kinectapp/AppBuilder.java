@@ -1,39 +1,70 @@
 package kinectapp;
 
 import static processing.core.PApplet.println;
+import de.looksgood.ani.Ani;
+import processing.core.PApplet;
 import kinectapp.Interaction.Processing.PRegion;
 import kinectapp.Interaction.SimpleOpenNI.SONRegion;
 import kinectapp.view.MainView;
 import kinectapp.view.canvas.CanvasScene;
 import kinectapp.view.gallery.GalleryView;
 import kinectapp.view.home.HomeScene;
+import kinectapp.view.tracks.TrackPlayer;
+import FrameWork.IMainView;
 import FrameWork.Interaction.IInteractionRegion;
+import FrameWork.audio.IAudioPlayer;
 import FrameWork.events.InteractionRegionReadyEvent;
 import SimpleOpenNI.SimpleOpenNI;
 
 public class AppBuilder {
 
+
 	private IInteractionRegion _region;
-	MainView _parent;
+	KinectApp _parent;
+	IMainView _root;
 	Controller _controller;
 	CanvasScene _canvas;
 	HomeScene _home;
 
-	public AppBuilder(MainView parent) {
-		_parent = parent;
-		_controller = Controller.getInstance();
-		_controller.registerParent(_parent);
+	public AppBuilder(PApplet parent) {
+		_parent = (KinectApp) parent;
+
+		init();
+		
+		start();
 	}
 
-	public void init() {
-		initInteraction();
-		initController();
-		initScenes();
-	}
-
-	private void initController() {
+	private void start() {
 		_controller.start();
 	}
+
+	private void init() {
+		
+		_controller = Controller.getInstance();
+		
+		initMainView();
+		initAnimationEngine();
+		initInteraction();
+		initScenes();
+		initPlayer();
+	}
+
+	private void initMainView() {
+		_root = new MainView(_parent);
+		_controller.registerParent(_root);
+		_parent.setRoot(_root);
+	}
+
+	private void initPlayer() {
+		IAudioPlayer player = new TrackPlayer();
+		_controller.registerTrackPlayer(player);
+		player.set_view(_root.get_audioView());
+	}
+
+	private void initAnimationEngine(){
+		Ani.init(_parent);
+	}
+
 
 	private void initScenes() {
 		// TODO Auto-generated method stub
@@ -48,10 +79,10 @@ public class AppBuilder {
 	private void initInteraction() {
 		// try SimpleOpenNI
 		if (!initSONContext())
-			_region = new PRegion(KinectApp.instance);
+			_region = new PRegion(_parent);
 
-		_region.get_adapter().set_canvas(_parent);
-		_parent.set_region(_region);
+		_region.get_adapter().set_canvas(_root);
+		_root.set_region(_region);
 
 	}
 

@@ -1,12 +1,14 @@
-package kinectapp.Interaction;
+package kinectapp.Interaction.view;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import processing.core.PApplet;
 
-import kinectapp.view.AvatarView;
 import FrameWork.Interaction.IInteractionView;
 import FrameWork.data.UserData;
 import FrameWork.view.View;
@@ -14,20 +16,24 @@ import FrameWork.view.View;
 public class InteractionView extends View implements IInteractionView {
 
 	private ArrayList<UserData> _users;
-
 	private Map<Integer, AvatarView> _avatarViews;
 
 	public InteractionView() {
 		_users = new ArrayList<UserData>();
 		_avatarViews = new HashMap<Integer, AvatarView>();
 	}
-	
+
 	@Override
 	public void draw(PApplet p) {
-		// TODO Auto-generated method stub
-		//arrange views by user pressure
-		
-		super.draw(p);
+		// arrange views by user pressure
+		if (_avatarViews.values() != null) {
+			List<AvatarView> views = new ArrayList<AvatarView>(_avatarViews.values());
+			Collections.sort(views);
+			
+			for(AvatarView view : views){
+				view.draw(p);
+			}
+		}
 	}
 
 	@Override
@@ -63,9 +69,10 @@ public class InteractionView extends View implements IInteractionView {
 		addUser(user);
 		return new UserData(id);
 	}
-	
+
 	public ArrayList<UserData> get_users() {
 		return _users;
 	}
+
 
 }

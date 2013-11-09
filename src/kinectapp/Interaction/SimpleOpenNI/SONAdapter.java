@@ -25,7 +25,7 @@ public class SONAdapter extends Adapter {
 	}
 
 	@Override
-	public InteractionTargetInfo getInteractionInfoAtLocation(float x, float y,
+	public InteractionTargetInfo getInteractionInfoAtLocation(float x, float y, float z,
 			int userId, InteractionType type) {
 		// TODO Auto-generated method stub
 

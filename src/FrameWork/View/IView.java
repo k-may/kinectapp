@@ -11,4 +11,8 @@ public interface IView {
 	IView get_parent();
 	Boolean isTouchEnabled();
 	Rectangle get_rect();
+	int get_numChildren();
+	IView get_childAt(int index);
+	float get_x();
+	float get_y();
 }

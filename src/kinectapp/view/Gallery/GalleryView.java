@@ -6,7 +6,7 @@ import processing.core.PApplet;
 
 import kinectapp.content.GalleryEntry;
 import kinectapp.view.MainView;
-import kinectapp.view.LabelButton;
+import kinectapp.view.labels.LabelButton;
 import FrameWork.data.ImageEntry;
 import FrameWork.scenes.Scene;
 import FrameWork.scenes.SceneType;
@@ -46,18 +46,6 @@ public class GalleryView extends View implements IGallery {
 		// TODO Auto-generated method stub
 		_scrollable = new View("galleryScrollable");
 		addChild(_scrollable);
-
-		_canvasButton = new LabelButton();
-		_canvasButton.setText("Canvas");
-		addChild(_canvasButton);
-		_canvasButton.set_x(_width - _canvasButton.get_width() - 10);
-		_canvasButton.set_y(_height - _canvasButton.get_height() - 10);
-
-		_homeButton = new LabelButton();
-		_homeButton.setText("Home");
-		addChild(_homeButton);
-		_homeButton.set_x(10);
-		_homeButton.set_y(_height - _homeButton.get_height() - 10);
 	}
 
 	@Override

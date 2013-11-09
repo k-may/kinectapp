@@ -1,11 +1,23 @@
 package FrameWork;
 
+import FrameWork.Interaction.IInteractionRegion;
+import FrameWork.audio.IAudioView;
 import FrameWork.scenes.SceneType;
 import FrameWork.view.IView;
 import FrameWork.view.View;
 
 public interface IMainView extends IView {
 	IView getTargetAtLocation(float x, float y);
+	
+	void start();
+	
+	IAudioView get_audioView();
+	
+	void set_region(IInteractionRegion region);
+	
+	void showMenu();
+	
+	void hideMenu();
 
 	void setScene(SceneType scene);
 

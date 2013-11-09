@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import kinectapp.clients.XMLClient;
 import kinectapp.content.ContentManager;
 import kinectapp.view.MainView;
-import kinectapp.view.canvas.CanvasScene;
 import kinectapp.view.tracks.TrackPlayer;
 import processing.core.PApplet;
 import stroke.ICanvas;
+import FrameWork.IMainView;
+import FrameWork.audio.IAudioPlayer;
 import FrameWork.data.ImageEntry;
 import FrameWork.data.MusicEntry;
 import FrameWork.events.Event;
@@ -22,6 +23,7 @@ import FrameWork.events.PlayTrackEvent;
 import FrameWork.events.SaveCanvasEvent;
 import FrameWork.events.TouchEvent;
 import FrameWork.scenes.SceneType;
+import FrameWork.view.CanvasState;
 import FrameWork.view.ICanvasScene;
 import FrameWork.view.IGallery;
 
@@ -30,8 +32,8 @@ public class Controller {
 	private ArrayList<TouchEvent> _touchEventQueue;
 	private ArrayList<Event> _eventQueue;
 	private static Controller _instance;
-	private MainView _parent;
-	private TrackPlayer _player;
+	private IMainView _mainView;
+	private IAudioPlayer _player;
 	private IGallery _gallery;
 	private ICanvas _canvas;
 	private ICanvasScene _canvasScene;
@@ -46,17 +48,20 @@ public class Controller {
 		xmlClient = getXMLCLientInstance();
 	}
 
-	public void registerParent(MainView parent) {
-		_parent = parent;
+	public void registerParent(IMainView parent) {
+		_mainView = parent;
 	}
 
 	public void registerGallery(IGallery gallery) {
 		_gallery = gallery;
-		_gallery.setImages(ContentManager.GetGalleyImages());
 	}
 
 	public void registerCanvas(ICanvas canvas) {
 		_canvas = canvas;
+	}
+	
+	public void registerTrackPlayer(IAudioPlayer player){
+		_player = player;
 	}
 
 	public void addEvent(Event event) {
@@ -112,13 +117,23 @@ public class Controller {
 		println("handleLabelButton : " + text);
 
 		if (text == "Canvas")
-			_parent.setScene(SceneType.Canvas);
+			navigateToCanvas();
 		else if (text == "Home")
-			_parent.setScene(SceneType.Home);
+			naviagateToHome();
 		else if (text == "Save")
 			new SaveCanvasEvent().dispatch();
 		else if (text == "Clear")
 			handleClearCanvas();
+	}
+
+	private void naviagateToHome() {
+		_mainView.setScene(SceneType.Home);
+	}
+
+	private void navigateToCanvas() {
+		_mainView.setScene(SceneType.Canvas);
+		
+		_canvasScene.setState(CanvasState.Canvas);
 	}
 
 	private void handleClearCanvas() {
@@ -157,8 +172,7 @@ public class Controller {
 
 	private void handleRegionReady(InteractionRegionReadyEvent event) {
 		// TODO Auto-generated method stub
-		_parent.set_region(event.get_region());
-
+		_mainView.set_region(event.get_region());
 		start();
 	}
 
@@ -168,11 +182,12 @@ public class Controller {
 		ContentManager.loadFonts(KinectApp.instance, xmlClient.readFontEntries());
 		ContentManager.loadGalleryEntries(KinectApp.instance, xmlClient.readImageEntries());
 
-		musicEntries = xmlClient.readMusicEntries();
-		_player = new TrackPlayer();
-		_player.setEntries(musicEntries);
+		_gallery.setImages(ContentManager.GetGalleyImages());
 
-		_parent.start();
+		musicEntries = xmlClient.readMusicEntries();
+		_player.setEntries(musicEntries);
+		
+		_mainView.start();
 
 	}
 

@@ -1,22 +1,22 @@
 package kinectapp.view.tracks;
 
+import static processing.core.PApplet.println;
+
 import java.util.ArrayList;
+import java.util.Observable;
 
 import kinectapp.KinectApp;
-import static processing.core.PApplet.println;
 import processing.core.PApplet;
-
+import FrameWork.audio.IAudioPlayer;
+import FrameWork.audio.IAudioView;
+import FrameWork.data.MusicEntry;
+import FrameWork.events.PlayTrackEvent;
 import ddf.minim.AudioOutput;
 import ddf.minim.AudioPlayer;
 import ddf.minim.Controller;
 import ddf.minim.Minim;
 
-import FrameWork.IAudioPlayer;
-import FrameWork.data.MusicEntry;
-import FrameWork.events.PlayTrackEvent;
-import FrameWork.view.View;
-
-public class TrackPlayer extends View implements IAudioPlayer {
+public class TrackPlayer extends Observable implements IAudioPlayer {
 
 	private PApplet parent;
 	private ArrayList<MusicEntry> _entries;
@@ -40,6 +40,15 @@ public class TrackPlayer extends View implements IAudioPlayer {
 	@Override
 	public void setEntries(ArrayList<MusicEntry> entries) {
 		_entries = entries;
+		changed();
+	}
+
+	public ArrayList<MusicEntry> get_entries() {
+		return _entries;
+	}
+
+	public Boolean isPlaying() {
+		return _audioPlayer != null ? _audioPlayer.isPlaying() : false;
 	}
 
 	@Override
@@ -53,13 +62,14 @@ public class TrackPlayer extends View implements IAudioPlayer {
 				_audioPlayer = null;
 			}
 
-			parent.println("play track : " + _currentEntry.filePath);
+			// parent.println("play track : " + _currentEntry.filePath);
 			_audioPlayer = _minim.loadFile(_currentEntry.filePath);
 			set_volume(_volume);
 			new PlayTrackEvent(_currentEntry).dispatch();
 		}
 
 		_audioPlayer.play();
+		changed();
 
 	}
 
@@ -67,6 +77,7 @@ public class TrackPlayer extends View implements IAudioPlayer {
 	public void resume() {
 		// TODO Auto-generated method stub
 		_audioPlayer.play();
+		changed();
 	}
 
 	@Override
@@ -76,12 +87,16 @@ public class TrackPlayer extends View implements IAudioPlayer {
 			_audioPlayer.close();
 
 		_minim.stop();
+
+		_currentEntry = null;
+		changed();
 	}
 
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
 		_audioPlayer.pause();
+		changed();
 	}
 
 	@Override
@@ -93,6 +108,7 @@ public class TrackPlayer extends View implements IAudioPlayer {
 			println("set volume: " + _volume);
 			_audioPlayer.setGain(_volume);
 		}
+		changed();
 	}
 
 	private void testControls(Controller controller) {
@@ -134,26 +150,13 @@ public class TrackPlayer extends View implements IAudioPlayer {
 	}
 
 	@Override
-	public void show() {
-		// TODO Auto-generated method stub
-		
+	public void set_view(IAudioView view) {
+		this.addObserver(view);
 	}
 
-	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-		
+	private void changed() {
+		setChanged();
+		notifyObservers();
 	}
 
-	@Override
-	public void collapse() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void expand() {
-		// TODO Auto-generated method stub
-		
-	}
 }

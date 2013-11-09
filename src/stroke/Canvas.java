@@ -55,7 +55,7 @@ public class Canvas extends View implements ICanvas {
 		_buffer.vertex(pt1.x, pt1.y);
 		_buffer.quadraticVertex(ctrl.x, ctrl.y, pt2.x, pt2.y);
 		_buffer.endShape();
-		println(pt1 + " : " + ctrl + " : " + pt2);
+		//println(pt1 + " : " + ctrl + " : " + pt2);
 	}
 
 	@Override

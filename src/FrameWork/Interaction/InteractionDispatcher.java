@@ -22,6 +22,7 @@ public class InteractionDispatcher {
 	}
 
 	public void setStream(ArrayList<InteractionStreamData> data) {
+		println("data : " + data.size());
 		for (InteractionStreamData d : data)
 			seeData(d);
 
@@ -33,6 +34,7 @@ public class InteractionDispatcher {
 		float y = data.get_y();
 		View target = (View) _canvas.getTargetAtLocation(x, y);
 
+		
 		getInteractionHandle(target, data);
 	}
 
@@ -47,8 +49,9 @@ public class InteractionDispatcher {
 					handle.cancel();
 			}
 		}
-
 		if (target != null) {
+			//println("target : " + target);
+
 			InteractionHandle handle = new InteractionHandle(data.get_userId(), target);
 			handle.add(data);
 			_handles.add(handle);

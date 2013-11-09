@@ -1,4 +1,4 @@
-package kinectapp.view;
+package kinectapp.view.labels;
 
 import kinectapp.KinectApp;
 import kinectapp.content.FontInfo;
@@ -26,7 +26,6 @@ public class LabelView extends View {
 
 	@Override
 	public void draw(PApplet p) {
-		// TODO Auto-generated method stub
 		if(_invalidated){
 			_invalidated = false;
 			
@@ -82,16 +81,13 @@ public class LabelView extends View {
 	
 	@Override
 	public float get_width() {
-		// TODO Auto-generated method stub
 		_width = Utils.MeasureStringWidth(_font.get_font(), _text);
 		return _width;
 	}
 	
 	@Override
 	public float get_height() {
-		// TODO Auto-generated method stub
 		_height = _font.get_size();
-		log("set height: " + _height);
 		return _height;
 	}
 

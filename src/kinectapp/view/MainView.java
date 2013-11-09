@@ -1,12 +1,9 @@
 package kinectapp.view;
 
-import static processing.core.PApplet.println;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import kinectapp.Controller;
+import kinectapp.view.tracks.TrackView;
 import processing.core.PApplet;
 import processing.core.PVector;
 import FrameWork.IMainView;
@@ -15,12 +12,13 @@ import FrameWork.Interaction.IInteractionRegion;
 import FrameWork.Interaction.IInteractionView;
 import FrameWork.Interaction.InteractionDispatcher;
 import FrameWork.Interaction.Types.InteractionEventType;
-import FrameWork.data.UserData;
+import FrameWork.audio.IAudioView;
 import FrameWork.events.TouchEvent;
 import FrameWork.scenes.SceneManager;
 import FrameWork.scenes.SceneType;
 import FrameWork.view.IView;
 import FrameWork.view.View;
+import static processing.core.PApplet.println;
 
 public class MainView implements IMainView {
 	private SceneType _currentScene;
@@ -32,30 +30,35 @@ public class MainView implements IMainView {
 	private Controller _controller;
 	private InteractionDispatcher _dispatcher;
 	private IInteractionView _interactionView;
-	// private ArrayList<UserData> _users;
-	// private Map<Integer, AvatarView> _avatarViews;
+
+	private TrackView _trackMenu;
 
 	private ArrayList<IView> _childs;
 
 	public MainView(PApplet parent) {
 		_parent = parent;
+
+		init();
+		createChilds();
+	}
+
+	private void init() {
 		_parent.smooth();
 		_currentScene = DefaultScene;
 		_controller = Controller.getInstance();
 		_dispatcher = new InteractionDispatcher(this);
-		// _users = new ArrayList<UserData>();
 		_childs = new ArrayList<IView>();
-
 		SCREEN_WIDTH = _parent.width;
 		SCREEN_HEIGHT = _parent.height;
 	}
 
-	public float get_width() {
-		return _parent.width;
+	private void createChilds() {
+		_trackMenu = new TrackView();
+		addChild(_trackMenu);
 	}
 
-	public float get_height() {
-		return _parent.height;
+	public void start() {
+		_parent.loop();
 	}
 
 	@Override
@@ -64,10 +67,10 @@ public class MainView implements IMainView {
 		x = x * SCREEN_WIDTH;
 		y = y * SCREEN_HEIGHT;
 
-		View element = SceneManager.getScene(_currentScene);
+		IView element = this; //SceneManager.getScene(_currentScene);
 
 		for (int i = element.get_numChildren() - 1; i >= 0; i--) {
-			View child = element.get_childAt(i);
+			IView child = element.get_childAt(i);
 			Rectangle rect = child.get_rect();
 			if (rect.contains(x, y) && child.isTouchEnabled()) {
 				if (child.get_numChildren() == 0) {
@@ -82,14 +85,11 @@ public class MainView implements IMainView {
 			}
 		}
 
+		println("element : " + element);
 		if (element == SceneManager.getScene(_currentScene))
 			element = null;
 
 		return element;
-	}
-
-	public IInteractionRegion get_region() {
-		return _region;
 	}
 
 	public void set_region(IInteractionRegion _region) {
@@ -103,44 +103,11 @@ public class MainView implements IMainView {
 		_dispatcher.setStream(_region.getStream());
 		_controller.update();
 
+		SceneManager.getScene(_currentScene).draw(p);
+
 		for (IView child : _childs)
 			child.draw(p);
 
-		SceneManager.getScene(_currentScene).draw(p);
-
-	}
-
-	private void arrangeUsers() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void start() {
-		// TODO Auto-generated method stub
-		_parent.loop();
-	}
-
-	public IView get_parent() {
-		return null;
-	}
-
-	@Override
-	public void addChild(IView child) {
-		_childs.add(child);
-	}
-
-	@Override
-	public void removeChild(IView child) {
-		_childs.remove(child);
-	}
-
-	@Override
-	public void set_parent(IView view) {
-	}
-
-	@Override
-	public Rectangle get_rect() {
-		return null;
 	}
 
 	@Override
@@ -180,9 +147,11 @@ public class MainView implements IMainView {
 	private void addInteractionEvent(InteractionEventType type, View target,
 			float x, float y, float pressure, int id) {
 		PVector pos = target.get_absPos();
-		
-		//local data accessible from user data? but only if user exists. Perhaps
-		//we should concolidate and initiate the users in a separate area (ie. Adapter)
+
+		// local data accessible from user data? but only if user exists.
+		// Perhaps
+		// we should concolidate and initiate the users in a separate area (ie.
+		// Adapter)
 		float localX = x * SCREEN_WIDTH - pos.x;
 		float localY = y * SCREEN_HEIGHT - pos.y;
 		new TouchEvent(type, target, localX, localY, pressure, _interactionView.getUser(id)).dispatch();
@@ -193,10 +162,86 @@ public class MainView implements IMainView {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	public void addInteractionView(IInteractionView view){
+
+	public void addInteractionView(IInteractionView view) {
 		_interactionView = view;
 		addChild(_interactionView);
+	}
+
+	public IView get_parent() {
+		return null;
+	}
+
+	@Override
+	public void addChild(IView child) {
+		_childs.add(child);
+	}
+
+	@Override
+	public void removeChild(IView child) {
+		_childs.remove(child);
+	}
+
+	@Override
+	public void set_parent(IView view) {
+	}
+
+	@Override
+	public Rectangle get_rect() {
+		return null;
+	}
+
+	public float get_width() {
+		return _parent.width;
+	}
+
+	public float get_height() {
+		return _parent.height;
+	}
+
+	@Override
+	public void showMenu() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void hideMenu() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public IAudioView get_audioView() {
+		// TODO Auto-generated method stub
+		return _trackMenu;
+	}
+
+	@Override
+	public int get_numChildren() {
+		// TODO Auto-generated method stub
+		return _childs.size() + 1;
+	}
+
+	@Override
+	public IView get_childAt(int index) {
+		// TODO Auto-generated method stub
+		if(index == 0)
+			return SceneManager.getScene(_currentScene);
+		else
+			return _childs.get(index - 1);
+	}
+
+	@Override
+	public float get_x() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public float get_y() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
