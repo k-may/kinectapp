@@ -4,18 +4,15 @@ import static processing.core.PApplet.println;
 
 import java.util.ArrayList;
 
+import kinectapp.KinectApp;
+import processing.data.XML;
 import FrameWork.data.AssetEntry;
 import FrameWork.data.FontEntry;
+import FrameWork.data.IXMLClient;
 import FrameWork.data.ImageEntry;
 import FrameWork.data.MusicEntry;
 
-import com.jogamp.opengl.math.geom.AABBox;
-import com.sun.xml.internal.ws.util.StringUtils;
-
-import kinectapp.KinectApp;
-import processing.data.XML;
-
-public class XMLClient {
+public class XMLClient implements IXMLClient {
 	private String _filePath = "data.xml";
 
 	private static XMLClient instance;

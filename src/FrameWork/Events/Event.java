@@ -1,6 +1,6 @@
 package FrameWork.events;
 
-import kinectapp.Controller;
+import FrameWork.Controller;
 
 public class Event {
 

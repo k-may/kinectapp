@@ -148,4 +148,10 @@ public class View implements IView {
 	public Boolean isTouchEnabled() {
 		return _isTouchEnabled;
 	}
+
+	@Override
+	public Boolean isPressTarget() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

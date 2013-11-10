@@ -2,8 +2,8 @@ package kinectapp.view.home;
 
 import kinectapp.view.MainView;
 import kinectapp.view.labels.LabelButton;
+import kinectapp.view.scene.Scene;
 import processing.core.PApplet;
-import FrameWork.scenes.Scene;
 import FrameWork.scenes.SceneType;
 import FrameWork.view.View;
 

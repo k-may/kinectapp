@@ -2,11 +2,8 @@ package stroke;
 
 import java.util.ArrayList;
 
-import kinectapp.KinectApp;
-import static processing.core.PApplet.println;
 import processing.core.PApplet;
 import processing.core.PGraphics;
-import processing.core.PImage;
 import processing.core.PVector;
 import FrameWork.events.TouchEvent;
 import FrameWork.view.View;
@@ -46,7 +43,7 @@ public class Canvas extends View implements ICanvas {
 			_buffer.stroke(stroke.get_color());
 			drawStrokeFragment(stroke.get_startPt(), stroke.get_ctrlPt(), stroke.get_endPt());
 		}
-		
+
 		_buffer.endDraw();
 	}
 
@@ -55,7 +52,7 @@ public class Canvas extends View implements ICanvas {
 		_buffer.vertex(pt1.x, pt1.y);
 		_buffer.quadraticVertex(ctrl.x, ctrl.y, pt2.x, pt2.y);
 		_buffer.endShape();
-		//println(pt1 + " : " + ctrl + " : " + pt2);
+		// println(pt1 + " : " + ctrl + " : " + pt2);
 	}
 
 	@Override

@@ -43,6 +43,8 @@ public class AvatarView extends View implements Comparable<AvatarView> {
 		// TODO Auto-generated method stub
 		Boolean isOverPressTarget = _user.isOverPressTarget();
 		Boolean isInPressureRange = isInWheelPressureRange();
+		
+		//println("isOverPressTarget : " + isOverPressTarget);
 		float x = _user.get_localX();
 		float y = _user.get_localY();
 

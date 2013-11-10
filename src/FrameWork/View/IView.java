@@ -10,9 +10,12 @@ public interface IView {
 	void set_parent(IView view);
 	IView get_parent();
 	Boolean isTouchEnabled();
+	Boolean isPressTarget();
 	Rectangle get_rect();
 	int get_numChildren();
 	IView get_childAt(int index);
 	float get_x();
 	float get_y();
+	float get_width();
+	float get_height();
 }

@@ -1,6 +1,6 @@
 package FrameWork.events;
 
-import kinectapp.Controller;
+import FrameWork.Controller;
 import FrameWork.Interaction.Types.InteractionEventType;
 import FrameWork.data.UserData;
 import FrameWork.view.View;

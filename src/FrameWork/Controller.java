@@ -1,18 +1,13 @@
-package kinectapp;
+package FrameWork;
 
-import static kinectapp.clients.XMLClient.getXMLCLientInstance;
 import static processing.core.PApplet.println;
 
 import java.util.ArrayList;
 
-import kinectapp.clients.XMLClient;
-import kinectapp.content.ContentManager;
-import kinectapp.view.MainView;
-import kinectapp.view.tracks.TrackPlayer;
 import processing.core.PApplet;
 import stroke.ICanvas;
-import FrameWork.IMainView;
 import FrameWork.audio.IAudioPlayer;
+import FrameWork.data.IXMLClient;
 import FrameWork.data.ImageEntry;
 import FrameWork.data.MusicEntry;
 import FrameWork.events.Event;
@@ -37,17 +32,17 @@ public class Controller {
 	private IGallery _gallery;
 	private ICanvas _canvas;
 	private ICanvasScene _canvasScene;
-	private XMLClient xmlClient;
-
-	private ArrayList<MusicEntry> musicEntries;
-	private ArrayList<ImageEntry> imageEntries;
+	private IXMLClient xmlClient;
 
 	private Controller() {
 		_touchEventQueue = new ArrayList<TouchEvent>();
 		_eventQueue = new ArrayList<Event>();
-		xmlClient = getXMLCLientInstance();
 	}
 
+	public void registerXMLClient(IXMLClient client){
+		xmlClient = client;
+	}
+	
 	public void registerParent(IMainView parent) {
 		_mainView = parent;
 	}
@@ -59,8 +54,8 @@ public class Controller {
 	public void registerCanvas(ICanvas canvas) {
 		_canvas = canvas;
 	}
-	
-	public void registerTrackPlayer(IAudioPlayer player){
+
+	public void registerTrackPlayer(IAudioPlayer player) {
 		_player = player;
 	}
 
@@ -114,7 +109,6 @@ public class Controller {
 
 	private void handleLableButton(LabelButtonPressed event) {
 		String text = event.get_text();
-		println("handleLabelButton : " + text);
 
 		if (text == "Canvas")
 			navigateToCanvas();
@@ -132,12 +126,10 @@ public class Controller {
 
 	private void navigateToCanvas() {
 		_mainView.setScene(SceneType.Canvas);
-		
 		_canvasScene.setState(CanvasState.Canvas);
 	}
 
 	private void handleClearCanvas() {
-		// TODO Auto-generated method stub
 		_canvas.clear();
 	}
 
@@ -146,8 +138,6 @@ public class Controller {
 	}
 
 	private void handleExit() {
-		// TODO Auto-generated method stub
-		println("exit!");
 		_player.stop();
 	}
 
@@ -157,7 +147,6 @@ public class Controller {
 	}
 
 	private void handleSaveCanvas(SaveCanvasEvent event) {
-		// TODO Auto-generated method stub
 		String date = PApplet.month() + "_" + PApplet.day() + "_"
 				+ PApplet.minute() + "_" + PApplet.second();
 		String title = PApplet.minute() + "_" + PApplet.second();
@@ -165,30 +154,18 @@ public class Controller {
 				+ ".jpg";
 		ImageEntry entry = new ImageEntry(filePath, "", new String[] { "me" }, date);
 
-		XMLClient.getXMLCLientInstance().writeXML(entry);
+		xmlClient.writeXML(entry);
 
 		_canvas.save(filePath);
 	}
 
 	private void handleRegionReady(InteractionRegionReadyEvent event) {
-		// TODO Auto-generated method stub
 		_mainView.set_region(event.get_region());
 		start();
 	}
 
 	public void start() {
-
-		ContentManager.loadIcons(KinectApp.instance, xmlClient.readAssetEntries());
-		ContentManager.loadFonts(KinectApp.instance, xmlClient.readFontEntries());
-		ContentManager.loadGalleryEntries(KinectApp.instance, xmlClient.readImageEntries());
-
-		_gallery.setImages(ContentManager.GetGalleyImages());
-
-		musicEntries = xmlClient.readMusicEntries();
-		_player.setEntries(musicEntries);
-		
 		_mainView.start();
-
 	}
 
 	public static Controller getInstance() {

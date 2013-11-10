@@ -29,8 +29,8 @@ public class InteractionView extends View implements IInteractionView {
 		if (_avatarViews.values() != null) {
 			List<AvatarView> views = new ArrayList<AvatarView>(_avatarViews.values());
 			Collections.sort(views);
-			
-			for(AvatarView view : views){
+
+			for (AvatarView view : views) {
 				view.draw(p);
 			}
 		}
@@ -74,5 +74,9 @@ public class InteractionView extends View implements IInteractionView {
 		return _users;
 	}
 
+	@Override
+	public Boolean isTouchEnabled() {
+		return false;
+	}
 
 }

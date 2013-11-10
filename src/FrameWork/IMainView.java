@@ -1,6 +1,7 @@
 package FrameWork;
 
 import FrameWork.Interaction.IInteractionRegion;
+import FrameWork.Interaction.IInteractionView;
 import FrameWork.audio.IAudioView;
 import FrameWork.scenes.SceneType;
 import FrameWork.view.IView;
@@ -12,6 +13,8 @@ public interface IMainView extends IView {
 	void start();
 	
 	IAudioView get_audioView();
+	
+	void addInteractionView(IInteractionView view);
 	
 	void set_region(IInteractionRegion region);
 	

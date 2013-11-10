@@ -9,10 +9,7 @@ import FrameWork.Interaction.InteractionStreamData;
 import FrameWork.Interaction.InteractionTargetInfo;
 import FrameWork.Interaction.InteractionType;
 
-/**
- * @author kev
- * 
- */
+
 public class PRegion extends Region<PApplet> {
 
 	public PRegion(PApplet source) {

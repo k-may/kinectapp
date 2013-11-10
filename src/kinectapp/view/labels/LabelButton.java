@@ -66,4 +66,10 @@ public class LabelButton extends View {
 				break;
 		}
 	}
+	
+	@Override
+	public Boolean isPressTarget() {
+		// TODO Auto-generated method stub
+		return true;
+	}
 }

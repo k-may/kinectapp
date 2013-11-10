@@ -12,6 +12,8 @@ public class TrackView extends View implements IAudioView {
 	private ArrayList<TrackEntryView> _trackViews;
 	private Boolean _isExpanded = false;
 	private Boolean _isShowing = false;
+	
+	public static int TrackHeight = 130;
 
 	public TrackView() {
 	}
@@ -35,6 +37,9 @@ public class TrackView extends View implements IAudioView {
 				x += view.get_width();
 				_trackViews.add(view);
 			}
+			
+			_width = x;
+			_height = TrackHeight;
 		}
 		
 		for (TrackEntryView view : _trackViews) {
@@ -65,5 +70,10 @@ public class TrackView extends View implements IAudioView {
 	@Override
 	public void expand() {
 		_isExpanded = true;
+	}
+	
+	@Override
+	public Boolean isPressTarget() {
+		return true;
 	}
 }

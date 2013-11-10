@@ -1,28 +1,25 @@
 package FrameWork.Interaction;
 
-import java.util.ArrayList;
-
-import kinectapp.view.MainView;
 import static processing.core.PApplet.println;
-import processing.core.PVector;
+
+import java.util.ArrayList;
 
 import FrameWork.IMainView;
 import FrameWork.Interaction.Types.InteractionEventType;
-import FrameWork.view.IView;
 import FrameWork.view.View;
 
 public class InteractionDispatcher {
 
-	public MainView _canvas;
+	public IMainView _canvas;
 	public ArrayList<InteractionHandle> _handles;
 
-	public InteractionDispatcher(MainView canvas) {
+	public InteractionDispatcher(IMainView canvas) {
 		_canvas = canvas;
 		_handles = new ArrayList<InteractionHandle>();
 	}
 
 	public void setStream(ArrayList<InteractionStreamData> data) {
-		println("data : " + data.size());
+		//println("data : " + data.size());
 		for (InteractionStreamData d : data)
 			seeData(d);
 
@@ -34,7 +31,6 @@ public class InteractionDispatcher {
 		float y = data.get_y();
 		View target = (View) _canvas.getTargetAtLocation(x, y);
 
-		
 		getInteractionHandle(target, data);
 	}
 
@@ -50,7 +46,7 @@ public class InteractionDispatcher {
 			}
 		}
 		if (target != null) {
-			//println("target : " + target);
+			// println("target : " + target);
 
 			InteractionHandle handle = new InteractionHandle(data.get_userId(), target);
 			handle.add(data);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import kinectapp.Interaction.view.InteractionView;
 import kinectapp.view.MainView;
+import FrameWork.BaseMainView;
 import FrameWork.IMainView;
 import FrameWork.Interaction.IAdapter;
 import FrameWork.Interaction.InteractionStreamData;
@@ -12,9 +13,11 @@ import FrameWork.Interaction.InteractionType;
 import FrameWork.data.UserData;
 import FrameWork.view.View;
 
+import static processing.core.PApplet.println;
+
 public class Adapter implements IAdapter {
 
-	protected MainView _canvas;
+	protected IMainView _canvas;
 	protected InteractionView _interactionView;
 
 	public Adapter() {
@@ -26,12 +29,9 @@ public class Adapter implements IAdapter {
 			float z, int userId, InteractionType type) {
 		// TODO Auto-generated method stub
 		InteractionTargetInfo info = new InteractionTargetInfo();
+		View target = (View) _canvas.getTargetAtLocation(x, y);
 
-		float localX = _canvas.get_width() * x;
-		float localY = _canvas.get_height() * y;
-
-		View target = (View) _canvas.getTargetAtLocation(localX, localY);
-		info.set_isPressTarget(target != null ? target.isTouchEnabled() : false);
+		info.set_isPressTarget(target != null ? target.isPressTarget() : false);
 
 		return info;
 	}
@@ -39,8 +39,7 @@ public class Adapter implements IAdapter {
 	@Override
 	public void set_canvas(IMainView canvas) {
 		// TODO Auto-generated method stub
-		_canvas = (MainView) canvas;
-
+		_canvas = canvas;
 		_canvas.addInteractionView(_interactionView);
 	}
 
