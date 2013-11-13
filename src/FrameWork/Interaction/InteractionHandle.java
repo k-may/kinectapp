@@ -2,16 +2,18 @@ package FrameWork.Interaction;
 
 import java.util.ArrayList;
 import static processing.core.PApplet.println;
+import FrameWork.view.IView;
 import FrameWork.view.View;
 
 public class InteractionHandle {
-	private View _target;
+	private IView _target;
 	private int _id;
 	private ArrayList<InteractionStreamData> _data;
 	private Boolean _isCancelled = false;
 	private Boolean _isPressing = false;
+	private Boolean _updated = false;
 
-	public InteractionHandle(int id, View target) {
+	public InteractionHandle(int id, IView target) {
 		_target = target;
 		_id = id;
 	}
@@ -21,9 +23,10 @@ public class InteractionHandle {
 			_data = new ArrayList<InteractionStreamData>();
 
 		_data.add(data);
+		_updated = true;
 	}
 
-	public View get_target() {
+	public IView get_target() {
 		return _target;
 	}
 
@@ -32,12 +35,12 @@ public class InteractionHandle {
 	}
 
 	public void cancel() {
-		println("handle cancelled");
+		//println("handle cancelled");
 		_isCancelled = true;
 	}
 
-	public Boolean isCancelled() {
-		return _isCancelled;
+	public Boolean isUpdated() {
+		return _updated;
 	}
 
 	public float get_currentX() {
@@ -64,8 +67,9 @@ public class InteractionHandle {
 		return _isPressing;
 	}
 
-	public void update(){
+	public void reset(){
 		_isPressing = getCurrentPressure() == 1;
+		_updated = false;
 	}
 	
 	public float getCurrentPressure(){

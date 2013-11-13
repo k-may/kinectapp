@@ -45,30 +45,30 @@ public class BaseMainView implements IMainView {
 	}
 
 	@Override
-	public IView getTargetAtLocation(float x, float y) {
+	public ArrayList<IView> getTargetsAtLocation(float x, float y) {
 		return null;
 	}
 
 	@Override
-	public void addPressDownEvent(View target, float x, float y,
+	public void addPressDownEvent(IView target, float x, float y,
 			float pressure, int id) {
 		addInteractionEvent(InteractionEventType.PressDown, target, x, y, pressure, id);
 	}
 
 	@Override
-	public void addPressReleaseEvent(View target, float x, float y,
+	public void addPressReleaseEvent(IView target, float x, float y,
 			float pressure, int id) {
 		addInteractionEvent(InteractionEventType.PressUp, target, x, y, pressure, id);
 	}
 
 	@Override
-	public void addRollOverEvent(View target, float x, float y, float pressure,
+	public void addRollOverEvent(IView target, float x, float y, float pressure,
 			int id) {
 		addInteractionEvent(InteractionEventType.RollOver, target, x, y, pressure, id);
 	}
 
 	@Override
-	public void addRollOutEvent(View target, float x, float y, float pressure,
+	public void addRollOutEvent(IView target, float x, float y, float pressure,
 			int id) {
 		addInteractionEvent(InteractionEventType.RollOut, target, x, y, pressure, id);
 	}
@@ -78,7 +78,7 @@ public class BaseMainView implements IMainView {
 		addInteractionEvent(InteractionEventType.Move, target, x, y, pressure, id);
 	}
 
-	protected void addInteractionEvent(InteractionEventType type, View target,
+	protected void addInteractionEvent(InteractionEventType type, IView target,
 			float x, float y, float pressure, int id) {
 		PVector pos = target.get_absPos();
 
@@ -88,7 +88,7 @@ public class BaseMainView implements IMainView {
 		// Adapter)
 		float localX = x * SCREEN_WIDTH - pos.x;
 		float localY = y * SCREEN_HEIGHT - pos.y;
-		new TouchEvent(type, target, localX, localY, pressure, _interactionView.getUser(id)).dispatch();
+		new TouchEvent(type, target, localX, localY, pressure, _interactionView.getUser(id), _parent.millis()).dispatch();
 	}
 	
 	@Override
@@ -200,6 +200,25 @@ public class BaseMainView implements IMainView {
 	public void addInteractionView(IInteractionView view) {
 		_interactionView = view;
 		addChild(_interactionView);
+	}
+
+	@Override
+	public PVector get_absPos() {
+		// TODO Auto-generated method stub
+		return new PVector(0,0);
+	}
+
+	@Override
+	public void addMoveEvent(IView target, float x, float y, float pressure,
+			int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handleInteraction(TouchEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

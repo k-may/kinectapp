@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import FrameWork.IMainView;
 import FrameWork.Interaction.Types.InteractionEventType;
+import FrameWork.view.IView;
 import FrameWork.view.View;
 
 public class InteractionDispatcher {
@@ -19,56 +20,73 @@ public class InteractionDispatcher {
 	}
 
 	public void setStream(ArrayList<InteractionStreamData> data) {
-		//println("data : " + data.size());
+		// println("data : " + data.size());
+
 		for (InteractionStreamData d : data)
 			seeData(d);
 
-		preUpdateHandles();
+		processHandles();
 	}
 
 	private void seeData(InteractionStreamData data) {
 		float x = data.get_x();
 		float y = data.get_y();
-		View target = (View) _canvas.getTargetAtLocation(x, y);
+		ArrayList<IView> targets = _canvas.getTargetsAtLocation(x, y);
+		/*
+		 * for (IView view : targets) { getInteractionHandle(view, data); }
+		 */
 
-		getInteractionHandle(target, data);
-	}
+		// updateHandles(targets, data);
+		// }
 
-	private void getInteractionHandle(View target, InteractionStreamData data) {
+		// private void updateHandles(InteractionStreamData
+		// data,ArrayList<IView> targets) {
+
+		// }
+
+		// private void getInteractionHandle(IView target, InteractionStreamData
+		// data) {
 		for (InteractionHandle handle : _handles) {
-			if (handle.get_target() == target
-					&& handle.get_id() == data.get_userId()) {
-				handle.add(data);
-				return;// handle;
-			} else {
-				if (handle.get_id() == data.get_userId())
-					handle.cancel();
+			if (handle.get_id() == data.get_userId()) {
+				for (int i = 0; i < targets.size(); i ++){//IView target : targets) {
+					if (handle.get_target() == targets.get(i)) {
+						handle.add(data);
+						targets.remove(i);
+						break;// handle;
+					}
+				}/*
+				 * else { if (handle.get_id() == data.get_userId())
+				 * handle.cancel(); }
+				 */
 			}
 		}
-		if (target != null) {
-			// println("target : " + target);
-
-			InteractionHandle handle = new InteractionHandle(data.get_userId(), target);
-			handle.add(data);
-			_handles.add(handle);
+		
+		for(IView target : targets){
+			if (target != null) {
+				println("target : " + target);
+				InteractionHandle handle = new InteractionHandle(data.get_userId(), target);
+				handle.add(data);
+				_handles.add(handle);
+			}
 		}
+
 	}
 
-	private void preUpdateHandles() {
+	private void processHandles() {
 
 		ArrayList<InteractionHandle> completeHandles = new ArrayList<InteractionHandle>();
 		ArrayList<InteractionEvent> events = new ArrayList<InteractionEvent>();
-		// println("handles : " + _handles.size());
+		//println("handles : " + _handles.size());
 		for (InteractionHandle handle : _handles) {
 
-			View target = handle.get_target();
+			IView target = handle.get_target();
 			float x = handle.get_currentX();
 			float y = handle.get_currentY();
 			InteractionStreamData currentInteraction = handle.get_currentInteraction();
 			InteractionStreamData lastInteraction = handle.get_lastInteraction();
 			float pressure = handle.getCurrentPressure();
 
-			if (handle.isCancelled()) {
+			if (!handle.isUpdated()) {
 				dispatchEvent(target, InteractionEventType.RollOut, x, y, pressure, handle.get_id());
 				completeHandles.add(handle);
 			} else {
@@ -99,18 +117,18 @@ public class InteractionDispatcher {
 			_handles.remove(handle);
 		}
 
-		postUpdateHandles();
+		resetHandles();
 	}
 
-	private void postUpdateHandles() {
+	private void resetHandles() {
 		// update handles post dispatch (update press state, etc)
 		for (InteractionHandle handle : _handles)
-			handle.update();
+			handle.reset();
 	}
 
-	private void dispatchEvent(View target, InteractionEventType type, float x,
-			float y, float pressure, int id) {
-		// println("dispatch : " + type);
+	private void dispatchEvent(IView target, InteractionEventType type,
+			float x, float y, float pressure, int id) {
+		// println("dispatch : " + type + " : " + target.get_name());
 		switch (type) {
 			case None:
 				break;

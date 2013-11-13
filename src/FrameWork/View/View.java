@@ -16,7 +16,7 @@ public class View implements IView {
 	protected float _y;
 	protected float _width;
 	protected float _height;
-	private String _name;
+	protected String _name;
 	private IView _parent;
 	private ArrayList<IView> _childs;
 	protected Boolean _invalidated = false;
@@ -153,5 +153,9 @@ public class View implements IView {
 	public Boolean isPressTarget() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	public String get_name(){
+		return _name;
 	}
 }

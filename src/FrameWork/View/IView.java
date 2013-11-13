@@ -1,7 +1,9 @@
 package FrameWork.view;
 
 import FrameWork.Rectangle;
+import FrameWork.events.TouchEvent;
 import processing.core.PApplet;
+import processing.core.PVector;
 
 public interface IView {
 	void draw(PApplet p);
@@ -18,4 +20,6 @@ public interface IView {
 	float get_y();
 	float get_width();
 	float get_height();
+	PVector get_absPos();
+	void handleInteraction(TouchEvent event);
 }

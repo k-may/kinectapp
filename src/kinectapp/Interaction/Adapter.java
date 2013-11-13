@@ -11,6 +11,7 @@ import FrameWork.Interaction.InteractionStreamData;
 import FrameWork.Interaction.InteractionTargetInfo;
 import FrameWork.Interaction.InteractionType;
 import FrameWork.data.UserData;
+import FrameWork.view.IView;
 import FrameWork.view.View;
 
 import static processing.core.PApplet.println;
@@ -29,10 +30,12 @@ public class Adapter implements IAdapter {
 			float z, int userId, InteractionType type) {
 		// TODO Auto-generated method stub
 		InteractionTargetInfo info = new InteractionTargetInfo();
-		View target = (View) _canvas.getTargetAtLocation(x, y);
+		ArrayList<IView> targets = _canvas.getTargetsAtLocation(x, y);
+
+		IView target = targets.size() > 0 ? targets.get(targets.size() - 1) : null;
 
 		info.set_isPressTarget(target != null ? target.isPressTarget() : false);
-
+		
 		return info;
 	}
 

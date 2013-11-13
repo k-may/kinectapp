@@ -1,6 +1,9 @@
 package kinectapp.view;
 
 import static processing.core.PApplet.println;
+
+import java.util.ArrayList;
+
 import kinectapp.view.tracks.TrackView;
 import processing.core.PApplet;
 import FrameWork.BaseMainView;
@@ -15,7 +18,7 @@ public class MainView extends BaseMainView {
 	private SceneType DefaultScene = SceneType.Home;
 	private Controller _controller;
 
-	private TrackView _trackMenu;
+	private Menu _menu;
 
 	public MainView(PApplet parent) {
 		super(parent);
@@ -33,19 +36,19 @@ public class MainView extends BaseMainView {
 	}
 
 	private void createChilds() {
-		_trackMenu = new TrackView();
-		addChild(_trackMenu);
+		_menu = new Menu();
+		addChild(_menu);
 	}
 
 	public void start() {
 		_parent.loop();
 	}
 
-
 	@Override
 	public void draw(PApplet p) {
-		// TODO Auto-generated method stub
+		//gets inputs from region and process
 		_region.runInteractions();
+		//send processed inputs to dispatcher
 		_dispatcher.setStream(_region.getStream());
 		_controller.update();
 
@@ -59,25 +62,33 @@ public class MainView extends BaseMainView {
 	@Override
 	public IAudioView get_audioView() {
 		// TODO Auto-generated method stub
-		return _trackMenu;
+		return _menu.get_trackView();
 	}
-	
+
 	@Override
-	public IView getTargetAtLocation(float x, float y) {
+	public ArrayList<IView> getTargetsAtLocation(float x, float y) {
 		// map values
 		x = x * SCREEN_WIDTH;
 		y = y * SCREEN_HEIGHT;
+
+		ArrayList<IView> elements = new ArrayList<IView>();
 
 		IView element = this; // SceneManager.getScene(_currentScene);
 
 		for (int i = element.get_numChildren() - 1; i >= 0; i--) {
 			IView child = element.get_childAt(i);
+
 			Rectangle rect = child.get_rect();
 			if (rect.contains(x, y)) {
-				if (child.get_numChildren() == 0 && child.isTouchEnabled()) {
-					element = child;
+				if (child.get_numChildren() == 0) {
+					// element = child;
+					if (child.isTouchEnabled())
+						elements.add(child);
+
 					break;
 				} else {
+					if (child.isTouchEnabled())
+						elements.add(child);
 					x -= element.get_x();
 					y -= element.get_y();
 					element = child;
@@ -86,13 +97,11 @@ public class MainView extends BaseMainView {
 			}
 		}
 
-		//println("element : " + element);
-		if (element == this)
-			element = null;
+		// println("element : " + element);
+		if (elements.contains(this))
+			elements.remove(this);
 
-		return element;
+		return elements;
 	}
-
-
 
 }

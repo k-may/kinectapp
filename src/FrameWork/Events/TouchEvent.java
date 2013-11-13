@@ -3,19 +3,21 @@ package FrameWork.events;
 import FrameWork.Controller;
 import FrameWork.Interaction.Types.InteractionEventType;
 import FrameWork.data.UserData;
+import FrameWork.view.IView;
 import FrameWork.view.View;
 
 public class TouchEvent extends Event {
 
 	private InteractionEventType _type;
-	private View _target;
+	private IView _target;
 	private float _localX;
 	private float _localY;
 	private float _pressure;
 	private UserData _user;
+	private int _time;
 
-	public TouchEvent(InteractionEventType type, View target, float localX,
-			float localY, float pressure, UserData user) {
+	public TouchEvent(InteractionEventType type, IView target, float localX,
+			float localY, float pressure, UserData user, int time) {
 		super(EventType.Touch);
 		_type = type;
 		_target = target;
@@ -23,6 +25,7 @@ public class TouchEvent extends Event {
 		_localY = localY;
 		_pressure = pressure;
 		_user = user;
+		_time = time;
 	}
 	
 
@@ -34,7 +37,7 @@ public class TouchEvent extends Event {
 		return _type;
 	}
 
-	public View get_target() {
+	public IView get_target() {
 		return _target;
 	}
 
@@ -69,6 +72,12 @@ public class TouchEvent extends Event {
 	public UserData getUser() {
 		return _user;
 	}
+
+	public int get_time() {
+		return _time;
+	}
+
+
 
 
 }

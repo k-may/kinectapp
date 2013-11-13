@@ -74,6 +74,12 @@ public class TrackView extends View implements IAudioView {
 	
 	@Override
 	public Boolean isPressTarget() {
-		return true;
+		return _isExpanded;
+	}
+	
+	@Override
+	public Boolean isTouchEnabled() {
+		// TODO Auto-generated method stub
+		return _isExpanded;
 	}
 }

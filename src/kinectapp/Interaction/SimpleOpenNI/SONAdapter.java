@@ -1,5 +1,6 @@
 package kinectapp.Interaction.SimpleOpenNI;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import kinectapp.view.MainView;
 import FrameWork.IMainView;
 import FrameWork.Interaction.InteractionTargetInfo;
 import FrameWork.Interaction.InteractionType;
+import FrameWork.view.IView;
 import FrameWork.view.View;
 
 public class SONAdapter extends Adapter {
@@ -46,7 +48,8 @@ public class SONAdapter extends Adapter {
 			_avatars.put(userId, avatar);
 		}
 
-		View target = (View) _canvas.getTargetAtLocation(localX, localY);
+		ArrayList<IView> targets = _canvas.getTargetsAtLocation(localX, localY);
+		/*
 		if(target != null){
 			info.set_isPressTarget(true);
 			PVector absPos = target.get_absPos();
@@ -55,7 +58,7 @@ public class SONAdapter extends Adapter {
 		}
 		
 		avatar.set_currentTarget(target);
-		
+		*/
 		return info;
 	}
 
