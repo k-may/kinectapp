@@ -21,6 +21,8 @@ public class InteractionDispatcher {
 
 	public void setStream(ArrayList<InteractionStreamData> data) {
 		// println("data : " + data.size());
+		if (data == null)
+			return;
 
 		for (InteractionStreamData d : data)
 			seeData(d);
@@ -48,7 +50,8 @@ public class InteractionDispatcher {
 		// data) {
 		for (InteractionHandle handle : _handles) {
 			if (handle.get_id() == data.get_userId()) {
-				for (int i = 0; i < targets.size(); i ++){//IView target : targets) {
+				for (int i = 0; i < targets.size(); i++) {// IView target :
+															// targets) {
 					if (handle.get_target() == targets.get(i)) {
 						handle.add(data);
 						targets.remove(i);
@@ -60,8 +63,8 @@ public class InteractionDispatcher {
 				 */
 			}
 		}
-		
-		for(IView target : targets){
+
+		for (IView target : targets) {
 			if (target != null) {
 				println("target : " + target);
 				InteractionHandle handle = new InteractionHandle(data.get_userId(), target);
@@ -76,7 +79,7 @@ public class InteractionDispatcher {
 
 		ArrayList<InteractionHandle> completeHandles = new ArrayList<InteractionHandle>();
 		ArrayList<InteractionEvent> events = new ArrayList<InteractionEvent>();
-		//println("handles : " + _handles.size());
+		// println("handles : " + _handles.size());
 		for (InteractionHandle handle : _handles) {
 
 			IView target = handle.get_target();

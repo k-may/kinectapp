@@ -25,41 +25,24 @@ public class SONAdapter extends Adapter {
 		_canvas = (MainView) canvas;
 		_avatars = new HashMap<Integer, Avatar>();
 	}
-
-	@Override
-	public InteractionTargetInfo getInteractionInfoAtLocation(float x, float y, float z,
-			int userId, InteractionType type) {
-		// TODO Auto-generated method stub
-
-		Avatar avatar;
-		InteractionTargetInfo info = new InteractionTargetInfo();
-		
-		float localX = x*_canvas.get_width();
-		float localY = y*_canvas.get_height();
-
-		info.set_x(localX);
-		info.set_y(localY);
-		
-		if (_avatars.containsKey(userId))
-			avatar = _avatars.get(userId);
-		else {
-			avatar = new Avatar(userId);
-			_canvas.addChild(avatar);
-			_avatars.put(userId, avatar);
-		}
-
-		ArrayList<IView> targets = _canvas.getTargetsAtLocation(localX, localY);
-		/*
-		if(target != null){
-			info.set_isPressTarget(true);
-			PVector absPos = target.get_absPos();
-			info.set_pressAttractionX(absPos.x + target.get_width() / 2);
-			info.set_pressAttractionY(absPos.y + target.get_height() / 2);
-		}
-		
-		avatar.set_currentTarget(target);
-		*/
-		return info;
-	}
-
+	/*
+	 * @Override public InteractionTargetInfo getInteractionInfoAtLocation(float
+	 * x, float y, float z, int userId, InteractionType type) { // TODO
+	 * Auto-generated method stub
+	 * 
+	 * Avatar avatar; InteractionTargetInfo info = new InteractionTargetInfo();
+	 * 
+	 * float localX = x*_canvas.get_width(); float localY =
+	 * y*_canvas.get_height();
+	 * 
+	 * info.set_x(localX); info.set_y(localY);
+	 * 
+	 * if (_avatars.containsKey(userId)) avatar = _avatars.get(userId); else {
+	 * avatar = new Avatar(userId); _canvas.addChild(avatar);
+	 * _avatars.put(userId, avatar); }
+	 * 
+	 * ArrayList<IView> targets = _canvas.getTargetsAtLocation(localX, localY);
+	 * 
+	 * return info; }
+	 */
 }

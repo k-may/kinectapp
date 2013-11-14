@@ -1,15 +1,10 @@
 package kinectapp.Interaction;
 
-import static processing.core.PApplet.println;
-
 import java.util.ArrayList;
-
-import processing.core.PApplet;
 
 import FrameWork.Interaction.IAdapter;
 import FrameWork.Interaction.IInteractionRegion;
 import FrameWork.Interaction.InteractionStreamData;
-import FrameWork.Interaction.InteractionTargetInfo;
 import FrameWork.Interaction.InteractionType;
 
 public abstract class Region<T> implements IInteractionRegion {
@@ -49,4 +44,9 @@ public abstract class Region<T> implements IInteractionRegion {
 		return _source.getClass().getName();
 	}
 
+	@Override
+	public Object get_source() {
+		// TODO Auto-generated method stub
+		return _source;
+	}
 }

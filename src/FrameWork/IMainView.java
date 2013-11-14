@@ -14,6 +14,8 @@ public interface IMainView extends IView {
 	
 	void start();
 	
+	IInteractionRegion get_region();
+	
 	IAudioView get_audioView();
 	
 	void addInteractionView(IInteractionView view);

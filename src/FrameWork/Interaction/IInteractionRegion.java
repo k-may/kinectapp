@@ -12,4 +12,5 @@ public interface IInteractionRegion {
 	ArrayList<InteractionStreamData> getStream();
 	IAdapter get_adapter();
 	String get_name();
+	Object get_source();
 }

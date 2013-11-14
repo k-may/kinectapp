@@ -1,27 +1,30 @@
 package kinectapp;
 
+import kinectapp.Interaction.SimpleOpenNI.SONRegion;
 import kinectapp.view.MainView;
 import processing.core.PApplet;
+import processing.core.PVector;
 import FrameWork.IMainView;
 import FrameWork.events.ExitEvent;
+import SimpleOpenNI.SimpleOpenNI;
 
 public class KinectApp extends PApplet {
 
 	private IMainView _root;
 	private AppBuilder _appBuilder;
 	public static PApplet instance;
-	private Boolean isFullScreen  =	false;
+	private Boolean isFullScreen = false;
 
 	public void setup() {
 		noLoop();
-		if(!isFullScreen){
+		if (!isFullScreen) {
 			size(1024, 768);
 		}
-		
+
 		instance = this;
 		_appBuilder = new AppBuilder(this);
 	}
-	
+
 	public void draw() {
 		_root.draw(this);
 	}
@@ -41,8 +44,35 @@ public class KinectApp extends PApplet {
 	public boolean sketchFullScreen() {
 		return isFullScreen;
 	}
-	
-	public void setRoot(IMainView root){
+
+	public void setRoot(IMainView root) {
 		_root = root;
 	}
+
+	// -----------------------------------------------------------------
+	// hand events
+
+	public void onNewHand(SimpleOpenNI curContext, int handId, PVector pos) {
+		SONRegion region = (SONRegion) _root.get_region();
+		region.onNewHand(handId, pos);
+	}
+
+	public void onTrackedHand(SimpleOpenNI curContext, int handId, PVector pos) {
+		SONRegion region = (SONRegion) _root.get_region();
+		region.onTrackedHand(handId, pos);
+	}
+
+	public void onLostHand(SimpleOpenNI curContext, int handId) {
+		SONRegion region = (SONRegion) _root.get_region();
+		region.onLostHand(handId);
+	}
+
+	// -----------------------------------------------------------------
+	// gesture events
+	public void onCompletedGesture(SimpleOpenNI curContext, int gestureType,
+			PVector pos) {
+		SONRegion region = (SONRegion) _root.get_region();
+		region.onCompletedGesture(gestureType, pos);
+	}
+
 }

@@ -221,4 +221,10 @@ public class BaseMainView implements IMainView {
 		
 	}
 
+	@Override
+	public IInteractionRegion get_region() {
+		// TODO Auto-generated method stub
+		return _region;
+	}
+
 }

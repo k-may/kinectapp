@@ -1,10 +1,7 @@
 package kinectapp.view;
 
-import static processing.core.PApplet.println;
-
 import java.util.ArrayList;
 
-import kinectapp.view.tracks.TrackView;
 import processing.core.PApplet;
 import FrameWork.BaseMainView;
 import FrameWork.Controller;
