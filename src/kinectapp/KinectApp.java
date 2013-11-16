@@ -1,7 +1,7 @@
 package kinectapp;
 
+import oscP5.OscMessage;
 import kinectapp.Interaction.SimpleOpenNI.SONRegion;
-import kinectapp.view.MainView;
 import processing.core.PApplet;
 import processing.core.PVector;
 import FrameWork.IMainView;
@@ -19,6 +19,8 @@ public class KinectApp extends PApplet {
 		noLoop();
 		if (!isFullScreen) {
 			size(1024, 768);
+		}else{
+			size(displayWidth, displayHeight);
 		}
 
 		instance = this;

@@ -2,6 +2,8 @@ package kinectapp.Interaction;
 
 import java.util.ArrayList;
 
+import processing.core.PVector;
+
 import kinectapp.Interaction.view.InteractionView;
 import kinectapp.view.MainView;
 import FrameWork.BaseMainView;
@@ -32,10 +34,23 @@ public class Adapter implements IAdapter {
 		InteractionTargetInfo info = new InteractionTargetInfo();
 		ArrayList<IView> targets = _canvas.getTargetsAtLocation(x, y);
 
-		IView target = targets.size() > 0 ? targets.get(targets.size() - 1) : null;
+		IView target = targets.size() > 0 ? targets.get(targets.size() - 1)
+				: null;
+		Boolean isPressTarget = target != null ? target.isPressTarget() : false;
+		info.set_isPressTarget(isPressTarget);
 
-		info.set_isPressTarget(target != null ? target.isPressTarget() : false);
-		
+		if (isPressTarget) {
+			PVector targetAbsPos = target.get_absPos();
+			float targetWidth = target.get_width();
+			float targetHeight = target.get_height();
+			float attrX = (targetAbsPos.x + targetWidth / 2)
+					/ _canvas.get_width();
+			float attrY = (targetAbsPos.y + targetHeight / 2)
+					/ _canvas.get_height();
+
+			info.set_pressAttractionX(attrX);
+			info.set_pressAttractionY(attrY);
+		}
 		return info;
 	}
 
@@ -69,6 +84,7 @@ public class Adapter implements IAdapter {
 
 	@Override
 	public void handleStreamData(ArrayList<InteractionStreamData> data) {
+		//println("---handleStream---");
 		for (InteractionStreamData streamData : data) {
 
 			UserData user = _interactionView.getUser(streamData.get_userId());
@@ -76,6 +92,7 @@ public class Adapter implements IAdapter {
 			float localX = streamData.get_x() * _canvas.get_width();
 			float localY = streamData.get_y() * _canvas.get_height();
 
+			//println(streamData.get_userId() + " : " + localX + " / " + localY);
 			user.set_updated(true);
 			user.set_localX(localX);
 			user.set_localY(localY);

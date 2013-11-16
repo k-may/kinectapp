@@ -4,39 +4,49 @@ import kinectapp.view.MainView;
 import kinectapp.view.labels.LabelButton;
 import kinectapp.view.scene.Scene;
 import processing.core.PApplet;
+import FrameWork.scenes.IHomeScene;
 import FrameWork.scenes.SceneType;
-import FrameWork.view.View;
 
-public class HomeScene extends Scene {
+public class HomeScene extends Scene implements IHomeScene{
 
-	private HomeLabel _homeLabel;
 	private LabelButton _canvasButton;
+	private WelcomeLabel _welcomeLabel;
 
 	public HomeScene() {
 		super(SceneType.Home);
-		
+
 		_width = MainView.SCREEN_WIDTH;
 		_height = MainView.SCREEN_HEIGHT;
+
 		
 		createChilds();
 	}
-	
+
 	@Override
 	public void draw(PApplet p) {
 		p.background(255);
+
+		_canvasButton.set_x((_width - _canvasButton.get_width())/2);
+		_canvasButton.set_y(300);
+		
+		float welcomeWidth = _welcomeLabel.get_width();
+		_welcomeLabel.set_x((_width - welcomeWidth)/2);
+		
 		super.draw(p);
 	}
 
 	private void createChilds() {
-		_homeLabel = new HomeLabel();
-		_homeLabel.set_x((_width - _homeLabel.get_width())/ 2);
-		_homeLabel.set_y(100);
-		addChild(_homeLabel);
-		
 		_canvasButton = new LabelButton();
 		_canvasButton.setText("Canvas");
 		addChild(_canvasButton);
-		_canvasButton.set_x(_width - _canvasButton.get_width() - 10);
-		_canvasButton.set_y(_height - _canvasButton.get_height() - 10);
+
+		_welcomeLabel = new WelcomeLabel();
+		addChild(_welcomeLabel);
+
+	}
+
+	@Override
+	public void setReady() {
+		removeChild(_welcomeLabel);
 	}
 }

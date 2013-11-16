@@ -11,6 +11,7 @@ public class InteractionTargetInfo {
 	private float _pressAttractionY;
 	private UserData _user;
 	
+	
 	public InteractionTargetInfo(){
 	}
 	

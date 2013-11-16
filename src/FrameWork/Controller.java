@@ -12,11 +12,14 @@ import FrameWork.data.ImageEntry;
 import FrameWork.data.MusicEntry;
 import FrameWork.events.Event;
 import FrameWork.events.EventType;
+import FrameWork.events.HandDetectedEvent;
 import FrameWork.events.InteractionRegionReadyEvent;
 import FrameWork.events.LabelButtonPressed;
 import FrameWork.events.PlayTrackEvent;
 import FrameWork.events.SaveCanvasEvent;
 import FrameWork.events.TouchEvent;
+import FrameWork.scenes.IHomeScene;
+import FrameWork.scenes.SceneManager;
 import FrameWork.scenes.SceneType;
 import FrameWork.view.CanvasState;
 import FrameWork.view.ICanvasScene;
@@ -33,30 +36,11 @@ public class Controller {
 	private ICanvas _canvas;
 	private ICanvasScene _canvasScene;
 	private IXMLClient xmlClient;
+	private IHomeScene _homeScene;
 
 	private Controller() {
 		_touchEventQueue = new ArrayList<TouchEvent>();
 		_eventQueue = new ArrayList<Event>();
-	}
-
-	public void registerXMLClient(IXMLClient client){
-		xmlClient = client;
-	}
-	
-	public void registerParent(IMainView parent) {
-		_mainView = parent;
-	}
-
-	public void registerGallery(IGallery gallery) {
-		_gallery = gallery;
-	}
-
-	public void registerCanvas(ICanvas canvas) {
-		_canvas = canvas;
-	}
-
-	public void registerTrackPlayer(IAudioPlayer player) {
-		_player = player;
 	}
 
 	public void addEvent(Event event) {
@@ -88,7 +72,7 @@ public class Controller {
 
 	private void processEvent(Event event) {
 		EventType type = event.get_type();
-		println("process event : " + event.toString());
+		// println("process event : " + event.toString());
 		switch (type) {
 			case InteractionReady:
 				handleRegionReady((InteractionRegionReadyEvent) event);
@@ -104,7 +88,19 @@ public class Controller {
 				break;
 			case LabelButtonPressed:
 				handleLableButton((LabelButtonPressed) event);
+				break;
+			case HandDetected:
+				handleHandDetected((HandDetectedEvent) event);
 		}
+	}
+
+	private void handleHandDetected(HandDetectedEvent event) {
+		switch (SceneManager.GetSceneType()) {
+			case Home:
+				_homeScene.setReady();
+				break;
+		}
+
 	}
 
 	private void handleLableButton(LabelButtonPressed event) {
@@ -121,11 +117,13 @@ public class Controller {
 	}
 
 	private void naviagateToHome() {
-		_mainView.setScene(SceneType.Home);
+		//_mainView.setScene(SceneType.Home);
+		SceneManager.setScene(SceneType.Home);
 	}
 
 	private void navigateToCanvas() {
-		_mainView.setScene(SceneType.Canvas);
+		//_mainView.setScene(SceneType.Canvas);
+		SceneManager.setScene(SceneType.Canvas);
 		_canvasScene.setState(CanvasState.Canvas);
 	}
 
@@ -181,6 +179,30 @@ public class Controller {
 
 	public void registerCanvasScene(ICanvasScene canvasScene) {
 		_canvasScene = canvasScene;
+	}
+
+	public void registerXMLClient(IXMLClient client) {
+		xmlClient = client;
+	}
+
+	public void registerParent(IMainView parent) {
+		_mainView = parent;
+	}
+
+	public void registerGallery(IGallery gallery) {
+		_gallery = gallery;
+	}
+
+	public void registerCanvas(ICanvas canvas) {
+		_canvas = canvas;
+	}
+
+	public void registerTrackPlayer(IAudioPlayer player) {
+		_player = player;
+	}
+
+	public void registerHomeScene(IHomeScene scene) {
+		_homeScene = scene;
 	}
 
 }

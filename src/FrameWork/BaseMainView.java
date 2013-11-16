@@ -27,7 +27,6 @@ public class BaseMainView implements IMainView {
 	protected IInteractionRegion _region;
 	private IInteractionView _interactionView;
 
-
 	public BaseMainView(PApplet parent) {
 		_parent = parent;
 
@@ -37,11 +36,6 @@ public class BaseMainView implements IMainView {
 	private void init() {
 		_dispatcher = new InteractionDispatcher(this);
 		_childs = new ArrayList<IView>();
-	}
-
-	@Override
-	public void setScene(SceneType scene) {
-		_currentScene = scene;
 	}
 
 	@Override
@@ -62,8 +56,8 @@ public class BaseMainView implements IMainView {
 	}
 
 	@Override
-	public void addRollOverEvent(IView target, float x, float y, float pressure,
-			int id) {
+	public void addRollOverEvent(IView target, float x, float y,
+			float pressure, int id) {
 		addInteractionEvent(InteractionEventType.RollOver, target, x, y, pressure, id);
 	}
 
@@ -73,7 +67,7 @@ public class BaseMainView implements IMainView {
 		addInteractionEvent(InteractionEventType.RollOut, target, x, y, pressure, id);
 	}
 
-	public void addMoveEvent(View target, float x, float y, float pressure,
+	public void addMoveEvent(IView target, float x, float y, float pressure,
 			int id) {
 		addInteractionEvent(InteractionEventType.Move, target, x, y, pressure, id);
 	}
@@ -90,7 +84,7 @@ public class BaseMainView implements IMainView {
 		float localY = y * SCREEN_HEIGHT - pos.y;
 		new TouchEvent(type, target, localX, localY, pressure, _interactionView.getUser(id), _parent.millis()).dispatch();
 	}
-	
+
 	@Override
 	public Boolean isTouchEnabled() {
 		// TODO Auto-generated method stub
@@ -141,12 +135,6 @@ public class BaseMainView implements IMainView {
 	}
 
 	@Override
-	public IAudioView get_audioView() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public int get_numChildren() {
 		// TODO Auto-generated method stub
 		return _childs.size() + 1;
@@ -156,7 +144,7 @@ public class BaseMainView implements IMainView {
 	public IView get_childAt(int index) {
 		// TODO Auto-generated method stub
 		if (index == 0)
-			return SceneManager.getScene(_currentScene);
+			return SceneManager.getScene();
 		else
 			return _childs.get(index - 1);
 	}
@@ -182,13 +170,13 @@ public class BaseMainView implements IMainView {
 	@Override
 	public void draw(PApplet p) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void start() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -205,20 +193,11 @@ public class BaseMainView implements IMainView {
 	@Override
 	public PVector get_absPos() {
 		// TODO Auto-generated method stub
-		return new PVector(0,0);
-	}
-
-	@Override
-	public void addMoveEvent(IView target, float x, float y, float pressure,
-			int id) {
-		// TODO Auto-generated method stub
-		
+		return new PVector(0, 0);
 	}
 
 	@Override
 	public void handleInteraction(TouchEvent event) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

@@ -1,7 +1,10 @@
 package kinectapp;
 
+import oscP5.OscP5;
+import kinectapp.Interaction.RegionType;
 import kinectapp.Interaction.Processing.PRegion;
 import kinectapp.Interaction.SimpleOpenNI.SONRegion;
+import kinectapp.Interaction.gestTrackOSC.GestTrackOSCRegion;
 import kinectapp.clients.XMLClient;
 import kinectapp.content.ContentManager;
 import kinectapp.view.MainView;
@@ -18,6 +21,7 @@ import de.looksgood.ani.Ani;
 
 public class AppBuilder {
 
+	private RegionType REGION_TYPE = RegionType.GestTrackOSC;
 	private IInteractionRegion _region;
 	KinectApp _parent;
 	IMainView _root;
@@ -41,7 +45,7 @@ public class AppBuilder {
 		ContentManager.loadGalleryEntries(KinectApp.instance, xmlClient.readImageEntries());
 
 		_canvas.getGallery().setImages(ContentManager.GetGalleyImages());
-		
+
 		_player.setEntries(xmlClient.readMusicEntries());
 	}
 
@@ -68,7 +72,7 @@ public class AppBuilder {
 	private void initPlayer() {
 		_player = new TrackPlayer();
 		_controller.registerTrackPlayer(_player);
-		_player.set_view(_root.get_audioView());
+		_player.set_view(_canvas.get_audioView());
 	}
 
 	private void initAnimationEngine() {
@@ -82,25 +86,32 @@ public class AppBuilder {
 		_controller.registerCanvasScene(_canvas);
 		_controller.registerGallery(_canvas.getGallery());
 		_controller.registerCanvas(_canvas.getCanvas());
+		_controller.registerHomeScene(_home);
 	}
 
 	private void initInteraction() {
-		// try SimpleOpenNI
-		if (!initSONContext())
-			_region = new PRegion(_parent);
+		switch (REGION_TYPE) {
+			case GestTrackOSC:
+				OscP5 osc = new OscP5(KinectApp.instance, 12345);
+				_region = new GestTrackOSCRegion(osc);
+				break;
+			case SimpleOpenNI:
+
+				SimpleOpenNI context = new SimpleOpenNI(KinectApp.instance);
+				if (context.init()) {
+					_region = new SONRegion(context);
+				} else
+					_region = new PRegion(_parent);
+
+				break;
+			default:
+				_region = new PRegion(_parent);
+
+		}
 
 		_region.get_adapter().set_canvas(_root);
 		_root.set_region(_region);
 
 	}
 
-	private Boolean initSONContext() {
-		SimpleOpenNI context = new SimpleOpenNI(KinectApp.instance);
-		if (context.init()) {
-			_region = new SONRegion(context);
-			return true;
-		}
-
-		return false;
-	}
 }

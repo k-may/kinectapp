@@ -131,7 +131,7 @@ public class InteractionDispatcher {
 
 	private void dispatchEvent(IView target, InteractionEventType type,
 			float x, float y, float pressure, int id) {
-		// println("dispatch : " + type + " : " + target.get_name());
+		// println("dispatch : " + type);
 		switch (type) {
 			case None:
 				break;

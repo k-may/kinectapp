@@ -11,26 +11,24 @@ import FrameWork.view.View;
 
 public interface IMainView extends IView {
 	ArrayList<IView> getTargetsAtLocation(float x, float y);
-	
+
 	void start();
-	
+
 	IInteractionRegion get_region();
-	
-	IAudioView get_audioView();
-	
+
 	void addInteractionView(IInteractionView view);
-	
+
 	void set_region(IInteractionRegion region);
-	
+
 	void showMenu();
-	
+
 	void hideMenu();
+	
+	void addPressDownEvent(IView target, float x, float y, float pressure,
+			int id);
 
-	void setScene(SceneType scene);
-
-	void addPressDownEvent(IView target, float x, float y, float pressure, int id);
-
-	void addPressReleaseEvent(IView target, float x, float y, float pressure, int id);
+	void addPressReleaseEvent(IView target, float x, float y, float pressure,
+			int id);
 
 	void addRollOverEvent(IView target, float x, float y, float pressure, int id);
 

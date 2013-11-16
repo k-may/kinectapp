@@ -6,7 +6,6 @@ import processing.core.PApplet;
 import FrameWork.BaseMainView;
 import FrameWork.Controller;
 import FrameWork.Rectangle;
-import FrameWork.audio.IAudioView;
 import FrameWork.scenes.SceneManager;
 import FrameWork.scenes.SceneType;
 import FrameWork.view.IView;
@@ -15,7 +14,6 @@ public class MainView extends BaseMainView {
 	private SceneType DefaultScene = SceneType.Home;
 	private Controller _controller;
 
-	private Menu _menu;
 
 	public MainView(PApplet parent) {
 		super(parent);
@@ -33,8 +31,7 @@ public class MainView extends BaseMainView {
 	}
 
 	private void createChilds() {
-		_menu = new Menu();
-		addChild(_menu);
+
 	}
 
 	public void start() {
@@ -49,17 +46,11 @@ public class MainView extends BaseMainView {
 		_dispatcher.setStream(_region.getStream());
 		_controller.update();
 
-		SceneManager.getScene(_currentScene).draw(p);
+		SceneManager.getScene().draw(p);
 
 		for (IView child : _childs)
 			child.draw(p);
 
-	}
-
-	@Override
-	public IAudioView get_audioView() {
-		// TODO Auto-generated method stub
-		return _menu.get_trackView();
 	}
 
 	@Override

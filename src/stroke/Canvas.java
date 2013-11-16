@@ -2,6 +2,8 @@ package stroke;
 
 import java.util.ArrayList;
 
+import kinectapp.Interaction.view.AvatarCursor;
+
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PVector;
@@ -13,15 +15,14 @@ public class Canvas extends View implements ICanvas {
 	private StrokeHandler _handler;
 	private PGraphics _buffer;
 
+	public static int BG_COLOR = 0xff111011;
+	
 	public Canvas() {
 		_handler = new StrokeHandler();
 	}
 
 	@Override
 	public void draw(PApplet p) {
-		p.fill(0xffffffff);
-		p.rect(_x, _y, _width, _height);
-
 		drawBuffer(p);
 		p.image(_buffer, _x, _y);
 
@@ -32,7 +33,7 @@ public class Canvas extends View implements ICanvas {
 		if (_buffer == null) {
 			_buffer = p.createGraphics((int) _width, (int) _height);
 			_buffer.beginDraw();
-			_buffer.background(0xffffffff);
+			_buffer.background(BG_COLOR);
 		} else
 			_buffer.beginDraw();
 
@@ -41,14 +42,16 @@ public class Canvas extends View implements ICanvas {
 		ArrayList<StrokeFragment> strokes = _handler.getStrokes();
 		for (StrokeFragment stroke : strokes) {
 			_buffer.stroke(stroke.get_color());
-			drawStrokeFragment(stroke.get_startPt(), stroke.get_ctrlPt(), stroke.get_endPt());
+			drawStrokeFragment(stroke.get_startPt(), stroke.get_ctrlPt(), stroke.get_endPt(), stroke.get_pressure());
 		}
 
 		_buffer.endDraw();
 	}
 
-	private void drawStrokeFragment(PVector pt1, PVector ctrl, PVector pt2) {
+	private void drawStrokeFragment(PVector pt1, PVector ctrl, PVector pt2, float pressure) {
+		
 		_buffer.beginShape();
+		_buffer.strokeWeight(AvatarCursor.GetRadiusForPressure(pressure));
 		_buffer.vertex(pt1.x, pt1.y);
 		_buffer.quadraticVertex(ctrl.x, ctrl.y, pt2.x, pt2.y);
 		_buffer.endShape();
@@ -75,7 +78,7 @@ public class Canvas extends View implements ICanvas {
 	@Override
 	public void clear() {
 		// TODO Auto-generated method stub
-		_buffer.background(0xffffffff);
+		_buffer.background(BG_COLOR);
 	}
 
 	@Override

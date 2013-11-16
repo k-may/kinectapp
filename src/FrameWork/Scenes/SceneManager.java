@@ -2,13 +2,18 @@ package FrameWork.scenes;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
 
 import kinectapp.view.scene.Scene;
 
 import FrameWork.view.IView;
 
-public class SceneManager {
+public class SceneManager extends Observable {
 
+	private static SceneManager instance;
+	
+	private static SceneType _type;
+	
 	private static Map<SceneType, IView> _sceneMap;
 
 	public static void registerScene(IView scene, SceneType type) {
@@ -18,8 +23,25 @@ public class SceneManager {
 		_sceneMap.put(type, scene);
 	}
 
-	public static IView getScene(SceneType type) {
-		return _sceneMap.get(type);
+	public static IView getScene() {
+		return _sceneMap.get(_type);
 	}
 	
+	public static SceneType  GetSceneType(){
+		return _type;
+	}
+	
+	public static void setScene(SceneType type){
+		if(_type != type){
+			_type = type;
+			getInstance().notifyObservers();
+		}
+	}
+	
+	public static SceneManager getInstance(){
+		if(instance == null)
+			instance = new SceneManager();
+		
+		return instance;
+	}
 }

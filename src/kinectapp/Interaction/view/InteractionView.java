@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import processing.core.PApplet;
+import static processing.core.PApplet.println;
 
 import FrameWork.Interaction.IInteractionView;
 import FrameWork.data.UserData;
@@ -64,6 +65,8 @@ public class InteractionView extends View implements IInteractionView {
 			if (u.get_id() == id)
 				return u;
 		}
+
+		println("\n\n--->>>>new user : " + id);
 
 		UserData user = new UserData(id);
 		addUser(user);

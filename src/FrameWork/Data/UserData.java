@@ -18,6 +18,7 @@ public class UserData {
 
 
 	public UserData(int id) {
+		//println("new user : " + id);
 		_id = id;
 	}
 

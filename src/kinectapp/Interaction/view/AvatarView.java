@@ -1,13 +1,19 @@
 package kinectapp.Interaction.view;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import kinectapp.content.ContentManager;
 import processing.core.PApplet;
 import processing.core.PImage;
 import FrameWork.data.UserData;
+import FrameWork.scenes.SceneManager;
+import FrameWork.scenes.SceneType;
 import FrameWork.view.View;
 import static processing.core.PApplet.println;
 
-public class AvatarView extends View implements Comparable<AvatarView> {
+public class AvatarView extends View implements Comparable<AvatarView>,
+		Observer {
 
 	private UserData _user;
 	private Boolean _isColorWheelVisible = false;
@@ -20,7 +26,7 @@ public class AvatarView extends View implements Comparable<AvatarView> {
 
 	private final float WHEEL_MIN_THRESHOLD = 0.0f;
 	private final float WHEEL_MAX_THRESHOLD = 0.1f;
-	
+
 	private AvatarCursor _cursor;
 
 	public AvatarView(UserData user) {
@@ -34,7 +40,7 @@ public class AvatarView extends View implements Comparable<AvatarView> {
 		_iconPressing = ContentManager.GetIcon("handOver");
 		_iconOut = ContentManager.GetIcon("handOut");
 		_colorWheel = ContentManager.GetIcon("colorWheel");
-		
+
 		_cursor = new AvatarCursor();
 	}
 
@@ -43,32 +49,33 @@ public class AvatarView extends View implements Comparable<AvatarView> {
 		// TODO Auto-generated method stub
 		Boolean isOverPressTarget = _user.isOverPressTarget();
 		Boolean isInPressureRange = isInWheelPressureRange();
-		
-		//println("isOverPressTarget : " + isOverPressTarget);
+
+		// println("isOverPressTarget : " + isOverPressTarget);
 		float x = _user.get_localX();
 		float y = _user.get_localY();
+		int color = 0xff000000;
 
-		if (_isColorWheelVisible) {
-			if (!isOverPressTarget && isInPressureRange) {
-				p.image(_colorWheel, _colorWheelX, _colorWheelY);
-				updateColor();
-			} else
-				hideColorWheel();
-		} else {
-			if (isInPressureRange)
-				showColorWheel(x, y);
+		if (SceneManager.GetSceneType() == SceneType.Canvas) {
+			if (_isColorWheelVisible) {
+				if (!isOverPressTarget && isInPressureRange) {
+					p.image(_colorWheel, _colorWheelX, _colorWheelY);
+					updateColor();
+				} else
+					hideColorWheel();
+			} else {
+				if (isInPressureRange)
+					showColorWheel(x, y);
+			}
+			color = _user.getColor();
 		}
 
-		if (isOverPressTarget) {
-			PImage _icon = _user.isPressing() ? _iconPressing : _iconOut;
-			p.image(_icon, x - _icon.width / 2, y - _icon.height / 2);
-		}else{
-			_cursor.set_x(x);
-			_cursor.set_y(y);
-			_cursor.setColor(_user.getColor());
-			_cursor.setPressure(_user.get_pressure());
-			_cursor.draw(p);
-		}
+		_cursor.set_x(x);
+		_cursor.set_y(y);
+		_cursor.setColor(color);
+		_cursor.setPressure(_user.get_pressure());
+		_cursor.draw(p);
+		_cursor.setPressing(_user.isPressing());
+		_cursor.isOverPressTarget(isOverPressTarget);
 
 	}
 
@@ -100,8 +107,8 @@ public class AvatarView extends View implements Comparable<AvatarView> {
 
 	public void showColorWheel(float x, float y) {
 		_isColorWheelVisible = true;
-		_colorWheelX = x - _colorWheel.width/2;
-		_colorWheelY = y - _colorWheel.height/2;
+		_colorWheelX = x - _colorWheel.width / 2;
+		_colorWheelY = y - _colorWheel.height / 2;
 	}
 
 	public void hideColorWheel() {
@@ -129,5 +136,11 @@ public class AvatarView extends View implements Comparable<AvatarView> {
 	private static int GetColor(int x, int y) {
 		PImage wheel = ContentManager.GetIcon("colorWheel");
 		return wheel.get(x, y);
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+
 	}
 }
