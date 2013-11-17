@@ -11,9 +11,8 @@ import SimpleOpenNI.SimpleOpenNI;
 public class KinectApp extends PApplet {
 
 	private IMainView _root;
-	private AppBuilder _appBuilder;
 	public static PApplet instance;
-	private Boolean isFullScreen = false;
+	private Boolean isFullScreen = true;
 
 	public void setup() {
 		noLoop();
@@ -24,7 +23,7 @@ public class KinectApp extends PApplet {
 		}
 
 		instance = this;
-		_appBuilder = new AppBuilder(this);
+		AppBuilder appBuilder = new AppBuilder(this);
 	}
 
 	public void draw() {

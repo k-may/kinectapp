@@ -95,7 +95,9 @@ public class AvatarView extends View implements Comparable<AvatarView>,
 		if (isOverWheel(localX, localY)) {
 			float x = localX - _colorWheelX;
 			float y = localY - _colorWheelY;
-			_user.setColor(GetColor((int) x, (int) y));
+			int color = GetColor((int) x, (int) y);
+			println("get color :" + Integer.toHexString(color) + " : " + x + " / " + y);
+			_user.setColor(color);
 		}
 	}
 
@@ -153,7 +155,7 @@ public class AvatarView extends View implements Comparable<AvatarView>,
 	}
 
 	public void startLoad(int interval, float value) {
-		println("startload!");
+		//println("startload!");
 		Ani.to(_cursor, interval/1000, "loadRatio", value);
 	}
 	

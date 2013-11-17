@@ -79,6 +79,8 @@ public class Menu extends View {
 		p.image(_bg, absPos.x, absPos.y, _width, height);
 
 		super.draw(p);
+		
+		p.noTint();
 	}
 
 	private void open() {
@@ -140,6 +142,6 @@ public class Menu extends View {
 	@Override
 	public Boolean isPressTarget() {
 		// TODO Auto-generated method stub
-		return _isOpen;
+		return false;
 	}
 }

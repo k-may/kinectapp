@@ -127,7 +127,7 @@ public class Controller {
 	private void handleLableButton(LabelButtonPressed event) {
 		String text = event.get_text();
 
-		if (text == "Canvas")
+		if (text == "START")
 			navigateToCanvas();
 		else if (text == "Home")
 			naviagateToHome();

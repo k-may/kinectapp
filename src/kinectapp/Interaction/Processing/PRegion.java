@@ -34,15 +34,15 @@ public class PRegion extends Region<PApplet> {
 		InteractionStreamData data = new InteractionStreamData(mX, mY, mZ, 1, _type);
 		data.set_isOverPressTarget(info.get_isPressTarget());
 
-		_interactions = new ArrayList<InteractionStreamData>();
-		_interactions.add(data);
+		_stream = new ArrayList<InteractionStreamData>();
+		_stream.add(data);
 		
-		_adapter.handleStreamData(_interactions);
+		_adapter.handleStreamData(_stream);
 	}
 
 	@Override
 	public ArrayList<InteractionStreamData> getStream() {
 		// TODO Auto-generated method stub
-		return _interactions;
+		return _stream;
 	}
 }

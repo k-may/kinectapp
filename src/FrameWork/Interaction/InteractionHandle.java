@@ -23,6 +23,7 @@ public class InteractionHandle {
 			_data = new ArrayList<InteractionStreamData>();
 
 		_data.add(data);
+
 		_updated = true;
 	}
 
@@ -68,7 +69,8 @@ public class InteractionHandle {
 	}
 
 	public void reset(){
-		_isPressing = getCurrentPressure() == 1;
+		//only update press state after initial processing
+		_isPressing = get_currentInteraction().isPressing();
 		_updated = false;
 	}
 	

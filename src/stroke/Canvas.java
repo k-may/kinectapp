@@ -3,7 +3,7 @@ package stroke;
 import java.util.ArrayList;
 
 import kinectapp.view.avatar.AvatarCursor;
-
+import static processing.core.PApplet.println;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PVector;
@@ -16,7 +16,7 @@ public class Canvas extends View implements ICanvas {
 	private PGraphics _buffer;
 
 	public static int BG_COLOR = 0xff111011;
-	
+
 	public Canvas() {
 		_handler = new StrokeHandler();
 	}
@@ -48,8 +48,9 @@ public class Canvas extends View implements ICanvas {
 		_buffer.endDraw();
 	}
 
-	private void drawStrokeFragment(PVector pt1, PVector ctrl, PVector pt2, float pressure) {
-		
+	private void drawStrokeFragment(PVector pt1, PVector ctrl, PVector pt2,
+			float pressure) {
+
 		_buffer.beginShape();
 		_buffer.strokeWeight(AvatarCursor.GetRadiusForPressure(pressure));
 		_buffer.vertex(pt1.x, pt1.y);
@@ -62,10 +63,12 @@ public class Canvas extends View implements ICanvas {
 	public void handleInteraction(TouchEvent event) {
 		switch (event.get_interactionType()) {
 			case PressDown:
+				println("press down");
 				_handler.start(event.get_localX(), event.get_localY(), event.get_pressure(), event.getUser());
 				break;
 			case PressUp:
 				// case RollOut:
+				println("press up");
 				_handler.end(event.get_localX(), event.get_localY(), event.get_pressure(), event.getUser());
 				break;
 			// case RollOver:

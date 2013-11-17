@@ -11,7 +11,7 @@
 	</music>
 
 	<asset type="image" name="hand">handCircle.png</asset>
-	<asset type="image" name="cursorHightlight">cursorHighlight.png</asset>
+	<asset type="image" name="cursorHighlight">cursorHighlight.png</asset>
 
 	<asset type="image" name="smallNote">smallNote.png</asset>
 	<asset type="image" name="smallPause">smallPause.png</asset>

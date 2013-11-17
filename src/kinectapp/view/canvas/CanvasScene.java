@@ -38,6 +38,7 @@ public class CanvasScene extends Scene implements ICanvasScene {
 		_canvas = new Canvas();
 		_canvas.set_width(_width);
 		_canvas.set_height(_height);
+		addChild(_canvas);
 
 		_gallery = new GalleryView();
 		// if (_menu == null) {

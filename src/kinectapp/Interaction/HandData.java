@@ -76,13 +76,14 @@ public class HandData {
 
 	private float getMapped(float val, float min, float range) {
 		// println(position.z + " : " + minZ + " : " + maxZ);
-		return Math.abs(val - min) / range;
+		return Math.max(0.0f, Math.min(1.0f, Math.abs(val - min) / range));
 	}
 
 	public PVector getPosition() {
 		float x = getMapped(position.x, minX, RANGE);
 		float y = getMapped(position.y, minY, RANGE);
 		float z = 1 - getMapped(position.z, minZ, ZRANGE);
+		
 		return new PVector(x, y, z);
 	}
 

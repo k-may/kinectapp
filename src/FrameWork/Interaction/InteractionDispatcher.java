@@ -79,9 +79,11 @@ public class InteractionDispatcher {
 
 					if (currentInteraction.isPressing() && !handle.isPressing())
 						dispatchEvent(target, InteractionEventType.PressDown, x, y, pressure, handle.get_id());
-					else if (!currentInteraction.isPressing()
-							&& handle.isPressing())
-						dispatchEvent(target, InteractionEventType.PressUp, x, y, pressure, handle.get_id());
+
+					if (!currentInteraction.isPressing()) {
+						if (handle.isPressing())
+							dispatchEvent(target, InteractionEventType.PressUp, x, y, pressure, handle.get_id());
+					}
 
 					if (x != lastInteraction.get_x()
 							|| y != lastInteraction.get_y())

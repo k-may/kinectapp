@@ -3,6 +3,7 @@ package stroke;
 import java.util.ArrayList;
 
 import processing.core.PVector;
+import static processing.core.PApplet.println;
 
 public class StrokeHandle {
 	private ArrayList<StrokeInfo> _infos;
@@ -11,6 +12,7 @@ public class StrokeHandle {
 	private ArrayList<PVector> _pos;
 
 	public StrokeHandle(int id, int color) {
+		println("new stroke handle : color : " + Integer.toHexString(color));
 		_color = color;
 		_id = id;
 		_infos = new ArrayList<StrokeInfo>();

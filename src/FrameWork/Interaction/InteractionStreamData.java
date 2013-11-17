@@ -49,7 +49,7 @@ public class InteractionStreamData {
 		return _type;
 	}
 
-	public Boolean get_isOverPressTarget() {
+	public Boolean isOverPressTarget() {
 		return _isOverPressTarget;
 	}
 

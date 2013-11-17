@@ -36,7 +36,7 @@ public class SONRegion extends Region<SimpleOpenNI> {
 	@Override
 	public void runInteractions() {
 		_source.update();
-		_interactions = new ArrayList<InteractionStreamData>();
+		_stream = new ArrayList<InteractionStreamData>();
 
 		for (HandData handData : _handData.values()) {
 
@@ -68,17 +68,17 @@ public class SONRegion extends Region<SimpleOpenNI> {
 
 			data.set_isOverPressTarget(isPressTarget);
 
-			_interactions.add(data);
+			_stream.add(data);
 		}
 
 		// update users
-		_adapter.handleStreamData(_interactions);
+		_adapter.handleStreamData(_stream);
 	}
 
 	@Override
 	public ArrayList<InteractionStreamData> getStream() {
 		// TODO Auto-generated method stub
-		return _interactions;
+		return _stream;
 	}
 
 	public void onCompletedGesture(int gestureType, PVector pos) {

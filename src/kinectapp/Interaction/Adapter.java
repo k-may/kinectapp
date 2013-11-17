@@ -96,8 +96,8 @@ public class Adapter implements IAdapter{
 			user.set_localX(localX);
 			user.set_localY(localY);
 			user.set_pressure(streamData.get_z());
-			// user.set_isPressing(streamData.get_isOverPressTarget())
-			user.set_isOverPressTarget(streamData.get_isOverPressTarget());
+			user.set_isPressing(streamData.isPressing());
+			user.set_isOverPressTarget(streamData.isOverPressTarget());
 
 		}
 	}

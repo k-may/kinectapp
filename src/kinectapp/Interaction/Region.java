@@ -21,7 +21,7 @@ public abstract class Region<T> implements IInteractionRegion {
 	protected IAdapter _adapter;
 	protected int[] _users;
 	protected T _source;
-	protected ArrayList<InteractionStreamData> _interactions;
+	protected ArrayList<InteractionStreamData> _stream;
 	protected InteractionType _type;
 
 	public Region(T source) {
