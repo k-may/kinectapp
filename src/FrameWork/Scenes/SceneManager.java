@@ -34,7 +34,7 @@ public class SceneManager extends Observable {
 	public static void setScene(SceneType type){
 		if(_type != type){
 			_type = type;
-			getInstance().notifyObservers();
+			getInstance().invalidate();
 		}
 	}
 	
@@ -43,5 +43,11 @@ public class SceneManager extends Observable {
 			instance = new SceneManager();
 		
 		return instance;
+	}
+	
+	private void invalidate(){
+		setChanged();
+		notifyObservers(_type);
+		
 	}
 }

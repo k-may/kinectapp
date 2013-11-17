@@ -60,7 +60,7 @@ public abstract class Region<T> implements IInteractionRegion {
 
 	protected HandData getHand(int id, PVector pos) {
 		// println("get hand : " + id);
-		println(id + " / " + pos);
+		//println(id + " / " + pos);
 		if (_handData == null) {
 			_handData = new HashMap<Integer, HandData>();
 			new HandDetectedEvent().dispatch();

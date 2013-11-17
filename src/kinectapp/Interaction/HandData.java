@@ -71,12 +71,12 @@ public class HandData {
 			minZ = maxZ - ZRANGE;
 		}
 
-		
+	//	println("add pos : " + pos + " :" + minX + " / " + minY + " / " + minZ);
 	}
 
 	private float getMapped(float val, float min, float range) {
 		// println(position.z + " : " + minZ + " : " + maxZ);
-		return (val - min) / range;
+		return Math.abs(val - min) / range;
 	}
 
 	public PVector getPosition() {

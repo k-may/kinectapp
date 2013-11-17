@@ -34,39 +34,21 @@ public class InteractionDispatcher {
 		float x = data.get_x();
 		float y = data.get_y();
 		ArrayList<IView> targets = _canvas.getTargetsAtLocation(x, y);
-		/*
-		 * for (IView view : targets) { getInteractionHandle(view, data); }
-		 */
 
-		// updateHandles(targets, data);
-		// }
-
-		// private void updateHandles(InteractionStreamData
-		// data,ArrayList<IView> targets) {
-
-		// }
-
-		// private void getInteractionHandle(IView target, InteractionStreamData
-		// data) {
 		for (InteractionHandle handle : _handles) {
 			if (handle.get_id() == data.get_userId()) {
-				for (int i = 0; i < targets.size(); i++) {// IView target :
-															// targets) {
+				for (int i = 0; i < targets.size(); i++) {
 					if (handle.get_target() == targets.get(i)) {
 						handle.add(data);
 						targets.remove(i);
-						break;// handle;
+						break;
 					}
-				}/*
-				 * else { if (handle.get_id() == data.get_userId())
-				 * handle.cancel(); }
-				 */
+				}
 			}
 		}
 
 		for (IView target : targets) {
 			if (target != null) {
-				println("target : " + target);
 				InteractionHandle handle = new InteractionHandle(data.get_userId(), target);
 				handle.add(data);
 				_handles.add(handle);

@@ -1,10 +1,11 @@
 package FrameWork.Interaction;
 
 import java.util.ArrayList;
+import java.util.Observer;
 
 import FrameWork.IMainView;
 
-public interface IAdapter {
+public interface IAdapter{
 	void set_canvas(IMainView canvas);
 	//convert finite location to screen coords, get press target location, etc.
 	InteractionTargetInfo getInteractionInfoAtLocation(float x, float y, float z, int userId,

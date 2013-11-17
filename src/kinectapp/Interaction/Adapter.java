@@ -1,12 +1,12 @@
 package kinectapp.Interaction;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
+import kinectapp.view.InteractionView;
+import kinectapp.view.avatar.AvatarView;
 import processing.core.PVector;
-
-import kinectapp.Interaction.view.InteractionView;
-import kinectapp.view.MainView;
-import FrameWork.BaseMainView;
 import FrameWork.IMainView;
 import FrameWork.Interaction.IAdapter;
 import FrameWork.Interaction.InteractionStreamData;
@@ -14,11 +14,10 @@ import FrameWork.Interaction.InteractionTargetInfo;
 import FrameWork.Interaction.InteractionType;
 import FrameWork.data.UserData;
 import FrameWork.view.IView;
-import FrameWork.view.View;
-
+import FrameWork.scenes.SceneManager;
 import static processing.core.PApplet.println;
 
-public class Adapter implements IAdapter {
+public class Adapter implements IAdapter{
 
 	protected IMainView _canvas;
 	protected InteractionView _interactionView;
@@ -102,5 +101,6 @@ public class Adapter implements IAdapter {
 
 		}
 	}
+
 
 }

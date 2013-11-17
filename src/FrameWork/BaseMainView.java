@@ -25,7 +25,7 @@ public class BaseMainView implements IMainView {
 	public static int SCREEN_HEIGHT;
 	protected SceneType _currentScene;
 	protected IInteractionRegion _region;
-	private IInteractionView _interactionView;
+	protected IInteractionView _interactionView;
 
 	public BaseMainView(PApplet parent) {
 		_parent = parent;
@@ -204,6 +204,18 @@ public class BaseMainView implements IMainView {
 	public IInteractionRegion get_region() {
 		// TODO Auto-generated method stub
 		return _region;
+	}
+
+	@Override
+	public void startHover(int userID, int interval) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void endHover(int userID) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

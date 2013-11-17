@@ -1,4 +1,4 @@
-package kinectapp.Interaction.view;
+package kinectapp.view;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,11 +7,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import kinectapp.view.avatar.AvatarView;
+import kinectapp.view.avatar.CursorMode;
+
 import processing.core.PApplet;
 import static processing.core.PApplet.println;
 
 import FrameWork.Interaction.IInteractionView;
 import FrameWork.data.UserData;
+import FrameWork.scenes.SceneManager;
+import FrameWork.scenes.SceneType;
 import FrameWork.view.View;
 
 public class InteractionView extends View implements IInteractionView {
@@ -57,6 +62,7 @@ public class InteractionView extends View implements IInteractionView {
 		AvatarView view = new AvatarView(user);
 		_avatarViews.put(user.get_id(), view);
 		addChild(view);
+		updateCursorMode();
 	}
 
 	@Override
@@ -70,7 +76,7 @@ public class InteractionView extends View implements IInteractionView {
 
 		UserData user = new UserData(id);
 		addUser(user);
-		return new UserData(id);
+		return user;
 	}
 
 	public ArrayList<UserData> get_users() {
@@ -80,6 +86,30 @@ public class InteractionView extends View implements IInteractionView {
 	@Override
 	public Boolean isTouchEnabled() {
 		return false;
+	}
+
+	public void setScene(SceneType scene) {
+		updateCursorMode();
+	}
+
+	private void updateCursorMode() {
+		CursorMode mode = getMode();
+		for (AvatarView view : _avatarViews.values()) {
+			view.setCursorMode(mode);
+		}
+	}
+
+	private CursorMode getMode() {
+		CursorMode mode = SceneManager.GetSceneType() == SceneType.Canvas ? CursorMode.Drawing
+				: CursorMode.Navigating;
+		return mode;
+	}
+
+	public AvatarView getAvatarById(int id) {
+		if(_avatarViews.containsKey(id))
+			return _avatarViews.get(id);
+		
+		return null;
 	}
 
 }

@@ -21,16 +21,15 @@ import kinectapp.Interaction.Region;
 public class GestTrackOSCRegion extends Region<OscP5> {
 	private static final int CAM_WIDTH = 640;
 	private static final int CAM_HEIGHT = 480;
-	private final static String NORMALIZED = "/normalized";
-	private final static String ABSOLUTE = "/absolute";
-	private String _dataType;
+	private TrackingType _trackingType;
 
 	public GestTrackOSCRegion(OscP5 source) {
 		super(source);
 		_adapter = new Adapter();
 
-		_dataType = NORMALIZED;
-		source.plug(this, "onHand1", _dataType + "/hand0");
+		_trackingType = TrackingType.Normalized;
+		
+		source.plug(this, "onHand1", _trackingType.toString() + "/hand0");
 		//source.plug(this, "onHand2", _dataType + "/hand1");
 		//source.plug(this, "onHand3", _dataType + "/hand2");
 	}
@@ -50,10 +49,11 @@ public class GestTrackOSCRegion extends Region<OscP5> {
 			float mY = position.y;// / CAM_HEIGHT;
 			float mZ = position.z;
 
+			
 			PVector tendency = handData.getTendency();
 			float pressRatio = Math.min(Math.max(tendency.z / 20, 0), 1);
 
-			println(position.z + " / " + tendency.z + " : " + (tendency.z > 30));
+			println(position.z + " / " +pressRatio);
 			InteractionTargetInfo info = _adapter.getInteractionInfoAtLocation(mX, mY, mZ, handData.get_id(), _type);
 
 			Boolean isPressTarget = info.get_isPressTarget();
@@ -82,12 +82,11 @@ public class GestTrackOSCRegion extends Region<OscP5> {
 
 	@Override
 	public ArrayList getStream() {
-		// TODO Auto-generated method stub
-		return null;
+		return _interactions;
 	}
 
 	public void onHand1(float x, float y, float z) {
-		println("hand1 : " + x + " : " + y + " : " + z);
+		//println("hand1 : " + x + " : " + y + " : " + z);
 		onHand(0, x, y, z);
 	}
 
@@ -102,7 +101,7 @@ public class GestTrackOSCRegion extends Region<OscP5> {
 	}
 
 	private void onHand(int id, float x, float y, float z) {
-		if (_dataType == NORMALIZED)
+		if (_trackingType == TrackingType.Normalized)
 			getHand(id, x, y, z);
 		else
 			getHand(id, new PVector(x, y, z));

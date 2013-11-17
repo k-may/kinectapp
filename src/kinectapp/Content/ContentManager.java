@@ -42,6 +42,8 @@ public class ContentManager {
 	public static PImage GetIcon(String name) {
 		if (Icons.containsKey(name))
 			return Icons.get(name).get_image();
+		
+		println("error : no image for " + name);
 
 		return null;
 	}

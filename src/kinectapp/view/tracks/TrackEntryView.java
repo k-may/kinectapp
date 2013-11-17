@@ -2,11 +2,13 @@ package kinectapp.view.tracks;
 
 import de.looksgood.ani.Ani;
 import kinectapp.content.ContentManager;
+import kinectapp.view.MainView;
 import kinectapp.view.labels.LabelView;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
 import FrameWork.data.MusicEntry;
+import FrameWork.events.PauseTrackEvent;
 import FrameWork.events.PlayTrackEvent;
 import FrameWork.events.TouchEvent;
 import FrameWork.view.View;
@@ -59,28 +61,28 @@ public class TrackEntryView extends View {
 	}
 
 	public void setPlaying(Boolean isPlaying) {
+		// println(_entry.trackName + " : isPlaying : " + isPlaying);
 		_isPlaying = isPlaying;
 	}
 
 	@Override
 	public void draw(PApplet p) {
 		if (_invalidated) {
-			_trackLabel = new LabelView(_entry.trackName, 0xff000000, ContentManager.GetFont("smallItalic"));
+			_trackLabel = new LabelView(_entry.trackName, MainView.TEXT_COLOR, ContentManager.GetFont("smallItalic"));
 			addChild(_trackLabel);
-			_trackLabel.set_y(100);
+			_trackLabel.set_y(130);
 			_trackLabel.set_x(5);
 
-			_artistLabel = new LabelView(_entry.artist, 0xff333333, ContentManager.GetFont("small"));
+			_artistLabel = new LabelView(_entry.artist, MainView.TEXT_COLOR, ContentManager.GetFont("small"));
 			addChild(_artistLabel);
 			_artistLabel.set_x(5);
-			_artistLabel.set_y(115);
+			_artistLabel.set_y(145);
 			_invalidated = false;
 		}
 		PVector absPos = get_absPos();
 
-		p.fill(0, 0, 0, alpha);
-		p.stroke(0xffeeeeee);
-		p.strokeWeight(1f);
+		p.fill(0xff333333, alpha);
+		p.noStroke();
 		p.rect(absPos.x, absPos.y, _width, _height);
 		PImage button = _isPlaying ? !_isOver ? _playButton : _playButtonOver
 				: !_isOver ? _pauseButton : _pauseButtonOver;
@@ -96,7 +98,7 @@ public class TrackEntryView extends View {
 			case RollOver:
 				if (!_isOver) {
 					_isOver = true;
-					Ani.to(this, 0.5f, "alpha", 0x33, Ani.SINE_IN);
+					Ani.to(this, 0.5f, "alpha", 0xdd, Ani.SINE_IN);
 				}
 				break;
 			case RollOut:
@@ -104,7 +106,10 @@ public class TrackEntryView extends View {
 				Ani.to(this, 0.25f, "alpha", 0x00, Ani.SINE_IN);
 				break;
 			case PressDown:
-				new PlayTrackEvent(_entry).dispatch();
+				if (!_isPlaying)
+					new PlayTrackEvent(_entry).dispatch();
+				else
+					new PauseTrackEvent(_entry).dispatch();
 				break;
 		}
 	}

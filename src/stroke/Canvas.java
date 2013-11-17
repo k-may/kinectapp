@@ -2,7 +2,7 @@ package stroke;
 
 import java.util.ArrayList;
 
-import kinectapp.Interaction.view.AvatarCursor;
+import kinectapp.view.avatar.AvatarCursor;
 
 import processing.core.PApplet;
 import processing.core.PGraphics;

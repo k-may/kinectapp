@@ -35,4 +35,8 @@ public interface IMainView extends IView {
 	void addRollOutEvent(IView target, float x, float y, float pressure, int id);
 
 	void addMoveEvent(IView target, float x, float y, float pressure, int id);
+	
+	void startHover(int userID, int interval);
+	
+	void endHover(int userID);
 }

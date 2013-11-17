@@ -15,6 +15,8 @@ public class PRegion extends Region<PApplet> {
 	public PRegion(PApplet source) {
 		super(source);
 
+		source.noCursor();
+		
 		_type = InteractionType.Mouse;
 		_adapter = new Adapter();
 		// TODO Auto-generated constructor stub

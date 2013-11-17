@@ -1,5 +1,5 @@
 package FrameWork.events;
 
 public enum EventType {
-	InteractionReady, SaveCanvas, PlayTrack, Exit, Touch, LabelButtonPressed, HandDetected
+	InteractionReady, SaveCanvas, PlayTrack, Exit, Touch, LabelButtonPressed, HandDetected, HoverStart, HoverEnd, PauseTrack
 }

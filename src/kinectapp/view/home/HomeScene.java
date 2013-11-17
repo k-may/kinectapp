@@ -24,7 +24,7 @@ public class HomeScene extends Scene implements IHomeScene{
 
 	@Override
 	public void draw(PApplet p) {
-		p.background(255);
+		p.background(10);
 
 		_canvasButton.set_x((_width - _canvasButton.get_width())/2);
 		_canvasButton.set_y(300);
@@ -37,7 +37,7 @@ public class HomeScene extends Scene implements IHomeScene{
 
 	private void createChilds() {
 		_canvasButton = new LabelButton();
-		_canvasButton.setText("Canvas");
+		_canvasButton.setText("START");
 		addChild(_canvasButton);
 
 		_welcomeLabel = new WelcomeLabel();

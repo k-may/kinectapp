@@ -1,7 +1,10 @@
-package kinectapp.Interaction.view;
+package kinectapp.view.avatar;
 
+import java.awt.Cursor;
 import java.util.Observable;
 import java.util.Observer;
+
+import de.looksgood.ani.Ani;
 
 import kinectapp.content.ContentManager;
 import processing.core.PApplet;
@@ -55,7 +58,7 @@ public class AvatarView extends View implements Comparable<AvatarView>,
 		float y = _user.get_localY();
 		int color = 0xff000000;
 
-		if (SceneManager.GetSceneType() == SceneType.Canvas) {
+		if (_cursor.get_mode() == CursorMode.Drawing) {
 			if (_isColorWheelVisible) {
 				if (!isOverPressTarget && isInPressureRange) {
 					p.image(_colorWheel, _colorWheelX, _colorWheelY);
@@ -73,9 +76,10 @@ public class AvatarView extends View implements Comparable<AvatarView>,
 		_cursor.set_y(y);
 		_cursor.setColor(color);
 		_cursor.setPressure(_user.get_pressure());
-		_cursor.draw(p);
 		_cursor.setPressing(_user.isPressing());
 		_cursor.isOverPressTarget(isOverPressTarget);
+		_cursor.draw(p);
+
 
 	}
 
@@ -143,4 +147,14 @@ public class AvatarView extends View implements Comparable<AvatarView>,
 		// TODO Auto-generated method stub
 
 	}
+	
+	public void setCursorMode(CursorMode mode){
+		_cursor.set_mode(mode);
+	}
+
+	public void startLoad(int interval, float value) {
+		println("startload!");
+		Ani.to(_cursor, interval/1000, "loadRatio", value);
+	}
+	
 }

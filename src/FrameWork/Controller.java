@@ -13,8 +13,11 @@ import FrameWork.data.MusicEntry;
 import FrameWork.events.Event;
 import FrameWork.events.EventType;
 import FrameWork.events.HandDetectedEvent;
+import FrameWork.events.HoverEndEvent;
+import FrameWork.events.HoverStartEvent;
 import FrameWork.events.InteractionRegionReadyEvent;
 import FrameWork.events.LabelButtonPressed;
+import FrameWork.events.PauseTrackEvent;
 import FrameWork.events.PlayTrackEvent;
 import FrameWork.events.SaveCanvasEvent;
 import FrameWork.events.TouchEvent;
@@ -83,6 +86,9 @@ public class Controller {
 			case PlayTrack:
 				handlePlayTrack((PlayTrackEvent) event);
 				break;
+			case PauseTrack:
+				handlePauseTrack((PauseTrackEvent) event);
+				break;
 			case Exit:
 				handleExit();
 				break;
@@ -91,7 +97,22 @@ public class Controller {
 				break;
 			case HandDetected:
 				handleHandDetected((HandDetectedEvent) event);
+				break;
+			case HoverStart:
+				handleHoverStart((HoverStartEvent) event);
+				break;
+			case HoverEnd:
+				handleHoverEnd((HoverEndEvent) event);
 		}
+	}
+
+	private void handleHoverEnd(HoverEndEvent event) {
+		_mainView.endHover(event.get_userId());
+	}
+
+	private void handleHoverStart(HoverStartEvent event) {
+		//println("controller : hover start : " + event.get_userId());
+		_mainView.startHover(event.get_userId(), event.get_interval());
 	}
 
 	private void handleHandDetected(HandDetectedEvent event) {
@@ -117,14 +138,13 @@ public class Controller {
 	}
 
 	private void naviagateToHome() {
-		//_mainView.setScene(SceneType.Home);
+		// _mainView.setScene(SceneType.Home);
 		SceneManager.setScene(SceneType.Home);
 	}
 
 	private void navigateToCanvas() {
-		//_mainView.setScene(SceneType.Canvas);
+		// _mainView.setScene(SceneType.Canvas);
 		SceneManager.setScene(SceneType.Canvas);
-		_canvasScene.setState(CanvasState.Canvas);
 	}
 
 	private void handleClearCanvas() {
@@ -139,9 +159,17 @@ public class Controller {
 		_player.stop();
 	}
 
+	//--------tracks----------
+	
 	private void handlePlayTrack(PlayTrackEvent event) {
 		MusicEntry entry = event.get_entry();
 		_player.play(entry);
+	}
+
+
+	private void handlePauseTrack(PauseTrackEvent event) {
+		MusicEntry entry = event.get_entry();
+		_player.pause();
 	}
 
 	private void handleSaveCanvas(SaveCanvasEvent event) {

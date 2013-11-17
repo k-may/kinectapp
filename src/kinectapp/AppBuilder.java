@@ -16,6 +16,8 @@ import FrameWork.Controller;
 import FrameWork.IMainView;
 import FrameWork.Interaction.IInteractionRegion;
 import FrameWork.audio.IAudioPlayer;
+import FrameWork.scenes.SceneManager;
+import FrameWork.scenes.SceneType;
 import SimpleOpenNI.SimpleOpenNI;
 import de.looksgood.ani.Ani;
 
@@ -87,6 +89,10 @@ public class AppBuilder {
 		_controller.registerGallery(_canvas.getGallery());
 		_controller.registerCanvas(_canvas.getCanvas());
 		_controller.registerHomeScene(_home);
+		
+		SceneManager.getInstance().addObserver((MainView)_root);
+		SceneManager.setScene(SceneType.Home);
+		
 	}
 
 	private void initInteraction() {

@@ -32,34 +32,24 @@ public class CanvasScene extends Scene implements ICanvasScene {
 
 		createChilds();
 	}
-	
-	private void createChilds(){
-		_menu = new Menu();
-		addChild(_menu);
-		
+
+	private void createChilds() {
+
 		_canvas = new Canvas();
 		_canvas.set_width(_width);
 		_canvas.set_height(_height);
 
 		_gallery = new GalleryView();
-
-		_saveButton = new LabelButton();
-		_saveButton.setText("Save");
-		addChild(_saveButton);
-		_saveButton.set_x(_width - _saveButton.get_width());
-		_saveButton.set_y(_height - _saveButton.get_height());
-
-		_clearButton = new LabelButton();
-		_clearButton.setText("Clear");
-		addChild(_clearButton);
-		_clearButton.set_x(_width - _saveButton.get_x()
-				- _clearButton.get_width() - 10);
-		_clearButton.set_y(_height - _saveButton.get_height());
+		// if (_menu == null) {
+		_menu = new Menu();
+		addChild(_menu);
+		// }
 
 	}
 
 	@Override
 	public void draw(PApplet p) {
+
 		p.background(0x000);
 		super.draw(p);
 	}
@@ -84,20 +74,4 @@ public class CanvasScene extends Scene implements ICanvasScene {
 		return _menu.get_trackView();
 	}
 
-
-	@Override
-	public void setState(CanvasState state) {
-		_state = state;
-
-		switch (_state) {
-			case Gallery:
-				addChild(_gallery);
-				removeChild(_canvas);
-				break;
-			case Canvas:
-				addChild(_canvas);
-				removeChild(_gallery);
-				break;
-		}
-	}
 }
