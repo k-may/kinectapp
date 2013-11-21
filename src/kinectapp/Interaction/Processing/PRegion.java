@@ -31,8 +31,8 @@ public class PRegion extends Region<PApplet> {
 
 		InteractionTargetInfo info = _adapter.getInteractionInfoAtLocation(mX, mY, mZ, 1, _type);
 
-		InteractionStreamData data = new InteractionStreamData(mX, mY, mZ, 1, _type);
-		data.set_isOverPressTarget(info.get_isPressTarget());
+		InteractionStreamData data = new InteractionStreamData(mX, mY, mZ, 1, _type, info.get_isHoverTarget(), info.get_isPressTarget(),mZ == 1.0f, mZ);
+		//data.set_isOverPressTarget(info.get_isPressTarget());
 
 		_stream = new ArrayList<InteractionStreamData>();
 		_stream.add(data);

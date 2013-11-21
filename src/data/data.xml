@@ -12,19 +12,20 @@
 
 	<asset type="image" name="hand">handCircle.png</asset>
 	<asset type="image" name="cursorHighlight">cursorHighlight.png</asset>
-
-	<asset type="image" name="smallNote">smallNote.png</asset>
-	<asset type="image" name="smallPause">smallPause.png</asset>
-	<asset type="image" name="smallPlay">smallPlay.png</asset>
-
-	<asset name="playOver" type="image">playOver.png</asset>
-	<asset name="playOut" type="image">playOut.png</asset>
-	<asset name="pauseOver" type="image">pauseOver.png</asset>
-	<asset name="pauseOut" type="image">pauseOut.png</asset>
+	
+	<asset name="nowPlayingText" type="image">nowPlayingText.png</asset>
+	<asset name="galleryText" type="image">galleryText.png</asset>
+	<asset name="saveText" type="image">saveText.png</asset>
+	<asset name="musicIcon" type="image">musicIcon.png</asset>
+	<asset name="galleryIcon" type="image">galleryIcon.png</asset>
+	<asset name="saveIcon" type="image">saveIcon.png</asset>
+	<asset name="playText" type="image">playText.png</asset>
+	<asset name="pauseText" type="image">pauseText.png</asset>
+	<asset name="playIcon" type="image">playIcon.png</asset>
+	<asset name="pauseIcon" type="image">pauseIcon.png</asset>
+	<asset name="shadow" type="image">shadow.png</asset>
 	<asset name="colorWheel" type="image">colorWheel.png</asset>
 	
-	<asset name="menuBg" type="image">menuHeader.png</asset>
-
 	<font name="large" size="48">GillSansMT-48.vlw</font>
 	<font name="small" size="13">GillSansMTPro-Medium-13.vlw</font>
 	<font name="smallItalic" size="13">GillSansMT-Italic-13.vlw</font>

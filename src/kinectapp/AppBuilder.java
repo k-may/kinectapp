@@ -23,7 +23,7 @@ import de.looksgood.ani.Ani;
 
 public class AppBuilder {
 
-	private RegionType REGION_TYPE = RegionType.GestTrackOSC;
+	private RegionType REGION_TYPE = RegionType.SimpleOpenNI;
 	private IInteractionRegion _region;
 	KinectApp _parent;
 	IMainView _root;

@@ -10,14 +10,12 @@ import FrameWork.Interaction.IInteractionRegion;
 import FrameWork.Interaction.IInteractionView;
 import FrameWork.Interaction.InteractionDispatcher;
 import FrameWork.Interaction.Types.InteractionEventType;
-import FrameWork.audio.IAudioView;
 import FrameWork.events.TouchEvent;
 import FrameWork.scenes.SceneManager;
 import FrameWork.scenes.SceneType;
 import FrameWork.view.IView;
-import FrameWork.view.View;
 
-public class BaseMainView implements IMainView {
+public abstract class BaseMainView implements IMainView {
 	protected InteractionDispatcher _dispatcher;
 	protected ArrayList<IView> _childs;
 	protected PApplet _parent;
@@ -62,14 +60,34 @@ public class BaseMainView implements IMainView {
 	}
 
 	@Override
-	public void addRollOutEvent(IView target, float x, float y, float pressure,
+	public void addCancelEvent(IView target, float x, float y, float pressure,
 			int id) {
-		addInteractionEvent(InteractionEventType.RollOut, target, x, y, pressure, id);
+		addInteractionEvent(InteractionEventType.Cancel, target, x, y, pressure, id);
+
+		endHover(id);
 	}
 
+	@Override
 	public void addMoveEvent(IView target, float x, float y, float pressure,
 			int id) {
 		addInteractionEvent(InteractionEventType.Move, target, x, y, pressure, id);
+	}
+
+	@Override
+	public void addHoverStartEvent(IView target, float x, float y,
+			float pressure, int id) {
+		addInteractionEvent(InteractionEventType.HoverStart, target, x, y, pressure, id);
+		
+		startHover(id, InteractionDispatcher.HOVER_ELAPSE, target);
+	}
+
+	@Override
+	public void addHoverEndEvent(IView target, float x, float y,
+			float pressure, int id) {
+
+		addInteractionEvent(InteractionEventType.HoverEnd, target, x, y, pressure, id);
+		
+		endHover(id);
 	}
 
 	protected void addInteractionEvent(InteractionEventType type, IView target,
@@ -78,7 +96,7 @@ public class BaseMainView implements IMainView {
 
 		// local data accessible from user data? but only if user exists.
 		// Perhaps
-		// we should concolidate and initiate the users in a separate area (ie.
+		// we should consolidate and initiate the users in a separate area (ie.
 		// Adapter)
 		float localX = x * SCREEN_WIDTH - pos.x;
 		float localY = y * SCREEN_HEIGHT - pos.y;
@@ -168,10 +186,7 @@ public class BaseMainView implements IMainView {
 	}
 
 	@Override
-	public void draw(PApplet p) {
-		// TODO Auto-generated method stub
-
-	}
+	public abstract void draw(PApplet p);
 
 	@Override
 	public void start() {
@@ -207,15 +222,14 @@ public class BaseMainView implements IMainView {
 	}
 
 	@Override
-	public void startHover(int userID, int interval) {
+	public Boolean isHoverTarget() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 	@Override
-	public void endHover(int userID) {
-		// TODO Auto-generated method stub
-		
-	}
+	public abstract void startHover(int userID, int interval, IView target);
+
+	public abstract void endHover(int userID);
 
 }

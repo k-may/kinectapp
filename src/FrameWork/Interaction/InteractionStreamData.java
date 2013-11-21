@@ -1,5 +1,7 @@
 package FrameWork.Interaction;
 
+import FrameWork.pressing.PressStateData;
+
 public class InteractionStreamData {
 
 	private float _z;
@@ -9,20 +11,28 @@ public class InteractionStreamData {
 	private InteractionType _type;
 	private Boolean _isOverPressTarget = false;
 	private Boolean _isPressing = false;
-
+	private float _pressPressure = 0.0f;
+	private Boolean _isOverHoverTarget = false;
+	
 	public InteractionStreamData(float x, float y, float z, int userId,
 			InteractionType type) {
 		_z = (z);
 		_x = (x);
 		_y = (y);
 		_type = (type);
-		_isPressing = _z == 1;
 	}
 
 	public InteractionStreamData(float x, float y, float z, int userId,
-			InteractionType type, Boolean isPressing) {
+			InteractionType type, Boolean isOverHoverTarget, Boolean isOverPressTarget,Boolean isPressing,float pressPressure) {
 		this(x, y, z, userId, type);
+		_isOverHoverTarget = isOverHoverTarget;
+		_isOverPressTarget = isOverPressTarget;
 		_isPressing = isPressing;
+		_pressPressure = pressPressure;
+	}
+
+	public float get_pressPressure() {
+		return _pressPressure;
 	}
 
 	public Boolean isPressing() {
@@ -53,8 +63,8 @@ public class InteractionStreamData {
 		return _isOverPressTarget;
 	}
 
-	public void set_isOverPressTarget(Boolean _isOverPressTarget) {
-		this._isOverPressTarget = _isOverPressTarget;
+	public Boolean isOverHoverTarget() {
+		return _isOverHoverTarget ;
 	}
 
 }

@@ -32,11 +32,16 @@ public interface IMainView extends IView {
 
 	void addRollOverEvent(IView target, float x, float y, float pressure, int id);
 
-	void addRollOutEvent(IView target, float x, float y, float pressure, int id);
+	void addCancelEvent(IView target, float x, float y, float pressure, int id);
 
 	void addMoveEvent(IView target, float x, float y, float pressure, int id);
-	
-	void startHover(int userID, int interval);
+
+	void startHover(int userID, int interval, IView target);
 	
 	void endHover(int userID);
+
+	void addHoverStartEvent(IView target, float x, float y, float pressure,
+			int id);
+
+	void addHoverEndEvent(IView target, float x, float y, float pressure, int id);
 }

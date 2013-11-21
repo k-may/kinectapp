@@ -13,6 +13,7 @@ public interface IView {
 	IView get_parent();
 	Boolean isTouchEnabled();
 	Boolean isPressTarget();
+	Boolean isHoverTarget();
 	Rectangle get_rect();
 	int get_numChildren();
 	IView get_childAt(int index);

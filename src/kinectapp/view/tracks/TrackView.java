@@ -3,9 +3,8 @@ package kinectapp.view.tracks;
 import java.util.ArrayList;
 import java.util.Observable;
 
-import kinectapp.view.MainView;
+import kinectapp.view.menu.Menu;
 import static processing.core.PApplet.println;
-import processing.core.PApplet;
 
 import FrameWork.audio.IAudioView;
 import FrameWork.data.MusicEntry;
@@ -17,8 +16,6 @@ public class TrackView extends View implements IAudioView {
 	private Boolean _isExpanded = false;
 	private Boolean _isShowing = false;
 
-	public static int TrackHeight = 130;
-
 	private TrackSmallView _smallView;
 
 	public TrackView() {
@@ -28,13 +25,10 @@ public class TrackView extends View implements IAudioView {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 
-		// addChild(_smallView);
-		// TODO Auto-generated method stub
 		TrackPlayer player = (TrackPlayer) arg0;
 		MusicEntry currentEntry = (MusicEntry) arg1;
 		Boolean isPlaying = player.isPlaying();
 
-		//println("TracksView update : " + currentEntry + " : " + isPlaying);
 		if (_trackViews == null) {
 			// init views
 			_trackViews = new ArrayList<TrackEntryView>();
@@ -49,7 +43,7 @@ public class TrackView extends View implements IAudioView {
 			}
 
 			_width = x;
-			_height = TrackHeight;
+			_height = Menu.OpenHeight;
 		}
 
 		for (TrackEntryView view : _trackViews) {
@@ -116,21 +110,5 @@ public class TrackView extends View implements IAudioView {
 		return _isExpanded;
 	}
 
-	@Override
-	public void draw(PApplet p) {
-
-		if (_isShowing) {
-			// dividors
-			p.stroke(MainView.TEXT_COLOR, 140);
-			for (TrackEntryView view : _trackViews) {
-				float x = view.get_absPos().x + view.get_width();
-				float y = view.get_absPos().y + 30;
-
-				p.line(x, y, x, 100);
-			}
-		}
-
-		super.draw(p);
-	}
 
 }

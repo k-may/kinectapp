@@ -1,5 +1,5 @@
 package kinectapp.view.avatar;
 
 public enum CursorMode {
-	Drawing, Navigating
+	Drawing, Navigating, Pressing
 }

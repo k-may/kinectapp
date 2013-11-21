@@ -1,5 +1,5 @@
 package kinectapp.view.labels;
-
+import static processing.core.PApplet.println;
 import kinectapp.KinectApp;
 import kinectapp.content.ContentManager;
 import processing.core.PApplet;
@@ -54,11 +54,12 @@ public class LabelButton extends View {
 	public void handleInteraction(TouchEvent event) {
 		switch (event.get_interactionType()) {
 			case PressDown:
-				new LabelButtonPressed(_label.get_text()).dispatch();
+				println("pressed");
+				//new LabelButtonPressed(_label.get_text()).dispatch();
 				break;
 			case PressUp:
 				break;
-			case RollOut:
+			case Cancel:
 				_color = _outColor;
 				break;
 			case RollOver:

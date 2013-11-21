@@ -1,5 +1,5 @@
 package FrameWork.Interaction.Types;
 
 public enum InteractionEventType {
-PressUp, PressDown, RollOver, RollOut, None, Move
+PressUp, PressDown, RollOver, Cancel, None, Move, HoverEnd, HoverStart
 }

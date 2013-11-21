@@ -5,7 +5,6 @@ import static processing.core.PApplet.println;
 import java.util.ArrayList;
 
 import processing.core.PApplet;
-import stroke.ICanvas;
 import FrameWork.audio.IAudioPlayer;
 import FrameWork.data.IXMLClient;
 import FrameWork.data.ImageEntry;
@@ -13,8 +12,6 @@ import FrameWork.data.MusicEntry;
 import FrameWork.events.Event;
 import FrameWork.events.EventType;
 import FrameWork.events.HandDetectedEvent;
-import FrameWork.events.HoverEndEvent;
-import FrameWork.events.HoverStartEvent;
 import FrameWork.events.InteractionRegionReadyEvent;
 import FrameWork.events.LabelButtonPressed;
 import FrameWork.events.PauseTrackEvent;
@@ -24,6 +21,7 @@ import FrameWork.events.TouchEvent;
 import FrameWork.scenes.IHomeScene;
 import FrameWork.scenes.SceneManager;
 import FrameWork.scenes.SceneType;
+import FrameWork.stroke.ICanvas;
 import FrameWork.view.CanvasState;
 import FrameWork.view.ICanvasScene;
 import FrameWork.view.IGallery;
@@ -98,21 +96,22 @@ public class Controller {
 			case HandDetected:
 				handleHandDetected((HandDetectedEvent) event);
 				break;
-			case HoverStart:
-				handleHoverStart((HoverStartEvent) event);
+			case OpenTracks:
+				handleOpenTracks();
 				break;
-			case HoverEnd:
-				handleHoverEnd((HoverEndEvent) event);
+			case CloseTracks:
+				handleCloseTracks();
+				break;
+				
 		}
 	}
 
-	private void handleHoverEnd(HoverEndEvent event) {
-		_mainView.endHover(event.get_userId());
+	private void handleCloseTracks() {
+		_canvasScene.hideTracks();
 	}
 
-	private void handleHoverStart(HoverStartEvent event) {
-		//println("controller : hover start : " + event.get_userId());
-		_mainView.startHover(event.get_userId(), event.get_interval());
+	private void handleOpenTracks() {
+		_canvasScene.showTracks();
 	}
 
 	private void handleHandDetected(HandDetectedEvent event) {

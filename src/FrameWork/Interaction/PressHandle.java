@@ -44,7 +44,6 @@ public class PressHandle {
 	}
 
 	public Boolean isPressing() {
-		//println("change :" + _dZ);
 		return _tendency.z > 0;
 	}
 
@@ -53,7 +52,10 @@ public class PressHandle {
 	}
 	
 	public Boolean isPressAction(){
-		println("dZ : "  + _dZ);
 		return _dZ > 0.7f;
+	}
+
+	public float get_pressure() {
+		return Math.min(1.0f,_dZ/0.7f);
 	}
 }

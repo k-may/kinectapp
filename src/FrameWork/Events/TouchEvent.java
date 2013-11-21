@@ -62,7 +62,7 @@ public class TouchEvent extends Event {
 	}
 
 	public Boolean isRollOut() {
-		return _type == InteractionEventType.RollOut;
+		return _type == InteractionEventType.Cancel;
 	}
 
 	public float get_pressure() {

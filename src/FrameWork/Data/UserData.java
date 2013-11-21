@@ -1,6 +1,8 @@
 package FrameWork.data;
 
 import FrameWork.Interaction.Types.HandType;
+import FrameWork.pressing.PressState;
+import FrameWork.pressing.PressStateData;
 
 public class UserData {
 	private int _id;
@@ -10,15 +12,14 @@ public class UserData {
 	private Boolean _updated = false;
 	private float _localX;
 	private float _localY;
-	private float _pressure;
-	private float _maxPressure = Integer.MIN_VALUE;
-	private float _minPressure = Integer.MAX_VALUE;
+	private float _pressure = 0.0f;
 	private Boolean _isPressing = false;
 	private Boolean _isOverPressTarget = false;
-
+	private Boolean _isOverHoverTarget = false;
+	private PressStateData _pressStateData;
 
 	public UserData(int id) {
-		//println("new user : " + id);
+		// println("new user : " + id);
 		_id = id;
 	}
 
@@ -63,28 +64,6 @@ public class UserData {
 		this._localY = _localY;
 	}
 
-	public void set_pressure(float z) {
-		_pressure = z;
-		
-		if(_pressure > _maxPressure)
-			_maxPressure = _pressure;
-		
-		if(_pressure < _minPressure)
-			_minPressure = _minPressure;
-	}
-	
-	public float get_pressure(){
-		return _pressure;
-	}
-	
-	public float get_maxPressure() {
-		return _maxPressure;
-	}
-
-	public float get_minPressure() {
-		return _minPressure;
-	}
-
 	public Boolean isPressing() {
 		return _isPressing;
 	}
@@ -97,9 +76,46 @@ public class UserData {
 		// TODO Auto-generated method stub
 		_isOverPressTarget = isOverPressTarget;
 	}
-	
-	public Boolean isOverPressTarget(){
+
+	public Boolean isOverPressTarget() {
 		return _isOverPressTarget;
 	}
 
+	public PressStateData get_pressStateData() {
+		return _pressStateData;
+	}
+
+	public void set_pressStateData(PressStateData _pressStateData) {
+		this._pressStateData = _pressStateData;
+	}
+
+	public void set_pressPressure(float pressure) {
+		_pressure = pressure;
+	}
+	
+	public float get_pressPressure(){
+		return _isOverPressTarget ? _pressure : 0.0f;
+	}
+	
+	public float get_strokePressure(){
+		return _pressStateData.get_state() == PressState.Drawing ? 
+				_pressStateData.get_pressure() : 0.0f;
+	}
+	
+	public float get_navigationPressure(){
+		return _pressStateData.get_state() == PressState.Start ? 
+				_pressStateData.get_pressure() : 0.0f;
+	}
+
+	public Boolean isOverTouchTarget(){
+		return _isOverHoverTarget || _isOverPressTarget;
+	}
+	
+	public Boolean isOverHoverTarget() {
+		return _isOverHoverTarget;
+	}
+
+	public void set_isOverHoverTarget(Boolean _isOverHoverTarget) {
+		this._isOverHoverTarget = _isOverHoverTarget;
+	}
 }

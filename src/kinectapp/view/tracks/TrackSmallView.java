@@ -12,36 +12,25 @@ import FrameWork.view.View;
 
 public class TrackSmallView extends View {
 
-	private PImage _noteIcon;
-	private PImage _playIcon;
-	private PImage _pauseIcon;
+	private PImage _musicIcon;
+	private PImage _nowPlayingText;
 
-	private LabelView _nowPlayingLabel;
 	private LabelView _trackLabel;
-
-	private Boolean _isPlaying = true;
 
 	private int _notePaddingLeft = 12;
 	private int _notePaddingTop = 7;
 
-	private int _playPaddingLeft = 50;
-	private int _playPaddingTop = 12;
-
-	private int _dividor1PaddingLeft = 38;
-	private int _dividor2PaddingLeft = 73;
-	private int _dividorPaddingTop = 7;
-	private int _dividorHeight = 23;
-
 	private int _textPaddingLeft = 82;
 
+	private Boolean _isPlaying = false;
+	
 	public TrackSmallView() {
 		createChilds();
 	}
 
 	private void createChilds() {
-		_noteIcon = ContentManager.GetIcon("smallNote");
-		_pauseIcon = ContentManager.GetIcon("smallPause");
-		_playIcon = ContentManager.GetIcon("smallPlay");
+		_musicIcon = ContentManager.GetIcon("musicIcon");
+		_nowPlayingText = ContentManager.GetIcon("nowPlayingText");
 	}
 
 	@Override
@@ -51,28 +40,12 @@ public class TrackSmallView extends View {
 
 		PVector absPos = get_absPos();
 
+		p.noTint();
+		p.image(_nowPlayingText, absPos.x, absPos.y);
+
 		p.tint(MainView.TEXT_COLOR, 140);
-		p.image(_noteIcon, absPos.x + _notePaddingLeft, absPos.y
+		p.image(_musicIcon, absPos.x + _notePaddingLeft, absPos.y
 				+ _notePaddingTop);
-
-		p.strokeWeight(1);
-		p.stroke(MainView.TEXT_COLOR, 140);
-		p.line(absPos.x + _dividor1PaddingLeft, absPos.y + _dividorPaddingTop, absPos.x
-				+ _dividor1PaddingLeft, absPos.y + _dividorPaddingTop
-				+ _dividorHeight);
-
-		if (_isPlaying)
-			p.image(_playIcon, absPos.x + _playPaddingLeft, absPos.y
-					+ _playPaddingTop);
-		else
-			p.image(_pauseIcon, absPos.x + _playPaddingLeft, absPos.y
-					+ _playPaddingTop);
-
-		p.strokeWeight(1);
-		p.stroke(MainView.TEXT_COLOR, 140);
-		p.line(absPos.x + _dividor2PaddingLeft, absPos.y + _dividorPaddingTop, absPos.x
-				+ _dividor2PaddingLeft, absPos.y + _dividorPaddingTop
-				+ _dividorHeight);
 
 	}
 
@@ -83,7 +56,7 @@ public class TrackSmallView extends View {
 	public void setTrackEntry(MusicEntry entry) {
 
 		String text = entry.artist + ",\"" + entry.trackName + "\"";
-		
+
 		if (_trackLabel == null)
 			_trackLabel = new LabelView(text, MainView.TEXT_COLOR, ContentManager.GetFont("small"));
 		else
@@ -92,12 +65,5 @@ public class TrackSmallView extends View {
 		_trackLabel.set_x(_textPaddingLeft);
 		_trackLabel.set_y(15);
 		addChild(_trackLabel);
-
-		if (_nowPlayingLabel == null) {
-			_nowPlayingLabel = new LabelView("now playing:", MainView.TEXT_COLOR, ContentManager.GetFont("smallItalic"));
-			_nowPlayingLabel.set_x(_textPaddingLeft);
-			_nowPlayingLabel.set_y(2);
-			addChild(_nowPlayingLabel);
-		}
 	}
 }

@@ -14,16 +14,19 @@ public class AvatarCursor extends View {
 	public float loadRatio = 0.0f;
 	private int _outerRingWeight = 6;
 	private int _midRingWeight = 2;
-	private int _innerRingWeight = 1;
+	private int _innerRingWeight = 2;
 
 	private int _greyColor = 0xBA6E6F72;
 	private int _lightGreyColor = 0xBADBD7D7;
 	private int _color = 0xffffffff;
-	private float _pressure = 0.0f;
+	private float _pressPressure = 0.0f;
+	private float _strokePressure = 0.0f;
+	private float _navPressure = 0.0f;
 
 	private static final int MAX_RADIUS = 25;
 	private static final int MIN_RADIUS = 4;
 	private Boolean _isPressing = false;
+
 	private Boolean _isOverPressTarget = false;
 
 	private CursorMode _mode;
@@ -41,18 +44,16 @@ public class AvatarCursor extends View {
 	@Override
 	public void draw(PApplet p) {
 
-		float cX = _x;
-		float cY = _y;
+		int baseColor = _pressPressure > 0.0f ? _lightGreyColor : _greyColor;
+		println("pressure : " + _pressPressure + " : isPressing : " + _isPressing + " : " + _mode);
+		if (_pressPressure > 0.0f) {
+			p.image(_highlight, _x - _highlight.width / 2, _y
+					- _highlight.height / 2);
+			if (!_isPressing) {
+				p.tint(_lightGreyColor, _pressPressure * 255);
+			} else
+				baseColor = 0xffffffff;
 
-		int baseColor = getBaseColor();
-		
-		if (_isOverPressTarget) {
-			if (_isPressing) {
-				p.image(_highlight, _x - _highlight.width / 2, _y
-						- _highlight.height / 2);
-			} else {
-				p.tint(baseColor, _pressure * 255);
-			}
 			p.image(_hand, _x - _hand.width / 2, _y - _hand.height / 2);
 		} else {
 			p.noStroke();
@@ -78,48 +79,40 @@ public class AvatarCursor extends View {
 		p.ellipse(_x, _y, MAX_RADIUS * 2, MAX_RADIUS * 2);
 
 		// stroke
-		if (!_isOverPressTarget) {
-			switch (_mode) {
-				case Drawing:
-					p.noStroke();
-					p.fill(_color);
-					break;
-				case Navigating:
-					p.strokeWeight(1);
-					p.stroke(_color);
-					p.noFill();
-					break;
-			}
-			float cRadius = GetRadiusForPressure(_pressure);
-			p.ellipse(cX, cY, cRadius * 2, cRadius * 2);
+		switch (_mode) {
+			case Drawing:
+				drawDrawingEllipse(p, _x, _y);
+				break;
+			case Navigating:
+				drawNavigationEllipse(p, _x, _y);
+				break;
 		}
 
 		if (loadRatio == 1.0f)
 			loadRatio = 0.0f;
-		
+
 		p.noTint();
 
+	}
+
+	private void drawNavigationEllipse(PApplet p, float x, float y) {
+		p.strokeWeight(1);
+		p.stroke(_color);
+		p.noFill();
+		float cRadius = GetRadiusForPressure(1 - _navPressure);
+		p.ellipse(x, y, cRadius * 2, cRadius * 2);
+	}
+
+	private void drawDrawingEllipse(PApplet p, float x, float y) {
+		p.noStroke();
+		p.fill(_color);
+		float cRadius = GetRadiusForPressure(_strokePressure);
+		p.ellipse(x, y, cRadius * 2, cRadius * 2);
 	}
 
 	private float get_loadAngle() {
 		// TODO Auto-generated method stub
 		return (float) (loadRatio * Math.PI * 2 - Math.PI / 2);
-	}
-
-	private int getBaseColor() {
-		if (_isOverPressTarget) {
-			if (_isPressing)
-				return 0xffffffff;
-			else
-				return _lightGreyColor;
-		}
-
-		return _greyColor;
-
-	}
-
-	public void setPressure(float pressure) {
-		_pressure = pressure;
 	}
 
 	public void setColor(int color) {
@@ -130,16 +123,30 @@ public class AvatarCursor extends View {
 		return (MAX_RADIUS - MIN_RADIUS) * pressure + MIN_RADIUS;
 	}
 
-	public void setPressing(Boolean pressing) {
+	public void set_pressing(Boolean pressing, float pressure) {
 		_isPressing = pressing;
+		_pressPressure = pressure;
 	}
 
-	public void isOverPressTarget(Boolean isOverPressTarget) {
+	public void setStrokePressure(float pressure) {
+		_strokePressure = pressure;
+	}
+
+	public void set_isOverPressTarget(Boolean isOverPressTarget) {
 		_isOverPressTarget = isOverPressTarget;
 	}
 
 	public void set_mode(CursorMode _mode) {
 		this._mode = _mode;
+	}
+
+	public void set_strokePressure(float _strokePressure) {
+		this._strokePressure = _strokePressure;
+	}
+
+	public void set_navPressure(float get_navigationPressure) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

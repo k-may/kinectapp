@@ -1,15 +1,14 @@
 package kinectapp.view.canvas;
 
 import kinectapp.view.MainView;
-import kinectapp.view.Menu;
 import kinectapp.view.gallery.GalleryView;
 import kinectapp.view.labels.LabelButton;
+import kinectapp.view.menu.Menu;
 import kinectapp.view.scene.Scene;
 import processing.core.PApplet;
-import stroke.Canvas;
-import stroke.ICanvas;
 import FrameWork.audio.IAudioView;
 import FrameWork.scenes.SceneType;
+import FrameWork.stroke.ICanvas;
 import FrameWork.view.CanvasState;
 import FrameWork.view.ICanvasScene;
 import FrameWork.view.IGallery;
@@ -74,5 +73,16 @@ public class CanvasScene extends Scene implements ICanvasScene {
 		// TODO Auto-generated method stub
 		return _menu.get_trackView();
 	}
+
+	@Override
+	public void showTracks() {
+		_menu.showTracks();
+	}
+
+	@Override
+	public void hideTracks() {
+		_menu.hideTracks();
+	}
+	
 
 }

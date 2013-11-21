@@ -53,7 +53,7 @@ public class HomeLabel extends View {
 				break;
 			case PressUp:
 				break;
-			case RollOut:
+			case Cancel:
 				_color = _outColor;
 				break;
 			case RollOver:

@@ -3,7 +3,6 @@ package FrameWork.Interaction;
 import java.util.ArrayList;
 import static processing.core.PApplet.println;
 import FrameWork.view.IView;
-import FrameWork.view.View;
 
 public class InteractionHandle {
 	private IView _target;
@@ -11,7 +10,9 @@ public class InteractionHandle {
 	private ArrayList<InteractionStreamData> _data;
 	private Boolean _isCancelled = false;
 	private Boolean _isPressing = false;
+	private Boolean _isHovering = false;
 	private Boolean _updated = false;
+	private int _startMillis;
 
 	public InteractionHandle(int id, IView target) {
 		_target = target;
@@ -36,7 +37,7 @@ public class InteractionHandle {
 	}
 
 	public void cancel() {
-		//println("handle cancelled");
+		// println("handle cancelled");
 		_isCancelled = true;
 	}
 
@@ -59,8 +60,8 @@ public class InteractionHandle {
 		else
 			return null;
 	}
-	
-	public InteractionStreamData get_currentInteraction(){
+
+	public InteractionStreamData get_currentInteraction() {
 		return _data.get(_data.size() - 1);
 	}
 
@@ -68,13 +69,42 @@ public class InteractionHandle {
 		return _isPressing;
 	}
 
-	public void reset(){
-		//only update press state after initial processing
+	public void reset() {
+		// only update press state after initial processing
 		_isPressing = get_currentInteraction().isPressing();
 		_updated = false;
 	}
-	
-	public float getCurrentPressure(){
+
+	public float getCurrentPressure() {
 		return get_currentInteraction().get_z();
+	}
+
+	public boolean isHovering() {
+		// TODO Auto-generated method stub
+		return _isHovering;
+	}
+
+	public int get_startMillis() {
+		return _startMillis;
+	}
+
+	public void set_startMillis(int millis) {
+		_startMillis = millis;
+	}
+
+	public float get_dX() {
+		return get_currentX() - get_lastInteraction().get_x();
+	}
+
+	public float get_dY() {
+		return get_currentY() - get_lastInteraction().get_y();
+	}
+
+	public void endHovering() {
+		_isHovering = false;
+	}
+
+	public void startHover() {
+		_isHovering = true;
 	}
 }

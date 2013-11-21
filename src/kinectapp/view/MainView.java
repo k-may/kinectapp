@@ -7,7 +7,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import kinectapp.view.avatar.AvatarView;
-
 import processing.core.PApplet;
 import FrameWork.BaseMainView;
 import FrameWork.Controller;
@@ -20,6 +19,7 @@ public class MainView extends BaseMainView implements Observer {
 	private SceneType DefaultScene = SceneType.Home;
 	private Controller _controller;
 
+	public static int ICON_COLOR = 0Xff333333;
 	public static int TEXT_COLOR = 0xff808080;
 
 	public MainView(PApplet parent) {
@@ -51,6 +51,8 @@ public class MainView extends BaseMainView implements Observer {
 		_region.runInteractions();
 		//send processed inputs to dispatcher
 		_dispatcher.setStream(_region.getStream());
+		_dispatcher.process(p.millis());
+		
 		_controller.update();
 
 		SceneManager.getScene().draw(p);
@@ -92,7 +94,6 @@ public class MainView extends BaseMainView implements Observer {
 			}
 		}
 
-		// println("element : " + element);
 		if (elements.contains(this))
 			elements.remove(this);
 
@@ -100,22 +101,20 @@ public class MainView extends BaseMainView implements Observer {
 	}
 
 	@Override
-	public void startHover(int userID, int interval) {
-		println("adapter : start load : " + userID + " / " + interval);
-		AvatarView avatar = ((InteractionView) _interactionView).getAvatarById(userID);
-		avatar.startLoad(interval, 1.0f);
+	public void startHover(int userID, int interval, IView target) {
+		AvatarView avatar = ((AvatarsView) _interactionView).getAvatarById(userID);
+		avatar.startLoad(interval, 1.0f, target);
 	}
 	
 	@Override
 	public void endHover(int userID) {
-		println("adapter : end load : " + userID );
-		AvatarView avatar = ((InteractionView) _interactionView).getAvatarById(userID);
-		avatar.startLoad(0, 0.0f);
+		AvatarView avatar = ((AvatarsView) _interactionView).getAvatarById(userID);
+		avatar.cancelHover();
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		println("adapter : set scene : " + arg1);
-		((InteractionView) _interactionView).setScene(SceneManager.GetSceneType());
+		((AvatarsView) _interactionView).setScene(SceneManager.GetSceneType());
 	}
+
 }

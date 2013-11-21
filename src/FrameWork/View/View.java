@@ -1,12 +1,12 @@
 package FrameWork.view;
 
+import static processing.core.PApplet.println;
+
 import java.util.ArrayList;
 
 import processing.core.PApplet;
 import processing.core.PVector;
-import static processing.core.PApplet.println;
 import FrameWork.Rectangle;
-import FrameWork.Interaction.InteractionStreamData;
 import FrameWork.events.TouchEvent;
 
 public class View implements IView {
@@ -17,7 +17,7 @@ public class View implements IView {
 	protected float _width;
 	protected float _height;
 	protected String _name;
-	private IView _parent;
+	protected IView _parent;
 	private ArrayList<IView> _childs;
 	protected Boolean _invalidated = false;
 
@@ -155,7 +155,17 @@ public class View implements IView {
 		return false;
 	}
 	
+	@Override
+	public Boolean isHoverTarget() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	public String get_name(){
 		return _name;
+	}
+	
+	public void onHoverEnd(){
+		println("view : hover end");
 	}
 }

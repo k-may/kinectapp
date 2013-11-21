@@ -1,34 +1,32 @@
 package kinectapp.view.avatar;
 
-import java.awt.Cursor;
-import java.util.Observable;
-import java.util.Observer;
-
 import de.looksgood.ani.Ani;
 
+import kinectapp.KinectApp;
 import kinectapp.content.ContentManager;
+import kinectapp.view.MainView;
 import processing.core.PApplet;
 import processing.core.PImage;
+import FrameWork.IMainView;
+import FrameWork.Interaction.Types.InteractionEventType;
 import FrameWork.data.UserData;
-import FrameWork.scenes.SceneManager;
-import FrameWork.scenes.SceneType;
+import FrameWork.events.TouchEvent;
+import FrameWork.pressing.PressState;
 import FrameWork.view.View;
 import static processing.core.PApplet.println;
+import FrameWork.view.IView;
 
-public class AvatarView extends View implements Comparable<AvatarView>,
-		Observer {
+public class AvatarView extends View implements Comparable<AvatarView> {
 
+	private IView _hoverTarget;
 	private UserData _user;
 	private Boolean _isColorWheelVisible = false;
 	private float _colorWheelX;
 	private float _colorWheelY;
 	private PImage _colorWheel;
+	private Ani _hoverAnimation;
 
-	private PImage _iconPressing;
-	private PImage _iconOut;
-
-	private final float WHEEL_MIN_THRESHOLD = 0.0f;
-	private final float WHEEL_MAX_THRESHOLD = 0.1f;
+	private PressState _currentState;
 
 	private AvatarCursor _cursor;
 
@@ -40,63 +38,98 @@ public class AvatarView extends View implements Comparable<AvatarView>,
 	}
 
 	private void createChilds() {
-		_iconPressing = ContentManager.GetIcon("handOver");
-		_iconOut = ContentManager.GetIcon("handOut");
 		_colorWheel = ContentManager.GetIcon("colorWheel");
-
 		_cursor = new AvatarCursor();
+		addChild(_cursor);
 	}
 
 	@Override
 	public void draw(PApplet p) {
-		// TODO Auto-generated method stub
-		Boolean isOverPressTarget = _user.isOverPressTarget();
-		Boolean isInPressureRange = isInWheelPressureRange();
+		Boolean isPressing = _user.isPressing();
 
-		// println("isOverPressTarget : " + isOverPressTarget);
 		float x = _user.get_localX();
 		float y = _user.get_localY();
-		int color = 0xff000000;
 
-		if (_cursor.get_mode() == CursorMode.Drawing) {
-			if (_isColorWheelVisible) {
-				if (!isOverPressTarget && isInPressureRange) {
-					p.image(_colorWheel, _colorWheelX, _colorWheelY);
-					updateColor();
-				} else
-					hideColorWheel();
-			} else {
-				if (isInPressureRange)
+		PressState state = _user.get_pressStateData().get_state();
+		_cursor.set_pressing(isPressing, _user.get_pressPressure());
+
+		switch (state) {
+			case Start:
+				drawStart(p);
+				break;
+			case ColorSelection:
+
+				if (!_isColorWheelVisible)
 					showColorWheel(x, y);
-			}
-			color = _user.getColor();
+
+				drawColorSelection(p);
+				break;
+			case PreDrawing:
+				drawPreDrawing(p);
+				break;
+			case Drawing:
+				drawDrawing(p);
+				break;
 		}
 
+		if (state != PressState.ColorSelection && _isColorWheelVisible)
+			hideColorWheel();
+
+		_cursor.set_mode(getCursorMode());
+		_cursor.set_navPressure(_user.get_navigationPressure());
+		_cursor.set_strokePressure(_user.get_strokePressure());
 		_cursor.set_x(x);
 		_cursor.set_y(y);
-		_cursor.setColor(color);
-		_cursor.setPressure(_user.get_pressure());
-		_cursor.setPressing(_user.isPressing());
-		_cursor.isOverPressTarget(isOverPressTarget);
-		_cursor.draw(p);
+		_cursor.setColor(_user.getColor());
 
+		_currentState = state;
 
+		super.draw(p);
 	}
 
-	private Boolean isInWheelPressureRange() {
-		float pressure = _user.get_pressure();
-		return (pressure >= WHEEL_MIN_THRESHOLD && pressure < WHEEL_MAX_THRESHOLD);
+	public CursorMode getCursorMode() {
+		PressState state = _user.get_pressStateData().get_state();
+		CursorMode mode = CursorMode.Navigating;
+
+		switch (state) {
+			case Drawing:
+				mode = CursorMode.Drawing;
+				break;
+		}
+
+		mode = _user.isOverPressTarget() ? mode.Pressing : mode;
+
+		return mode;
+	}
+
+	private void drawDrawing(PApplet p) {
+	}
+
+	private void drawPreDrawing(PApplet p) {
+	}
+
+	private void drawColorSelection(PApplet p) {
+		// hide color wheel slightly if over press target
+		if (_user.isOverTouchTarget())
+			p.tint(255, 120);
+		else
+			p.noTint();
+
+		p.image(_colorWheel, _colorWheelX, _colorWheelY);
+
+		updateColor();
+	}
+
+	private void drawStart(PApplet p) {
 	}
 
 	private void updateColor() {
-		// TODO Auto-generated method stub
 		float localX = _user.get_localX();
 		float localY = _user.get_localY();
 		if (isOverWheel(localX, localY)) {
 			float x = localX - _colorWheelX;
 			float y = localY - _colorWheelY;
 			int color = GetColor((int) x, (int) y);
-			println("get color :" + Integer.toHexString(color) + " : " + x + " / " + y);
 			_user.setColor(color);
 		}
 	}
@@ -121,21 +154,12 @@ public class AvatarView extends View implements Comparable<AvatarView>,
 		_isColorWheelVisible = false;
 	}
 
-	public int getColor(float x, float y) {
-		return 0xffffffff;
-	}
-
 	public int get_userId() {
 		return _user.get_id();
 	}
 
-	public float get_pressure() {
-		return _user.get_pressure();
-	}
-
 	@Override
 	public int compareTo(AvatarView o) {
-		// TODO Auto-generated method stub
 		return get_userId() - o.get_userId();
 	}
 
@@ -144,19 +168,38 @@ public class AvatarView extends View implements Comparable<AvatarView>,
 		return wheel.get(x, y);
 	}
 
+	public void startLoad(int interval, float value, IView target) {
+		_hoverTarget = target;
+		_hoverAnimation = new Ani(_cursor, interval / 1000, "loadRatio", value, Ani.EXPO_OUT, "onEnd:onHoverEnd");
+
+		println("start hover");
+	}
+
+	public void cancelHover() {
+		println("cancel hover");
+		if (_hoverTarget != null)
+			_hoverTarget = null;
+
+		if (_hoverAnimation != null)
+			_hoverAnimation.end();
+
+		_cursor.loadRatio = 0.0f;
+	}
+
 	@Override
-	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
-
+	public void onHoverEnd() {
+		new TouchEvent(InteractionEventType.PressDown, _hoverTarget, _hoverTarget.get_absPos().x, _hoverTarget.get_absPos().y, 1.0f, _user, KinectApp.instance.millis()).dispatch();
+		_hoverTarget = null;
 	}
-	
-	public void setCursorMode(CursorMode mode){
-		_cursor.set_mode(mode);
-	}
-
-	public void startLoad(int interval, float value) {
-		//println("startload!");
-		Ani.to(_cursor, interval/1000, "loadRatio", value);
-	}
-	
+	/*
+	 * public void onHoverEnd() { if (_hoverTarget != null)
+	 * _hoverTarget.handleInteraction(new
+	 * TouchEvent(InteractionEventType.PressDown, _hoverTarget,
+	 * _hoverTarget.get_absPos().x, _hoverTarget.get_absPos().y, 1.0f, _user,
+	 * KinectApp.instance.millis()));
+	 * 
+	 * _hoverTarget = null;
+	 * 
+	 * println("hover end"); }
+	 */
 }
