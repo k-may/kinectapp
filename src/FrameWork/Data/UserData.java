@@ -6,7 +6,7 @@ import FrameWork.pressing.PressStateData;
 
 public class UserData {
 	private int _id;
-	private int _color = 0xff000000;
+	private int _color = 0xffffffff;
 	private int _previousColor;
 	private HandType _primaryHand;
 	private Boolean _updated = false;

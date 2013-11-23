@@ -5,9 +5,9 @@ public class MusicEntry{
 	public String trackName;
 	public String artist;
 	
-	public MusicEntry(String filePath, String artist) {
+	public MusicEntry(String filePath, String artist, String track) {
 		this.filePath = filePath;
 		this.artist = artist;
-		this.trackName = filePath.split("\\.")[0];
+		this.trackName = track;
 	}
 }

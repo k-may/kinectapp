@@ -1,4 +1,4 @@
-package kinectapp.view.tracks;
+package kinectapp.audio;
 
 import static processing.core.PApplet.println;
 
@@ -19,7 +19,7 @@ import ddf.minim.AudioPlayer;
 import ddf.minim.Controller;
 import ddf.minim.Minim;
 
-public class TrackPlayer extends Observable implements IAudioPlayer {
+public class MinimAudioPlayer extends Observable implements IAudioPlayer {
 
 	private Map<MusicEntry, AudioPlayer> _tracks;
 
@@ -31,7 +31,7 @@ public class TrackPlayer extends Observable implements IAudioPlayer {
 	private float _volume;
 	private MusicEntry _currentEntry;
 
-	public TrackPlayer() {
+	public MinimAudioPlayer() {
 		parent = KinectApp.instance;
 		_minim = new Minim(parent);
 		_output = _minim.getLineOut();
@@ -72,7 +72,7 @@ public class TrackPlayer extends Observable implements IAudioPlayer {
 			set_volume(_volume);
 		}
 
-		_audioPlayer.play();
+		//_audioPlayer.play();
 		changed();
 
 	}

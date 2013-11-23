@@ -30,9 +30,10 @@ public class TrackEntryView extends ShadowButton {
 	private Image _pauseText;
 
 	private Boolean _isPlaying = false;
-	private Boolean _isOver = false;
 
-	private int _textPaddingTop = 127;
+	private int _textPaddingTop = 116;
+	private int _trackPaddingTop = 146;
+	private int _artistPaddingTop = 165;
 
 	public int alpha = 0x00;
 
@@ -47,6 +48,8 @@ public class TrackEntryView extends ShadowButton {
 
 		_width = Menu.OpenHeight;
 		_height = Menu.OpenHeight;
+		
+		set_height(_height);
 
 		_bg.set_width(_width);
 		_bg.set_height(_height);
@@ -63,8 +66,10 @@ public class TrackEntryView extends ShadowButton {
 
 		_playText = new Image("playText");
 		_playText.set_color(0xff000000);
+		_playText.set_y(_textPaddingTop);
 		_pauseText = new Image("pauseText");
 		_pauseText.set_color(0xff000000);
+		_pauseText.set_y(_textPaddingTop);
 
 		_invalidated = true;
 	}
@@ -101,13 +106,13 @@ public class TrackEntryView extends ShadowButton {
 		if (_invalidated) {
 			_trackLabel = new LabelView(_entry.trackName, MainView.TEXT_COLOR, ContentManager.GetFont("smallItalic"));
 			addChild(_trackLabel);
-			_trackLabel.set_y(130);
-			_trackLabel.set_x(5);
+			_trackLabel.set_y(_trackPaddingTop);
+			_trackLabel.set_x(_width - _trackLabel.get_width() - 5);
 
 			_artistLabel = new LabelView(_entry.artist, MainView.TEXT_COLOR, ContentManager.GetFont("small"));
 			addChild(_artistLabel);
-			_artistLabel.set_x(5);
-			_artistLabel.set_y(145);
+			_artistLabel.set_x(_width - _artistLabel.get_width() - 5);
+			_artistLabel.set_y(_artistPaddingTop);
 			_invalidated = false;
 		}
 
@@ -120,22 +125,31 @@ public class TrackEntryView extends ShadowButton {
 	}
 
 	@Override
-	protected void dispatchHover(TouchEvent event) {
+	protected void onHover(TouchEvent event) {
+		super.onHover(event);
+		println("hover track view");
 		_playIcon.set_color(_color);
 		_pauseIcon.set_color(_color);
+		_artistLabel.set_color(_color);
+		_trackLabel.set_color(_color);
+	}
+	@Override
+	protected void onHoverOut(TouchEvent event) {
+		// TODO Auto-generated method stub
+		super.onHoverOut(event);
+		println("hover out!");
+		_playIcon.set_color(_color);
+		_pauseIcon.set_color(_color);
+		_artistLabel.set_color(MainView.TEXT_COLOR);
+		_trackLabel.set_color(MainView.TEXT_COLOR);
 	}
 	
 	@Override
-	protected void dispatchHoverOut(TouchEvent event) {
-		_playIcon.set_color(_color);
-		_pauseIcon.set_color(_color);
-	}
-
-	@Override
-	protected void dispatchPress(TouchEvent event) {
+	protected void onPress(TouchEvent event) {
 		if (!_isPlaying)
 			new PlayTrackEvent(_entry).dispatch();
 		else
 			new PauseTrackEvent(_entry).dispatch();
 	}
+
 }

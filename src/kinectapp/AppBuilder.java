@@ -5,12 +5,12 @@ import kinectapp.Interaction.RegionType;
 import kinectapp.Interaction.Processing.PRegion;
 import kinectapp.Interaction.SimpleOpenNI.SONRegion;
 import kinectapp.Interaction.gestTrackOSC.GestTrackOSCRegion;
+import kinectapp.audio.MinimAudioPlayer;
 import kinectapp.clients.XMLClient;
 import kinectapp.content.ContentManager;
 import kinectapp.view.MainView;
 import kinectapp.view.canvas.CanvasScene;
 import kinectapp.view.home.HomeScene;
-import kinectapp.view.tracks.TrackPlayer;
 import processing.core.PApplet;
 import FrameWork.Controller;
 import FrameWork.IMainView;
@@ -23,7 +23,7 @@ import de.looksgood.ani.Ani;
 
 public class AppBuilder {
 
-	private RegionType REGION_TYPE = RegionType.SimpleOpenNI;
+	private RegionType REGION_TYPE = RegionType.Processing;
 	private IInteractionRegion _region;
 	KinectApp _parent;
 	IMainView _root;
@@ -72,7 +72,7 @@ public class AppBuilder {
 	}
 
 	private void initPlayer() {
-		_player = new TrackPlayer();
+		_player = new MinimAudioPlayer();
 		_controller.registerTrackPlayer(_player);
 		_player.set_view(_canvas.get_audioView());
 	}
@@ -91,7 +91,7 @@ public class AppBuilder {
 		_controller.registerHomeScene(_home);
 		
 		SceneManager.getInstance().addObserver((MainView)_root);
-		SceneManager.setScene(SceneType.Home);
+		SceneManager.setScene(SceneType.Canvas);
 		
 	}
 

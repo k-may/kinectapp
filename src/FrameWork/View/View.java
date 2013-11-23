@@ -10,7 +10,8 @@ import FrameWork.Rectangle;
 import FrameWork.events.TouchEvent;
 
 public class View implements IView {
-	
+
+	protected Boolean _isHoverEnabled = false;
 	protected Boolean _isTouchEnabled = true;
 	protected float _x;
 	protected float _y;
@@ -42,7 +43,9 @@ public class View implements IView {
 	public void addChild(IView child) {
 		// TODO Auto-generated method stub
 		child.set_parent(this);
-		_childs.add(child);
+
+		if (!_childs.contains(child))
+			_childs.add(child);
 	}
 
 	@Override
@@ -105,8 +108,7 @@ public class View implements IView {
 		IView tempParent = _parent;
 
 		while (tempParent != null) {
-			rect = tempParent.get_rect().offset(
-					new PVector(rect.get_x(), rect.get_y()));
+			rect = tempParent.get_rect().offset(new PVector(rect.get_x(), rect.get_y()));
 			tempParent = tempParent.get_parent();
 		}
 
@@ -139,11 +141,6 @@ public class View implements IView {
 		return (View) _childs.get(i);
 	}
 
-	public void handleInteraction(TouchEvent event) {
-		// TODO Auto-generated method stub
-
-	}
-
 	@Override
 	public Boolean isTouchEnabled() {
 		return _isTouchEnabled;
@@ -154,18 +151,60 @@ public class View implements IView {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	@Override
 	public Boolean isHoverTarget() {
 		// TODO Auto-generated method stub
-		return false;
+		return _isHoverEnabled;
 	}
-	
-	public String get_name(){
+
+	public String get_name() {
 		return _name;
 	}
-	
-	public void onHoverEnd(){
-		println("view : hover end");
+
+	@Override
+	public void handleInteraction(TouchEvent event) {
+		switch (event.get_interactionType()) {
+			case PressDown:
+				onPress(event);
+				break;
+			case PressUp:
+				onPressUp(event);
+				break;
+			case Cancel:
+				onHoverOut(event);
+				break;
+			case RollOver:
+				onHover(event);
+				break;
+			case HoverEnd:
+				onHoverEnd(event);
+				break;
+		}
+	}
+
+	protected void onHoverOut(TouchEvent event) {
+		// TODO Auto-generated method stub
+
+	}
+
+	protected void onPressUp(TouchEvent event) {
+		// TODO Auto-generated method stub
+
+	}
+
+	protected void onHover(TouchEvent event) {
+		// TODO Auto-generated method stub
+
+	}
+
+	protected void onHoverEnd(TouchEvent event) {
+		// TODO Auto-generated method stub
+
+	}
+
+	protected void onPress(TouchEvent event) {
+		// TODO Auto-generated method stub
+
 	}
 }

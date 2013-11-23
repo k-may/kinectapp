@@ -3,11 +3,14 @@ package kinectapp.view.tracks;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import kinectapp.audio.MinimAudioPlayer;
 import kinectapp.view.menu.Menu;
 import static processing.core.PApplet.println;
 
 import FrameWork.audio.IAudioView;
 import FrameWork.data.MusicEntry;
+import FrameWork.events.TouchEvent;
+import FrameWork.events.TracksHideEvent;
 import FrameWork.view.View;
 
 public class TrackView extends View implements IAudioView {
@@ -16,8 +19,6 @@ public class TrackView extends View implements IAudioView {
 	private Boolean _isExpanded = false;
 	private Boolean _isShowing = false;
 
-	private TrackSmallView _smallView;
-
 	public TrackView() {
 
 	}
@@ -25,7 +26,7 @@ public class TrackView extends View implements IAudioView {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 
-		TrackPlayer player = (TrackPlayer) arg0;
+		MinimAudioPlayer player = (MinimAudioPlayer) arg0;
 		MusicEntry currentEntry = (MusicEntry) arg1;
 		Boolean isPlaying = player.isPlaying();
 
@@ -38,11 +39,12 @@ public class TrackView extends View implements IAudioView {
 				TrackEntryView view = new TrackEntryView(entry);
 				// addChild(view);
 				view.set_x(x);
-				x += view.get_width();
+				x += view.get_width() + Menu.DividorWidth;
 				_trackViews.add(view);
+				addChild(view);
 			}
 
-			_width = x;
+			_width = x - Menu.DividorWidth;
 			_height = Menu.OpenHeight;
 		}
 
@@ -56,37 +58,19 @@ public class TrackView extends View implements IAudioView {
 			}
 		}
 
-		if (_smallView == null)
-			_smallView = new TrackSmallView();
-
-		_smallView.setPlaying(isPlaying);
-
-		if (!_isShowing)
-			addChild(_smallView);
-
-		if (currentEntry != null)
-			_smallView.setTrackEntry(currentEntry);
 	}
 
 	@Override
 	public void show() {
 		_isShowing = true;
-
-		for (TrackEntryView view : _trackViews) {
-			addChild(view);
-		}
-
-		removeChild(_smallView);
+		_isHoverEnabled = true;
+		
 	}
 
 	@Override
 	public void hide() {
+		_isHoverEnabled = false;
 		_isShowing = false;
-		for (TrackEntryView view : _trackViews) {
-			removeChild(view);
-		}
-
-		addChild(_smallView);
 	}
 
 	@Override
@@ -107,7 +91,12 @@ public class TrackView extends View implements IAudioView {
 	@Override
 	public Boolean isTouchEnabled() {
 		// TODO Auto-generated method stub
-		return _isExpanded;
+		return _isShowing;
+	}
+	
+	@Override
+	protected void onHoverOut(TouchEvent event) {
+		new TracksHideEvent().dispatch();
 	}
 
 

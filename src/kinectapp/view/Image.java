@@ -1,18 +1,17 @@
 package kinectapp.view;
 
+import static processing.core.PApplet.println;
 import kinectapp.content.ContentManager;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
 import FrameWork.view.View;
 
-import static processing.core.PApplet.println;
-
 public class Image extends View {
 
-	private float _scaleX = 1.0f;
-	private float _scaleY = 1.0f;
-	private int _color;
+	protected float _scaleX = 1.0f;
+	protected float _scaleY = 1.0f;
+	private int _color = 0xffffffff;
 
 	public Image(String name) {
 		super(name);
@@ -24,13 +23,18 @@ public class Image extends View {
 
 		p.tint(_color);
 
-		p.image(ContentManager.GetIcon(_name), absPos.x, absPos.y, get_width(), get_height());
+		float width = get_width();
+		float height = get_height();
+
+		p.image(getImage(), absPos.x, absPos.y, width, height);
+
+		p.noTint();
 	}
 
 	@Override
 	public float get_width() {
 		try {
-			return ContentManager.GetIcon(_name).width * _scaleX;
+			return getImage().width * _scaleX;
 		} catch (NullPointerException e) {
 			println("image name null : " + _name);
 		}
@@ -40,20 +44,23 @@ public class Image extends View {
 	@Override
 	public void set_width(float width) {
 		// TODO Auto-generated method stub
-		_scaleX = getImage().width / width;
+		_scaleX = width / getImage().width;
 	}
 
 	@Override
 	public float get_height() {
-		return ContentManager.GetIcon(_name).height * _scaleY;
+		if (getImage() != null)
+			return getImage().height * _scaleY;
+		else
+			return -1;
 	}
 
 	@Override
 	public void set_height(float height) {
-		_scaleY = getImage().height / height;
+		_scaleY = height / getImage().height;
 	}
 
-	private PImage getImage() {
+	protected PImage getImage() {
 		return ContentManager.GetIcon(_name);
 	}
 

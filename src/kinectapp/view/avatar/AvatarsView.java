@@ -1,4 +1,4 @@
-package kinectapp.view;
+package kinectapp.view.avatar;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import kinectapp.view.avatar.AvatarView;
-import kinectapp.view.avatar.CursorMode;
 
 import processing.core.PApplet;
 import static processing.core.PApplet.println;

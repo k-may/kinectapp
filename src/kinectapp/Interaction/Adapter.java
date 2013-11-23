@@ -1,7 +1,8 @@
 package kinectapp.Interaction;
 
 import java.util.ArrayList;
-import kinectapp.view.AvatarsView;
+
+import kinectapp.view.avatar.AvatarsView;
 import processing.core.PVector;
 import FrameWork.IMainView;
 import FrameWork.Interaction.IAdapter;
@@ -36,6 +37,8 @@ public class Adapter implements IAdapter {
 		IView target = targets.size() > 0 ? targets.get(targets.size() - 1)
 				: null;
 		Boolean isPressTarget = target != null ? target.isPressTarget() : false;
+		
+		
 		info.set_isPressTarget(isPressTarget);
 
 		Boolean isHoverTarget = target != null ? target.isHoverTarget() : false;

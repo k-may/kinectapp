@@ -171,12 +171,9 @@ public class AvatarView extends View implements Comparable<AvatarView> {
 	public void startLoad(int interval, float value, IView target) {
 		_hoverTarget = target;
 		_hoverAnimation = new Ani(_cursor, interval / 1000, "loadRatio", value, Ani.EXPO_OUT, "onEnd:onHoverEnd");
-
-		println("start hover");
 	}
 
 	public void cancelHover() {
-		println("cancel hover");
 		if (_hoverTarget != null)
 			_hoverTarget = null;
 
@@ -186,20 +183,4 @@ public class AvatarView extends View implements Comparable<AvatarView> {
 		_cursor.loadRatio = 0.0f;
 	}
 
-	@Override
-	public void onHoverEnd() {
-		new TouchEvent(InteractionEventType.PressDown, _hoverTarget, _hoverTarget.get_absPos().x, _hoverTarget.get_absPos().y, 1.0f, _user, KinectApp.instance.millis()).dispatch();
-		_hoverTarget = null;
-	}
-	/*
-	 * public void onHoverEnd() { if (_hoverTarget != null)
-	 * _hoverTarget.handleInteraction(new
-	 * TouchEvent(InteractionEventType.PressDown, _hoverTarget,
-	 * _hoverTarget.get_absPos().x, _hoverTarget.get_absPos().y, 1.0f, _user,
-	 * KinectApp.instance.millis()));
-	 * 
-	 * _hoverTarget = null;
-	 * 
-	 * println("hover end"); }
-	 */
 }

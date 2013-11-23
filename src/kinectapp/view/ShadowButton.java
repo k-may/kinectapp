@@ -23,46 +23,31 @@ public abstract class ShadowButton extends View {
 	@Override
 	public void draw(PApplet p) {
 
+
 		PVector absPos = get_absPos();
 
+		p.noTint();
 		super.draw(p);
 		
 		if (_isOver) {
+			p.noFill();
+			p.noTint();
 			p.stroke(_color);
 			p.rect(absPos.x, absPos.y, _width, _height);
 		}
 
 	}
 
-	protected abstract void dispatchPress(TouchEvent event);
-	
-	protected void dispatchHover(TouchEvent event){
-		
-	}
-	
-	protected void dispatchHoverOut(TouchEvent event){
-		
-	}
-
 	@Override
-	public void handleInteraction(TouchEvent event) {
-		switch (event.get_interactionType()) {
-			case PressDown:
-				dispatchPress(event);
-				break;
-			case PressUp:
-				break;
-			case Cancel:
-				_isOver = false;
-				_color = _grey;
-				dispatchHoverOut(event);
-				break;
-			case RollOver:
-				_isOver = true;
-				_color = event.getUser().getColor();
-				dispatchHover(event);
-				break;
-		}
+	protected void onHover(TouchEvent event) {
+		_isOver = true;
+		_color = event.getUser().getColor();
+	}
+	
+	@Override
+	protected void onHoverOut(TouchEvent event) {
+		_isOver = false;
+		_color = MainView.ICON_COLOR;
 	}
 	
 	

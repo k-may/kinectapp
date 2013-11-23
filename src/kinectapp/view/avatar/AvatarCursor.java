@@ -45,7 +45,7 @@ public class AvatarCursor extends View {
 	public void draw(PApplet p) {
 
 		int baseColor = _pressPressure > 0.0f ? _lightGreyColor : _greyColor;
-		println("pressure : " + _pressPressure + " : isPressing : " + _isPressing + " : " + _mode);
+		//println("pressure : " + _pressPressure + " : isPressing : " + _isPressing + " : " + _mode);
 		if (_pressPressure > 0.0f) {
 			p.image(_highlight, _x - _highlight.width / 2, _y
 					- _highlight.height / 2);
@@ -76,7 +76,7 @@ public class AvatarCursor extends View {
 		// inner/color ring
 		p.strokeWeight(_innerRingWeight);
 		p.stroke(_color);
-		p.ellipse(_x, _y, MAX_RADIUS * 2, MAX_RADIUS * 2);
+		p.ellipse(_x, _y, MAX_RADIUS * 2 - 1, MAX_RADIUS * 2 - 1);
 
 		// stroke
 		switch (_mode) {

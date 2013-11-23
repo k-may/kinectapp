@@ -54,8 +54,7 @@ public class LabelButton extends View {
 	public void handleInteraction(TouchEvent event) {
 		switch (event.get_interactionType()) {
 			case PressDown:
-				println("pressed");
-				//new LabelButtonPressed(_label.get_text()).dispatch();
+				new LabelButtonPressed(_label.get_text()).dispatch();
 				break;
 			case PressUp:
 				break;

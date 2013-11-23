@@ -11,6 +11,7 @@ import FrameWork.data.ImageEntry;
 import FrameWork.data.MusicEntry;
 import FrameWork.events.Event;
 import FrameWork.events.EventType;
+import FrameWork.events.GalleryNavigationEvent;
 import FrameWork.events.HandDetectedEvent;
 import FrameWork.events.InteractionRegionReadyEvent;
 import FrameWork.events.LabelButtonPressed;
@@ -25,6 +26,7 @@ import FrameWork.stroke.ICanvas;
 import FrameWork.view.CanvasState;
 import FrameWork.view.ICanvasScene;
 import FrameWork.view.IGallery;
+import FrameWork.view.IView;
 
 public class Controller {
 
@@ -73,7 +75,7 @@ public class Controller {
 
 	private void processEvent(Event event) {
 		EventType type = event.get_type();
-		// println("process event : " + event.toString());
+		println("process event : " + event.toString());
 		switch (type) {
 			case InteractionReady:
 				handleRegionReady((InteractionRegionReadyEvent) event);
@@ -102,8 +104,16 @@ public class Controller {
 			case CloseTracks:
 				handleCloseTracks();
 				break;
-				
+			case GalleryNavigation:
+				handleGalleryNavigation((GalleryNavigationEvent)event);
+				break;
+
 		}
+	}
+	
+	private void handleGalleryNavigation(GalleryNavigationEvent event) {
+		String direction = event.get_direction();
+		_gallery.navigate(direction);
 	}
 
 	private void handleCloseTracks() {
@@ -112,6 +122,7 @@ public class Controller {
 
 	private void handleOpenTracks() {
 		_canvasScene.showTracks();
+
 	}
 
 	private void handleHandDetected(HandDetectedEvent event) {
@@ -151,20 +162,20 @@ public class Controller {
 	}
 
 	private void handleTouchEvent(TouchEvent event) {
-		event.get_target().handleInteraction(event);
+		IView parent = event.get_target();
+		parent.handleInteraction(event);
 	}
 
 	private void handleExit() {
 		_player.stop();
 	}
 
-	//--------tracks----------
-	
+	// --------tracks----------
+
 	private void handlePlayTrack(PlayTrackEvent event) {
 		MusicEntry entry = event.get_entry();
 		_player.play(entry);
 	}
-
 
 	private void handlePauseTrack(PauseTrackEvent event) {
 		MusicEntry entry = event.get_entry();

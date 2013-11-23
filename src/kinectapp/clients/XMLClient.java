@@ -36,8 +36,9 @@ public class XMLClient implements IXMLClient {
 		for (XML child : xml.getChildren("music")) {
 			String content = child.getContent().trim();
 			String artist = child.getString("artist").trim();
+			String track = child.getString("name").trim();
 			log("content  : " + content + "/ artist : " + artist);
-			MusicEntry entry = new MusicEntry(content, artist);
+			MusicEntry entry = new MusicEntry(content, artist, track);
 			entries.add(entry);
 		}
 

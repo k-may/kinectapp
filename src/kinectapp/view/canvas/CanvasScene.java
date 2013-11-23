@@ -37,12 +37,13 @@ public class CanvasScene extends Scene implements ICanvasScene {
 		_canvas = new Canvas();
 		_canvas.set_width(_width);
 		_canvas.set_height(_height);
-		addChild(_canvas);
+		//addChild(_canvas);
 
 		_gallery = new GalleryView();
+		addChild(_gallery);
 		// if (_menu == null) {
 		_menu = new Menu();
-		addChild(_menu);
+		//addChild(_menu);
 		// }
 
 	}
@@ -76,11 +77,13 @@ public class CanvasScene extends Scene implements ICanvasScene {
 
 	@Override
 	public void showTracks() {
+		_menu.get_trackView().show();
 		_menu.showTracks();
 	}
 
 	@Override
 	public void hideTracks() {
+		_menu.get_trackView().hide();
 		_menu.hideTracks();
 	}
 	

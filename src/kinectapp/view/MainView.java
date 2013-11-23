@@ -7,6 +7,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import kinectapp.view.avatar.AvatarView;
+import kinectapp.view.avatar.AvatarsView;
 import processing.core.PApplet;
 import FrameWork.BaseMainView;
 import FrameWork.Controller;

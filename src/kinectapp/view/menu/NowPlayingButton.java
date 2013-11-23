@@ -40,11 +40,6 @@ public class NowPlayingButton extends ShadowButton {
 	}
 
 	@Override
-	public void dispatchPress(TouchEvent event) {
-		new OpenTracksEvent().dispatch();
-	}
-
-	@Override
 	public Boolean isHoverTarget() {
 		return true;
 	}
@@ -55,13 +50,20 @@ public class NowPlayingButton extends ShadowButton {
 	}
 
 	@Override
-	protected void dispatchHover(TouchEvent event) {
+	protected void onHover(TouchEvent event) {
+		super.onHover(event);
 		_icon.set_color(_color);
-	}
 
+	}
 	@Override
-	protected void dispatchHoverOut(TouchEvent event) {
-		_icon.set_color(_color);
+	protected void onHoverOut(TouchEvent event) {
+		super.onHoverOut(event);
+		_icon.set_color(MainView.ICON_COLOR);
+
+	}
+	@Override
+	protected void onHoverEnd(TouchEvent event) {
+		new OpenTracksEvent().dispatch();
 	}
 	
 	public void setTrackEntry(MusicEntry entry) {

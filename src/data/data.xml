@@ -12,7 +12,7 @@
 
 	<asset type="image" name="hand">handCircle.png</asset>
 	<asset type="image" name="cursorHighlight">cursorHighlight.png</asset>
-	
+
 	<asset name="nowPlayingText" type="image">nowPlayingText.png</asset>
 	<asset name="galleryText" type="image">galleryText.png</asset>
 	<asset name="saveText" type="image">saveText.png</asset>
@@ -24,12 +24,23 @@
 	<asset name="playIcon" type="image">playIcon.png</asset>
 	<asset name="pauseIcon" type="image">pauseIcon.png</asset>
 	<asset name="shadow" type="image">shadow.png</asset>
+	<asset name="shadowLeft" type="image">shadowRight.png</asset>
+	<asset name="shadowRight" type="image">shadowLeft.png</asset>
+
 	<asset name="colorWheel" type="image">colorWheel.png</asset>
-	
+	<asset name="navigationLeftIcon" type="image">navigateLeftIcon.png
+	</asset>
+	<asset name="navigationRightIcon" type="image">navigateRightIcon.png
+	</asset>
+
 	<font name="large" size="48">GillSansMT-48.vlw</font>
-	<font name="small" size="13">GillSansMTPro-Medium-13.vlw</font>
-	<font name="smallItalic" size="13">GillSansMT-Italic-13.vlw</font>
+	<font name="small" size="17">CenturyGothic-17.vlw</font>
+	<font name="smallItalic" size="17">CenturyGothic-Italic-17.vlw</font>
 
 	<image artists="me/you" title="here's the title" date="1908_12_01_34_35">images/11.jpg
+	</image>
+	<image artists="me/you" title="here's the title" date="1908_12_01_34_35">images/12.jpg
+	</image>
+	<image artists="me/you" title="here's the title" date="1908_12_01_34_35">images/15.jpg
 	</image>
 </data>
