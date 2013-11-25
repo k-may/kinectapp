@@ -12,4 +12,10 @@ public class ImageEntry {
 		this.artists = artists;
 		this.date = date;
 	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return this.filePath;
+	}
 }

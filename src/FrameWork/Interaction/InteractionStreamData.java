@@ -16,6 +16,7 @@ public class InteractionStreamData {
 	
 	public InteractionStreamData(float x, float y, float z, int userId,
 			InteractionType type) {
+		_userId = userId;
 		_z = (z);
 		_x = (x);
 		_y = (y);
@@ -65,6 +66,11 @@ public class InteractionStreamData {
 
 	public Boolean isOverHoverTarget() {
 		return _isOverHoverTarget ;
+	}
+
+	public Boolean isOverTarget() {
+		// TODO Auto-generated method stub
+		return _isOverHoverTarget || _isOverPressTarget;
 	}
 
 }

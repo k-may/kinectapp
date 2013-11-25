@@ -11,7 +11,7 @@ import FrameWork.Interaction.InteractionTargetInfo;
 import FrameWork.Interaction.InteractionType;
 import FrameWork.data.UserData;
 import FrameWork.view.IView;
-import FrameWork.pressing.PressStateConverter;
+import FrameWork.pressing.PressStateFactory;
 
 import static processing.core.PApplet.println;
 
@@ -19,11 +19,11 @@ public class Adapter implements IAdapter {
 
 	protected IMainView _canvas;
 	protected AvatarsView _avatarsView;
-	private PressStateConverter _pressStateConverter;
+	private PressStateFactory _pressStateFactory;
 
 	public Adapter() {
 		_avatarsView = new AvatarsView();
-		_pressStateConverter = new PressStateConverter(0.1f, 0.3f, 0.5f);
+		_pressStateFactory = new PressStateFactory(0.1f, 0.3f, 0.5f);
 
 	}
 
@@ -83,7 +83,7 @@ public class Adapter implements IAdapter {
 		}
 
 		for (UserData user : staleUsers) {
-			_avatarsView.get_users().remove(user);
+			_avatarsView.removeUser(user);
 		}
 	}
 
@@ -93,11 +93,14 @@ public class Adapter implements IAdapter {
 		for (InteractionStreamData streamData : data) {
 
 			UserData user = _avatarsView.getUser(streamData.get_userId());
+			
+			if(user == null)
+				user = _avatarsView.addUser(streamData.get_userId());
 
 			float localX = streamData.get_x() * _canvas.get_width();
 			float localY = streamData.get_y() * _canvas.get_height();
 
-			user.set_pressStateData(_pressStateConverter.getStateData(streamData.get_z()));
+			user.set_pressStateData(_pressStateFactory.getStateData(streamData.get_z(), _canvas.get_currentState(), streamData.isOverTarget()));
 			user.set_updated(true);
 			user.set_localX(localX);
 			user.set_localY(localY);

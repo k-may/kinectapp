@@ -1,7 +1,8 @@
 package FrameWork.pressing;
 
+import FrameWork.view.CanvasState;
 
-public class PressStateConverter {
+public class PressStateFactory {
 
 	private float _startS;
 	private float _startE;
@@ -15,7 +16,7 @@ public class PressStateConverter {
 	private float _drawS;
 	private float _drawE;
 
-	public PressStateConverter(float startTo, float colorTo, float preDrawTo) {
+	public PressStateFactory(float startTo, float colorTo, float preDrawTo) {
 		_startS = 0.0f;
 		_startE = startTo;
 
@@ -29,10 +30,19 @@ public class PressStateConverter {
 		_drawE = 1.0f;
 	}
 
-	public PressStateData getStateData(float pressure) {
+	public PressStateData getStateData(float pressure, CanvasState state, Boolean overTarget) {
+		switch (state) {
+			case Canvas:
+				return getCanvasStateData(pressure, overTarget);
+			default:
+				return getGalleryStateData(pressure, overTarget);
+		}
+	}
+
+	private PressStateData getCanvasStateData(float pressure, Boolean overTarget) {
 		PressStateData data = null;
 
-		if (pressure >= _startS && pressure < _startE) {
+		if (pressure >= _startS && pressure < _startE || overTarget) {
 			data = new PressStateData(PressState.Start, map(pressure, _startS, _startE));
 		} else if (pressure >= _colorS && pressure < _colorE) {
 			data = new PressStateData(PressState.ColorSelection, map(pressure, _colorS, _colorE));
@@ -45,7 +55,19 @@ public class PressStateConverter {
 		return data;
 	}
 
+	private PressStateData getGalleryStateData(float pressure, Boolean overTarget) {
+		PressStateData data = null;
+
+		if (pressure >= _startS && pressure < _startE || overTarget) {
+			data = new PressStateData(PressState.Start, map(pressure, _startS, _startE));
+		} else{
+			data = new PressStateData(PressState.PreDrawing, map(pressure, _preDrawS, _preDrawE));
+		} 
+
+		return data;
+	}
+
 	private float map(float value, float start, float end) {
-		return (value - start)/(end - start);
+		return (value - start) / (end - start);
 	}
 }

@@ -19,6 +19,13 @@ public class NavButton extends View {
 
 	public NavButton(String direction) {
 		_direction = direction;
+		_width = 82;
+		_height = 197;
+		
+		_isTouchEnabled = true;
+		_isPressTarget = true;
+		_isHoverEnabled = false;
+		
 		createChilds();
 	}
 
@@ -41,9 +48,6 @@ public class NavButton extends View {
 	@Override
 	public void draw(PApplet p) {
 		super.draw(p);
-
-		_width = _bg.get_width();
-		_height = _bg.get_height();
 
 		if (_isOver) {
 			PVector absPos = get_absPos();

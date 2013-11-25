@@ -26,6 +26,9 @@
 	<asset name="shadow" type="image">shadow.png</asset>
 	<asset name="shadowLeft" type="image">shadowRight.png</asset>
 	<asset name="shadowRight" type="image">shadowLeft.png</asset>
+	<asset name="backText" type="image">backText.png</asset>
+	<asset name="backIcon" type="image">backIcon.png</asset>
+	<asset name="savedDialogue" type="image">savedDialogue.png</asset>
 
 	<asset name="colorWheel" type="image">colorWheel.png</asset>
 	<asset name="navigationLeftIcon" type="image">navigateLeftIcon.png
@@ -37,10 +40,4 @@
 	<font name="small" size="17">CenturyGothic-17.vlw</font>
 	<font name="smallItalic" size="17">CenturyGothic-Italic-17.vlw</font>
 
-	<image artists="me/you" title="here's the title" date="1908_12_01_34_35">images/11.jpg
-	</image>
-	<image artists="me/you" title="here's the title" date="1908_12_01_34_35">images/12.jpg
-	</image>
-	<image artists="me/you" title="here's the title" date="1908_12_01_34_35">images/15.jpg
-	</image>
 </data>

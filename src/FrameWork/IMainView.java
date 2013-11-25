@@ -6,6 +6,7 @@ import FrameWork.Interaction.IInteractionRegion;
 import FrameWork.Interaction.IInteractionView;
 import FrameWork.audio.IAudioView;
 import FrameWork.scenes.SceneType;
+import FrameWork.view.CanvasState;
 import FrameWork.view.IView;
 import FrameWork.view.View;
 
@@ -44,4 +45,8 @@ public interface IMainView extends IView {
 			int id);
 
 	void addHoverEndEvent(IView target, float x, float y, float pressure, int id);
+	
+	CanvasState get_currentState();
+	
+	void set_currentState(CanvasState state);
 }

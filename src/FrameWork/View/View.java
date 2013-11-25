@@ -13,10 +13,11 @@ public class View implements IView {
 
 	protected Boolean _isHoverEnabled = false;
 	protected Boolean _isTouchEnabled = true;
+	protected Boolean _isPressTarget = false;
 	protected float _x;
 	protected float _y;
-	protected float _width;
-	protected float _height;
+	protected float _width = -1;
+	protected float _height = -1;
 	protected String _name;
 	protected IView _parent;
 	private ArrayList<IView> _childs;
@@ -149,7 +150,7 @@ public class View implements IView {
 	@Override
 	public Boolean isPressTarget() {
 		// TODO Auto-generated method stub
-		return false;
+		return _isPressTarget;
 	}
 
 	@Override

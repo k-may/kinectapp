@@ -31,10 +31,6 @@ public class AvatarCursor extends View {
 
 	private CursorMode _mode;
 
-	public CursorMode get_mode() {
-		return _mode;
-	}
-
 	public AvatarCursor() {
 
 		_hand = ContentManager.GetIcon("hand");
@@ -138,6 +134,10 @@ public class AvatarCursor extends View {
 
 	public void set_mode(CursorMode _mode) {
 		this._mode = _mode;
+	}
+
+	public CursorMode get_mode() {
+		return _mode;
 	}
 
 	public void set_strokePressure(float _strokePressure) {

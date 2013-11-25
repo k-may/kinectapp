@@ -23,7 +23,7 @@ import de.looksgood.ani.Ani;
 
 public class AppBuilder {
 
-	private RegionType REGION_TYPE = RegionType.Processing;
+	private RegionType REGION_TYPE = RegionType.GestTrackOSC;
 	private IInteractionRegion _region;
 	KinectApp _parent;
 	IMainView _root;
@@ -42,6 +42,9 @@ public class AppBuilder {
 
 	private void load() {
 		XMLClient xmlClient = XMLClient.getXMLCLientInstance();
+		
+		_controller.registerXMLClient(xmlClient);
+		
 		ContentManager.loadIcons(KinectApp.instance, xmlClient.readAssetEntries());
 		ContentManager.loadFonts(KinectApp.instance, xmlClient.readFontEntries());
 		ContentManager.loadGalleryEntries(KinectApp.instance, xmlClient.readImageEntries());

@@ -4,14 +4,19 @@ import static processing.core.PApplet.println;
 
 import java.util.ArrayList;
 
+import kinectapp.KinectApp;
+import kinectapp.content.GalleryEntry;
+
 import processing.core.PApplet;
 import FrameWork.audio.IAudioPlayer;
 import FrameWork.data.IXMLClient;
 import FrameWork.data.ImageEntry;
 import FrameWork.data.MusicEntry;
+import FrameWork.events.BackEvent;
 import FrameWork.events.Event;
 import FrameWork.events.EventType;
 import FrameWork.events.GalleryNavigationEvent;
+import FrameWork.events.GallerySelectedEvent;
 import FrameWork.events.HandDetectedEvent;
 import FrameWork.events.InteractionRegionReadyEvent;
 import FrameWork.events.LabelButtonPressed;
@@ -105,12 +110,31 @@ public class Controller {
 				handleCloseTracks();
 				break;
 			case GalleryNavigation:
-				handleGalleryNavigation((GalleryNavigationEvent)event);
+				handleGalleryNavigation((GalleryNavigationEvent) event);
+				break;
+			case Back:
+				handleBack((BackEvent) event);
+				break;
+			case GallerySelected:
+				handleGallerySelected((GallerySelectedEvent) event);
 				break;
 
 		}
 	}
-	
+
+	private void handleGallerySelected(GallerySelectedEvent event) {
+		setCanvasState(CanvasState.Gallery);
+		SceneManager.setScene(SceneType.Canvas);
+	}
+
+	private void handleBack(BackEvent event) {
+		switch (SceneManager.GetSceneType()) {
+			case Canvas:
+				setCanvasState(CanvasState.Canvas);
+				break;
+		}
+	}
+
 	private void handleGalleryNavigation(GalleryNavigationEvent event) {
 		String direction = event.get_direction();
 		_gallery.navigate(direction);
@@ -122,7 +146,6 @@ public class Controller {
 
 	private void handleOpenTracks() {
 		_canvasScene.showTracks();
-
 	}
 
 	private void handleHandDetected(HandDetectedEvent event) {
@@ -131,7 +154,6 @@ public class Controller {
 				_homeScene.setReady();
 				break;
 		}
-
 	}
 
 	private void handleLableButton(LabelButtonPressed event) {
@@ -140,21 +162,37 @@ public class Controller {
 		if (text == "START")
 			navigateToCanvas();
 		else if (text == "Home")
-			naviagateToHome();
+			navigateToHome();
 		else if (text == "Save")
 			new SaveCanvasEvent().dispatch();
 		else if (text == "Clear")
 			handleClearCanvas();
 	}
 
-	private void naviagateToHome() {
-		// _mainView.setScene(SceneType.Home);
+	private void navigateToHome() {
+		setCanvasState(CanvasState.Canvas);
 		SceneManager.setScene(SceneType.Home);
 	}
 
 	private void navigateToCanvas() {
-		// _mainView.setScene(SceneType.Canvas);
+		setCanvasState(CanvasState.Gallery);
 		SceneManager.setScene(SceneType.Canvas);
+	}
+
+	private void setCanvasState(CanvasState state) {
+		switch (state) {
+			case Canvas:
+				_canvasScene.hideGallery();
+				break;
+			case Gallery:
+				_canvasScene.showGallery();
+				break;
+			default:
+				// home
+				break;
+		}
+
+		_mainView.set_currentState(state);
 	}
 
 	private void handleClearCanvas() {
@@ -193,6 +231,9 @@ public class Controller {
 		xmlClient.writeXML(entry);
 
 		_canvas.save(filePath);
+
+		GalleryEntry galleryEntry = new GalleryEntry(entry, KinectApp.instance.loadImage(filePath));
+		_gallery.addImage(galleryEntry);
 	}
 
 	private void handleRegionReady(InteractionRegionReadyEvent event) {
@@ -201,6 +242,7 @@ public class Controller {
 	}
 
 	public void start() {
+		navigateToHome();
 		_mainView.start();
 	}
 

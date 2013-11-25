@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import processing.core.PApplet;
 import static processing.core.PApplet.println;
 
@@ -46,20 +45,23 @@ public class AvatarsView extends View implements IInteractionView {
 
 		if (_avatarViews.containsKey(user.get_id())) {
 			AvatarView view = _avatarViews.get(user.get_id());
-			_avatarViews.remove(view);
+			_avatarViews.remove(user.get_id());
 			removeChild(view);
 		}
 	}
 
 	@Override
-	public void addUser(UserData user) {
+	public UserData addUser(int id) {
 
+		UserData user = new UserData(id);
 		_users.add(user);
 
 		AvatarView view = new AvatarView(user);
 		_avatarViews.put(user.get_id(), view);
 		addChild(view);
-		updateCursorMode();
+		//updateCursorMode();
+		
+		return user;
 	}
 
 	@Override
@@ -68,9 +70,8 @@ public class AvatarsView extends View implements IInteractionView {
 			if (u.get_id() == id)
 				return u;
 		}
-		UserData user = new UserData(id);
-		addUser(user);
-		return user;
+		
+		return null;
 	}
 
 	public ArrayList<UserData> get_users() {
@@ -87,7 +88,7 @@ public class AvatarsView extends View implements IInteractionView {
 	}
 
 	private void updateCursorMode() {
-		CursorMode mode = getMode();
+		//CursorMode mode = getMode();
 	}
 
 	private CursorMode getMode() {
@@ -97,9 +98,9 @@ public class AvatarsView extends View implements IInteractionView {
 	}
 
 	public AvatarView getAvatarById(int id) {
-		if(_avatarViews.containsKey(id))
+		if (_avatarViews.containsKey(id))
 			return _avatarViews.get(id);
-		
+
 		return null;
 	}
 

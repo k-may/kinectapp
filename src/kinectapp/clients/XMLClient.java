@@ -52,7 +52,7 @@ public class XMLClient implements IXMLClient {
 	public void writeXML(ImageEntry entry) {
 		String data = entry.toString();
 		XML newChild = xml.addChild("image");
-		newChild.setContent(data);
+		newChild.setContent(entry.filePath);
 		newChild.setString("title", entry.title);
 		newChild.setString("artists", join(entry.artists, ","));
 		save();

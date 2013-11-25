@@ -15,10 +15,28 @@ public class Image extends View {
 
 	public Image(String name) {
 		super(name);
+		
+		_isTouchEnabled = false;
 	}
 
 	@Override
 	public void draw(PApplet p) {
+
+		if (_invalidated) {
+
+			if (_width != -1)
+				_scaleX = _width / getImage().width;
+			else
+				_width = getImage().width;
+
+			if (_height != -1)
+				_scaleY = _height / getImage().height;
+			else
+				_height = getImage().height;
+
+			_invalidated = false;
+
+		}
 		PVector absPos = get_absPos();
 
 		p.tint(_color);
@@ -43,8 +61,13 @@ public class Image extends View {
 
 	@Override
 	public void set_width(float width) {
-		// TODO Auto-generated method stub
-		_scaleX = width / getImage().width;
+		try {
+			_scaleX = width / getImage().width;
+			_width = get_width();
+		} catch (NullPointerException e) {
+			_width = width;
+			_invalidated = true;
+		}
 	}
 
 	@Override
@@ -57,7 +80,13 @@ public class Image extends View {
 
 	@Override
 	public void set_height(float height) {
-		_scaleY = height / getImage().height;
+		try {
+			_scaleY = height / getImage().height;
+			_height = get_height();
+		} catch (NullPointerException e) {
+			_height = height;
+			_invalidated = true;
+		}
 	}
 
 	protected PImage getImage() {

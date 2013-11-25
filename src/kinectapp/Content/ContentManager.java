@@ -59,6 +59,10 @@ public class ContentManager {
 
 	private static void addGalleryImage(ImageEntry entry, PImage image) {
 		printload(entry.title);
+		
+		if(image == null)
+			return;
+		
 		if (GalleryEntries == null)
 			GalleryEntries = new ArrayList<GalleryEntry>();
 

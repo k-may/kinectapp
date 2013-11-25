@@ -35,7 +35,7 @@ public class KinectRegion<T> extends Region<T> {
 		InteractionTargetInfo info = _adapter.getInteractionInfoAtLocation(mX, mY, mZ, handData.get_id(), _type);
 		Boolean isPressTarget = info.get_isPressTarget();
 		Boolean isHoverTarget = info.get_isHoverTarget();
-		
+
 		if (pressHandle != null) {
 			// update pressing
 			pressHandle.updateTendency(tendency);
@@ -48,7 +48,7 @@ public class KinectRegion<T> extends Region<T> {
 				isPressTarget = true;
 				pressPressure = pressHandle.get_pressure();
 				isPressing = pressHandle.isPressAction();
-			} else if(!isPressTarget){
+			} else if (!isPressTarget) {
 				removePressHandle(pressHandle);
 			}
 
@@ -112,12 +112,15 @@ public class KinectRegion<T> extends Region<T> {
 		if (_handData == null)
 			return;
 
+		_adapter.beginInteractionFrame();
+
 		for (HandData handData : _handData.values()) {
 			processInput(handData);
 		}
 
 		// update users
 		_adapter.handleStreamData(_stream);
+		_adapter.endInteractionFrame();
 	}
 
 	@Override

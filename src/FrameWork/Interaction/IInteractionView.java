@@ -15,7 +15,7 @@ public interface IInteractionView extends IView {
 
 	ArrayList<UserData> get_users();
 
-	void addUser(UserData user);
+	UserData addUser(int id);
 
 	UserData getUser(int id);
 }

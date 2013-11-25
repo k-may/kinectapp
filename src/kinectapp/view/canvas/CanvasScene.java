@@ -19,10 +19,7 @@ public class CanvasScene extends Scene implements ICanvasScene {
 
 	private Menu _menu;
 	private Canvas _canvas;
-	private LabelButton _saveButton;
-	private LabelButton _clearButton;
-	private CanvasState _state;
-
+	
 	public CanvasScene() {
 		super(SceneType.Canvas);
 
@@ -85,6 +82,20 @@ public class CanvasScene extends Scene implements ICanvasScene {
 	public void hideTracks() {
 		_menu.get_trackView().hide();
 		_menu.hideTracks();
+	}
+
+	@Override
+	public void showGallery() {
+		addChild(_gallery);
+		removeChild(_canvas);
+		removeChild(_menu);
+	}
+
+	@Override
+	public void hideGallery() {
+		addChild(_canvas);
+		addChild(_menu);
+		removeChild(_gallery);
 	}
 	
 

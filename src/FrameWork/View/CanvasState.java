@@ -1,5 +1,5 @@
 package FrameWork.view;
 
 public enum CanvasState {
-Gallery, Canvas
+	Gallery, Canvas, Home
 }

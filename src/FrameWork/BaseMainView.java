@@ -10,6 +10,7 @@ import FrameWork.Interaction.IInteractionRegion;
 import FrameWork.Interaction.IInteractionView;
 import FrameWork.Interaction.InteractionDispatcher;
 import FrameWork.Interaction.Types.InteractionEventType;
+import FrameWork.data.UserData;
 import FrameWork.events.TouchEvent;
 import FrameWork.scenes.SceneManager;
 import FrameWork.scenes.SceneType;
@@ -77,7 +78,7 @@ public abstract class BaseMainView implements IMainView {
 	public void addHoverStartEvent(IView target, float x, float y,
 			float pressure, int id) {
 		addInteractionEvent(InteractionEventType.HoverStart, target, x, y, pressure, id);
-		
+
 		startHover(id, InteractionDispatcher.HOVER_ELAPSE, target);
 	}
 
@@ -86,7 +87,7 @@ public abstract class BaseMainView implements IMainView {
 			float pressure, int id) {
 
 		addInteractionEvent(InteractionEventType.HoverEnd, target, x, y, pressure, id);
-		
+
 		endHover(id);
 	}
 
@@ -94,13 +95,13 @@ public abstract class BaseMainView implements IMainView {
 			float x, float y, float pressure, int id) {
 		PVector pos = target.get_absPos();
 
-		// local data accessible from user data? but only if user exists.
-		// Perhaps
-		// we should consolidate and initiate the users in a separate area (ie.
-		// Adapter)
-		float localX = x * SCREEN_WIDTH - pos.x;
-		float localY = y * SCREEN_HEIGHT - pos.y;
-		new TouchEvent(type, target, localX, localY, pressure, _interactionView.getUser(id), _parent.millis()).dispatch();
+		UserData user = _interactionView.getUser(id);
+
+		if (user != null) {
+			float localX = x * SCREEN_WIDTH - pos.x;
+			float localY = y * SCREEN_HEIGHT - pos.y;
+			new TouchEvent(type, target, localX, localY, pressure, _interactionView.getUser(id), _parent.millis()).dispatch();
+		}
 	}
 
 	@Override

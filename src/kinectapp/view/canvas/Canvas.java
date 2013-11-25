@@ -2,11 +2,14 @@ package kinectapp.view.canvas;
 
 import java.util.ArrayList;
 
+import kinectapp.KinectApp;
+import kinectapp.view.Image;
 import kinectapp.view.avatar.AvatarCursor;
 import static processing.core.PApplet.println;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PVector;
+import FrameWork.data.UserData;
 import FrameWork.events.TouchEvent;
 import FrameWork.stroke.ICanvas;
 import FrameWork.stroke.StrokeFragment;
@@ -18,10 +21,15 @@ public class Canvas extends View implements ICanvas {
 	private StrokeHandler _handler;
 	private PGraphics _buffer;
 
+	private Image _savedDialogue;
+	private Boolean _dialogueVisible = false;
+	private int _startTime;
+
 	public static int BG_COLOR = 0xff111011;
 
 	public Canvas() {
 		_handler = new StrokeHandler();
+		_savedDialogue = new Image("savedDialogue");
 	}
 
 	@Override
@@ -30,6 +38,17 @@ public class Canvas extends View implements ICanvas {
 		p.image(_buffer, _x, _y);
 
 		super.draw(p);
+
+		if (_dialogueVisible) {
+			int elapsed = KinectApp.instance.millis() - _startTime;
+			if (elapsed > 3000)
+				_dialogueVisible = false;
+
+			_savedDialogue.set_x((_width - _savedDialogue.get_width()) / 2);
+			_savedDialogue.set_y((_height - _savedDialogue.get_height()) / 2);
+			_savedDialogue.draw(p);
+		}
+
 	}
 
 	private void drawBuffer(PApplet p) {
@@ -64,10 +83,9 @@ public class Canvas extends View implements ICanvas {
 
 	@Override
 	public void handleInteraction(TouchEvent event) {
-		float strokePressure = event.getUser().get_strokePressure();
+		UserData data = event.getUser();
+		float strokePressure = data.get_strokePressure();
 
-		// println("handle : " + event.get_interactionType() + " : " +
-		// strokePressure);
 		switch (event.get_interactionType()) {
 			case PressDown:
 				println("press down");
@@ -94,6 +112,8 @@ public class Canvas extends View implements ICanvas {
 	@Override
 	public void save(String filePath) {
 		_buffer.save(filePath);
+		_dialogueVisible = true;
+		_startTime = KinectApp.instance.millis();
 	}
 
 }

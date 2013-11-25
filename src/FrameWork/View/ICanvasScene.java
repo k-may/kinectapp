@@ -10,4 +10,6 @@ public interface ICanvasScene {
 	IAudioView get_audioView();
 	void showTracks();
 	void hideTracks();
+	void showGallery();
+	void hideGallery();
 }

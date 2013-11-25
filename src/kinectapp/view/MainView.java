@@ -14,11 +14,13 @@ import FrameWork.Controller;
 import FrameWork.Rectangle;
 import FrameWork.scenes.SceneManager;
 import FrameWork.scenes.SceneType;
+import FrameWork.view.CanvasState;
 import FrameWork.view.IView;
 
 public class MainView extends BaseMainView implements Observer {
 	private SceneType DefaultScene = SceneType.Home;
 	private Controller _controller;
+	private CanvasState _currentState;
 
 	public static int ICON_COLOR = 0Xff333333;
 	public static int TEXT_COLOR = 0xff808080;
@@ -48,12 +50,12 @@ public class MainView extends BaseMainView implements Observer {
 
 	@Override
 	public void draw(PApplet p) {
-		//gets inputs from region and process
+		// gets inputs from region and process
 		_region.runInteractions();
-		//send processed inputs to dispatcher
+		// send processed inputs to dispatcher
 		_dispatcher.setStream(_region.getStream());
 		_dispatcher.process(p.millis());
-		
+
 		_controller.update();
 
 		SceneManager.getScene().draw(p);
@@ -104,18 +106,32 @@ public class MainView extends BaseMainView implements Observer {
 	@Override
 	public void startHover(int userID, int interval, IView target) {
 		AvatarView avatar = ((AvatarsView) _interactionView).getAvatarById(userID);
-		avatar.startLoad(interval, 1.0f, target);
+
+		if (avatar != null)
+			avatar.startLoad(interval, 1.0f, target);
 	}
-	
+
 	@Override
 	public void endHover(int userID) {
 		AvatarView avatar = ((AvatarsView) _interactionView).getAvatarById(userID);
-		avatar.cancelHover();
+
+		if (avatar != null)
+			avatar.cancelHover();
 	}
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		((AvatarsView) _interactionView).setScene(SceneManager.GetSceneType());
+	}
+
+	@Override
+	public CanvasState get_currentState() {
+		return _currentState;
+	}
+
+	@Override
+	public void set_currentState(CanvasState state) {
+		_currentState = state;
 	}
 
 }
