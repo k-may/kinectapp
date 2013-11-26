@@ -12,7 +12,6 @@
 
 	<asset type="image" name="hand">handCircle.png</asset>
 	<asset type="image" name="cursorHighlight">cursorHighlight.png</asset>
-
 	<asset name="nowPlayingText" type="image">nowPlayingText.png</asset>
 	<asset name="galleryText" type="image">galleryText.png</asset>
 	<asset name="saveText" type="image">saveText.png</asset>

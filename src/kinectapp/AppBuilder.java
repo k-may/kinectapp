@@ -13,9 +13,11 @@ import kinectapp.view.canvas.CanvasScene;
 import kinectapp.view.home.HomeScene;
 import processing.core.PApplet;
 import FrameWork.Controller;
+import FrameWork.ErrorType;
 import FrameWork.IMainView;
 import FrameWork.Interaction.IInteractionRegion;
 import FrameWork.audio.IAudioPlayer;
+import FrameWork.events.ErrorEvent;
 import FrameWork.scenes.SceneManager;
 import FrameWork.scenes.SceneType;
 import SimpleOpenNI.SimpleOpenNI;
@@ -66,6 +68,9 @@ public class AppBuilder {
 		initInteraction();
 		initScenes();
 		initPlayer();
+
+		
+		new ErrorEvent(ErrorType.AssetError, "asset error").dispatch();
 	}
 
 	private void initMainView() {
@@ -109,8 +114,10 @@ public class AppBuilder {
 				SimpleOpenNI context = new SimpleOpenNI(KinectApp.instance);
 				if (context.init()) {
 					_region = new SONRegion(context);
-				} else
-					_region = new PRegion(_parent);
+				} else{
+					new ErrorEvent(ErrorType.KinectError, "Unable to initate SimpleOpenNI, make sure all KinectAPI drivers are properly installed");
+					_region = new PRegion(_parent);	
+				}
 
 				break;
 			default:

@@ -5,6 +5,7 @@ import static processing.core.PApplet.println;
 import java.util.ArrayList;
 
 import kinectapp.KinectApp;
+import kinectapp.clients.ErrorLogClient;
 import kinectapp.content.GalleryEntry;
 
 import processing.core.PApplet;
@@ -13,6 +14,7 @@ import FrameWork.data.IXMLClient;
 import FrameWork.data.ImageEntry;
 import FrameWork.data.MusicEntry;
 import FrameWork.events.BackEvent;
+import FrameWork.events.ErrorEvent;
 import FrameWork.events.Event;
 import FrameWork.events.EventType;
 import FrameWork.events.GalleryNavigationEvent;
@@ -45,10 +47,13 @@ public class Controller {
 	private ICanvasScene _canvasScene;
 	private IXMLClient xmlClient;
 	private IHomeScene _homeScene;
+	private ErrorLogClient _errorLogClient;
 
 	private Controller() {
 		_touchEventQueue = new ArrayList<TouchEvent>();
 		_eventQueue = new ArrayList<Event>();
+		
+		_errorLogClient = new ErrorLogClient();
 	}
 
 	public void addEvent(Event event) {
@@ -118,8 +123,15 @@ public class Controller {
 			case GallerySelected:
 				handleGallerySelected((GallerySelectedEvent) event);
 				break;
+			case Error:
+				handleError((ErrorEvent)event);
+				break;
 
 		}
+	}
+
+	private void handleError(ErrorEvent event) {
+		_errorLogClient.addError(event);
 	}
 
 	private void handleGallerySelected(GallerySelectedEvent event) {
@@ -224,7 +236,7 @@ public class Controller {
 		String date = PApplet.month() + "_" + PApplet.day() + "_"
 				+ PApplet.minute() + "_" + PApplet.second();
 		String title = PApplet.minute() + "_" + PApplet.second();
-		String filePath = "images" + PApplet.minute() + "_" + PApplet.second()
+		String filePath = "images/" + PApplet.minute() + "_" + PApplet.second()
 				+ ".jpg";
 		ImageEntry entry = new ImageEntry(filePath, "", new String[] { "me" }, date);
 

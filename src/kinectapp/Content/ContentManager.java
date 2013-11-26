@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import FrameWork.ErrorType;
 import FrameWork.data.AssetEntry;
 import FrameWork.data.FontEntry;
 import FrameWork.data.ImageEntry;
+import FrameWork.events.ErrorEvent;
 
 import processing.core.PApplet;
 import processing.core.PFont;
@@ -19,20 +21,28 @@ public class ContentManager {
 	public static Map<String, FontInfo> Fonts;
 	public static ArrayList<GalleryEntry> GalleryEntries;
 
-	//icons
+	// icons
 	public static void loadIcons(PApplet parent, ArrayList<AssetEntry> entries) {
 		for (AssetEntry entry : entries) {
 			loadIcon(parent, entry);
 		}
 	}
 
-	private static void printload(String name){
+	private static void printload(String name) {
 		println("--> loaded : " + name);
 	}
-	
+
 	private static void loadIcon(PApplet parent, AssetEntry entry) {
 		printload(entry.get_name());
-		PIcon asset = new PIcon(entry, parent.loadImage(entry.get_filePath()));
+		PImage icon = parent.loadImage(entry.get_filePath());
+
+		if (icon == null) {
+			new ErrorEvent(ErrorType.AssetError, "Couldn't find asset : "
+					+ entry.get_filePath()).dispatch();
+			return;
+		}
+		
+		PIcon asset = new PIcon(entry, icon);
 		if (Icons == null)
 			Icons = new HashMap<String, PIcon>();
 
@@ -42,13 +52,13 @@ public class ContentManager {
 	public static PImage GetIcon(String name) {
 		if (Icons.containsKey(name))
 			return Icons.get(name).get_image();
-		
+
 		println("error : no image for " + name);
 
 		return null;
 	}
 
-	//galleries
+	// galleries
 	public static void loadGalleryEntries(PApplet instance,
 			ArrayList<ImageEntry> readImageEntries) {
 
@@ -59,10 +69,10 @@ public class ContentManager {
 
 	private static void addGalleryImage(ImageEntry entry, PImage image) {
 		printload(entry.title);
-		
-		if(image == null)
+
+		if (image == null)
 			return;
-		
+
 		if (GalleryEntries == null)
 			GalleryEntries = new ArrayList<GalleryEntry>();
 
@@ -73,7 +83,7 @@ public class ContentManager {
 		return GalleryEntries;
 	}
 
-	//fonts
+	// fonts
 	public static void loadFonts(PApplet instance,
 			ArrayList<FontEntry> readFontEntries) {
 
