@@ -1,7 +1,9 @@
-package FrameWork.stroke;
+package framework.stroke;
 
-public interface ICanvas {
+public interface ICanvas<T> {
 	void save(String filePath);
 
 	void clear();
+
+	T getImage();
 }

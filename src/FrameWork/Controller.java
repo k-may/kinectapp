@@ -1,68 +1,77 @@
-package FrameWork;
+package framework;
 
 import static processing.core.PApplet.println;
 
 import java.util.ArrayList;
 
-import kinectapp.KinectApp;
-import kinectapp.clients.ErrorLogClient;
-import kinectapp.content.GalleryEntry;
-
 import processing.core.PApplet;
-import FrameWork.audio.IAudioPlayer;
-import FrameWork.data.IXMLClient;
-import FrameWork.data.ImageEntry;
-import FrameWork.data.MusicEntry;
-import FrameWork.events.BackEvent;
-import FrameWork.events.ErrorEvent;
-import FrameWork.events.Event;
-import FrameWork.events.EventType;
-import FrameWork.events.GalleryNavigationEvent;
-import FrameWork.events.GallerySelectedEvent;
-import FrameWork.events.HandDetectedEvent;
-import FrameWork.events.InteractionRegionReadyEvent;
-import FrameWork.events.LabelButtonPressed;
-import FrameWork.events.PauseTrackEvent;
-import FrameWork.events.PlayTrackEvent;
-import FrameWork.events.SaveCanvasEvent;
-import FrameWork.events.TouchEvent;
-import FrameWork.scenes.IHomeScene;
-import FrameWork.scenes.SceneManager;
-import FrameWork.scenes.SceneType;
-import FrameWork.stroke.ICanvas;
-import FrameWork.view.CanvasState;
-import FrameWork.view.ICanvasScene;
-import FrameWork.view.IGallery;
-import FrameWork.view.IView;
+import framework.audio.IAudioPlayer;
+import framework.clients.ErrorLogClient;
+import framework.clients.IDataClient;
+import framework.clients.LogClient;
+import framework.data.ImageEntry;
+import framework.data.MusicEntry;
+import framework.events.ActionEvent;
+import framework.events.BackEvent;
+import framework.events.ErrorEvent;
+import framework.events.Event;
+import framework.events.EventType;
+import framework.events.GallerySelectedEvent;
+import framework.events.HandDetectedEvent;
+import framework.events.InteractionRegionReadyEvent;
+import framework.events.LabelButtonPressed;
+import framework.events.LogEvent;
+import framework.events.PauseTrackEvent;
+import framework.events.PlayTrackEvent;
+import framework.events.SaveCanvasEvent;
+import framework.events.TouchEvent;
+import framework.scenes.IHomeScene;
+import framework.scenes.SceneManager;
+import framework.scenes.SceneType;
+import framework.view.CanvasState;
+import framework.view.IView;
 
-public class Controller {
+public class Controller implements IController {
 
 	private ArrayList<TouchEvent> _touchEventQueue;
 	private ArrayList<Event> _eventQueue;
 	private static Controller _instance;
 	private IMainView _mainView;
 	private IAudioPlayer _player;
-	private IGallery _gallery;
-	private ICanvas _canvas;
-	private ICanvasScene _canvasScene;
-	private IXMLClient xmlClient;
-	private IHomeScene _homeScene;
+	private IDataClient xmlClient;
+	private IHomeScene<?> _homeScene;
 	private ErrorLogClient _errorLogClient;
+	private LogClient _logClient;
+	private int _actionTime;
+
+	private ArrayList<IController> _controllers;
+
+	public static String DATA_PATH;
 
 	private Controller() {
 		_touchEventQueue = new ArrayList<TouchEvent>();
 		_eventQueue = new ArrayList<Event>();
+
+		_errorLogClient = new ErrorLogClient(Controller.DATA_PATH + "logs/error.txt");
+		_logClient = new LogClient(Controller.DATA_PATH + "logs/log.txt");
+
+		registerController(this);
 		
-		_errorLogClient = new ErrorLogClient();
 	}
 
 	public void addEvent(Event event) {
 		_eventQueue.add(event);
 	}
 
-	public void update() {
+	public void update(int time) {
 		processTouches();
 		processEvents();
+
+		if (SceneManager.GetSceneType() == SceneType.Canvas) {
+			int elapsed = time - _actionTime;
+			if (elapsed > 60000)
+				navigateToHome();
+		}
 	}
 
 	private void processTouches() {
@@ -79,11 +88,12 @@ public class Controller {
 		_eventQueue.clear();
 
 		for (Event evt : tempList) {
-			processEvent(evt);
+			for (IController controller : _controllers)
+				controller.processEvent(evt);
 		}
 	}
 
-	private void processEvent(Event event) {
+	public void processEvent(Event event) {
 		EventType type = event.get_type();
 		println("process event : " + event.toString());
 		switch (type) {
@@ -108,15 +118,6 @@ public class Controller {
 			case HandDetected:
 				handleHandDetected((HandDetectedEvent) event);
 				break;
-			case OpenTracks:
-				handleOpenTracks();
-				break;
-			case CloseTracks:
-				handleCloseTracks();
-				break;
-			case GalleryNavigation:
-				handleGalleryNavigation((GalleryNavigationEvent) event);
-				break;
 			case Back:
 				handleBack((BackEvent) event);
 				break;
@@ -124,10 +125,31 @@ public class Controller {
 				handleGallerySelected((GallerySelectedEvent) event);
 				break;
 			case Error:
-				handleError((ErrorEvent)event);
+				handleError((ErrorEvent) event);
 				break;
-
+			case Log:
+				handleLog((LogEvent) event);
+				break;
+			case Action:
+				handleAction((ActionEvent) event);
+				break;
+			case CanvasStateUpdate:
+				handleCanvasState((CanvasStateUpdateEvent) event);
+				break;
 		}
+	}
+
+	private void handleCanvasState(CanvasStateUpdateEvent event) {
+		CanvasState state = event.getState();
+		_mainView.set_currentState(state);
+	}
+
+	private void handleAction(ActionEvent event) {
+		_actionTime = event.get_time();
+	}
+
+	private void handleLog(LogEvent event) {
+		_logClient.addLog(event.get_time(), event.get_msg());
 	}
 
 	private void handleError(ErrorEvent event) {
@@ -135,35 +157,24 @@ public class Controller {
 	}
 
 	private void handleGallerySelected(GallerySelectedEvent event) {
-		setCanvasState(CanvasState.Gallery);
+		// setCanvasState(CanvasState.Gallery);
+		new CanvasStateUpdateEvent(CanvasState.Gallery).dispatch();
+
 		SceneManager.setScene(SceneType.Canvas);
 	}
 
 	private void handleBack(BackEvent event) {
 		switch (SceneManager.GetSceneType()) {
 			case Canvas:
-				setCanvasState(CanvasState.Canvas);
+				new CanvasStateUpdateEvent(CanvasState.Canvas).dispatch(); // (CanvasState.Canvas);
 				break;
 		}
-	}
-
-	private void handleGalleryNavigation(GalleryNavigationEvent event) {
-		String direction = event.get_direction();
-		_gallery.navigate(direction);
-	}
-
-	private void handleCloseTracks() {
-		_canvasScene.hideTracks();
-	}
-
-	private void handleOpenTracks() {
-		_canvasScene.showTracks();
 	}
 
 	private void handleHandDetected(HandDetectedEvent event) {
 		switch (SceneManager.GetSceneType()) {
 			case Home:
-				_homeScene.setReady();
+				_homeScene.setReady(true);
 				break;
 		}
 	}
@@ -177,38 +188,18 @@ public class Controller {
 			navigateToHome();
 		else if (text == "Save")
 			new SaveCanvasEvent().dispatch();
-		else if (text == "Clear")
-			handleClearCanvas();
+
 	}
 
 	private void navigateToHome() {
-		setCanvasState(CanvasState.Canvas);
+		new CanvasStateUpdateEvent(CanvasState.Canvas).dispatch(); // setCanvasState(CanvasState.Canvas);
 		SceneManager.setScene(SceneType.Home);
+		_homeScene.setReady(false);
 	}
 
 	private void navigateToCanvas() {
-		setCanvasState(CanvasState.Gallery);
+		new CanvasStateUpdateEvent(CanvasState.Canvas).dispatch(); // setCanvasState(CanvasState.Gallery);
 		SceneManager.setScene(SceneType.Canvas);
-	}
-
-	private void setCanvasState(CanvasState state) {
-		switch (state) {
-			case Canvas:
-				_canvasScene.hideGallery();
-				break;
-			case Gallery:
-				_canvasScene.showGallery();
-				break;
-			default:
-				// home
-				break;
-		}
-
-		_mainView.set_currentState(state);
-	}
-
-	private void handleClearCanvas() {
-		_canvas.clear();
 	}
 
 	private void handleTouchEvent(TouchEvent event) {
@@ -240,12 +231,8 @@ public class Controller {
 				+ ".jpg";
 		ImageEntry entry = new ImageEntry(filePath, "", new String[] { "me" }, date);
 
-		xmlClient.writeXML(entry);
+		xmlClient.writeImageEntry(entry);
 
-		_canvas.save(filePath);
-
-		GalleryEntry galleryEntry = new GalleryEntry(entry, KinectApp.instance.loadImage(filePath));
-		_gallery.addImage(galleryEntry);
 	}
 
 	private void handleRegionReady(InteractionRegionReadyEvent event) {
@@ -254,6 +241,7 @@ public class Controller {
 	}
 
 	public void start() {
+
 		navigateToHome();
 		_mainView.start();
 	}
@@ -269,24 +257,12 @@ public class Controller {
 		_touchEventQueue.add(touchEvent);
 	}
 
-	public void registerCanvasScene(ICanvasScene canvasScene) {
-		_canvasScene = canvasScene;
-	}
-
-	public void registerXMLClient(IXMLClient client) {
+	public void registerDataClient(IDataClient client) {
 		xmlClient = client;
 	}
 
 	public void registerParent(IMainView parent) {
 		_mainView = parent;
-	}
-
-	public void registerGallery(IGallery gallery) {
-		_gallery = gallery;
-	}
-
-	public void registerCanvas(ICanvas canvas) {
-		_canvas = canvas;
 	}
 
 	public void registerTrackPlayer(IAudioPlayer player) {
@@ -295,6 +271,13 @@ public class Controller {
 
 	public void registerHomeScene(IHomeScene scene) {
 		_homeScene = scene;
+	}
+
+	public void registerController(IController controller) {
+		if (_controllers == null)
+			_controllers = new ArrayList<IController>();
+
+		_controllers.add(controller);
 	}
 
 }

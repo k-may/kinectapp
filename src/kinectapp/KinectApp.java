@@ -1,11 +1,12 @@
 package kinectapp;
 
+import framework.IMainView;
+import framework.events.ExitEvent;
+import application.AppBuilder;
+import application.interaction.soni.SONRegion;
 import oscP5.OscMessage;
-import kinectapp.Interaction.SimpleOpenNI.SONRegion;
 import processing.core.PApplet;
 import processing.core.PVector;
-import FrameWork.IMainView;
-import FrameWork.events.ExitEvent;
 import SimpleOpenNI.SimpleOpenNI;
 
 public class KinectApp extends PApplet {
@@ -17,9 +18,9 @@ public class KinectApp extends PApplet {
 	public void setup() {
 		noLoop();
 		if (!isFullScreen) {
-			size(1024, 768);
+			size(1024, 768, PApplet.P2D);
 		}else{
-			size(displayWidth, displayHeight);
+			size(displayWidth, displayHeight, PApplet.P2D);
 		}
 
 		instance = this;
@@ -30,9 +31,6 @@ public class KinectApp extends PApplet {
 		_root.draw(this);
 	}
 
-	public static void main(String _args[]) {
-		PApplet.main(new String[] { kinectapp.KinectApp.class.getName() });
-	}
 
 	@Override
 	public void exit() {
@@ -76,4 +74,8 @@ public class KinectApp extends PApplet {
 		region.onCompletedGesture(gestureType, pos);
 	}
 
+
+	public static void main(String _args[]) {
+		PApplet.main(new String[] { kinectapp.KinectApp.class.getName() });
+	}
 }

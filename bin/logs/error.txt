@@ -1,1 +1,13 @@
 11/26 17:22:15 Asset Error : asset error
+11/26 17:53:00 Asset Error : asset error
+11/26 19:15:30 Asset Error : asset error
+11/27 11:23:45 Asset Error : asset error
+11/27 11:23:45 XML PATH : path : c:\work\gestuetek\KinectApp\KinectApp\bin\data\could not be found
+11/27 11:23:51 Asset Error : XMLClient null
+[11/27 11:47:26] [Asset Error] asset error
+[11/27 11:48:23] [Asset Error] asset error
+[11/27 11:58:19] [Asset Error] asset error
+[11/27 11:58:28] [Asset Error] path 'c:\work\gestuetek\KinectApp\KinectApp\bin\data\handCircle.png' could not be found
+[11/27 11:59:22] [Asset Error] asset error
+[11/27 12:55:42] [Initiation] no input type for 'mouse', try 'mouse', 'gesttracker', or 'soni'
+[11/27 12:55:43] [Initiation] no input type for 'mouse', try 'mouse', 'gesttracker', or 'soni'

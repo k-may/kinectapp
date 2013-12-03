@@ -1,15 +1,19 @@
-package FrameWork.view;
+package framework.view;
 
-import FrameWork.audio.IAudioView;
-import FrameWork.data.UserData;
-import FrameWork.stroke.ICanvas;
-import processing.core.PImage;
+import java.util.ArrayList;
 
-public interface ICanvasScene {
-	ICanvas get_canvas();
+import framework.audio.IAudioView;
+import framework.data.GalleryEntry;
+
+public interface ICanvasScene<T> {
+	//ICanvas<T> get_canvas();
 	IAudioView get_audioView();
 	void showTracks();
 	void hideTracks();
 	void showGallery();
 	void hideGallery();
+	void navigate(String direction);
+	//IGallery<T> getGallery();
+	GalleryEntry<T> save(String filePath, String date);
+	void setImages(ArrayList<GalleryEntry<T>> images);
 }

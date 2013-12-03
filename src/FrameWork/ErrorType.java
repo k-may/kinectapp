@@ -1,7 +1,7 @@
-package FrameWork;
+package framework;
 
 public enum ErrorType {
-	KinectError("Kinect Error"), AssetError("Asset Error"), MusicError("Audio Error");
+	KinectError("Kinect Error"), AssetError("Asset Error"), MusicError("Audio Error"), XMLPath("XML PATH"), INIT("Initiation"), Decode("URL_DECODE");
 	
 	private String _name;
 	private ErrorType(String name){
